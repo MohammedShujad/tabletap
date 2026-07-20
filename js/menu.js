@@ -3,49 +3,57 @@ const defaultMenuItems = [
         id: 1,
         name: "Chicken Biryani Full",
         category: "Traditional Dishes",
-        price: 22
+        price: 22,
+        image: ""
     },
     {
         id: 2,
         name: "Mutton Biryani Full",
         category: "Traditional Dishes",
-        price: 25
+        price: 25,
+        image: ""
     },
     {
         id: 3,
         name: "Chicken 65",
         category: "Starters",
-        price: 20
+        price: 20,
+        image: ""
     },
     {
         id: 4,
         name: "Fish Fry Boneless",
         category: "Starters",
-        price: 25
+        price: 25,
+        image: ""
     },
     {
         id: 5,
         name: "Chicken Fried Rice",
         category: "Fast Food",
-        price: 17
+        price: 17,
+        image: ""
     },
     {
         id: 6,
         name: "Chicken Handi",
         category: "Chicken Gravy",
-        price: 19
+        price: 19,
+        image: ""
     },
     {
         id: 7,
         name: "Mutton Handi",
         category: "Mutton Gravy",
-        price: 20
+        price: 20,
+        image: ""
     },
     {
         id: 8,
         name: "Paneer Butter Masala",
         category: "Vegetarian",
-        price: 24
+        price: 24,
+        image: ""
     }
 ];
 
@@ -59,9 +67,8 @@ function categoryKey(category) {
     return cleanCategory(category).toLowerCase();
 }
 
-const savedMenu = JSON.parse(
-    localStorage.getItem("tableTapMenu")
-);
+const savedMenu =
+    JSON.parse(localStorage.getItem("tableTapMenu"));
 
 const menuItems =
     Array.isArray(savedMenu)
@@ -136,12 +143,11 @@ function displayCategories() {
         }
 
         button.addEventListener("click", function () {
-            const buttons =
-                categoryList.querySelectorAll("button");
-
-            buttons.forEach(function (currentButton) {
-                currentButton.classList.remove("active");
-            });
+            categoryList
+                .querySelectorAll("button")
+                .forEach(function (currentButton) {
+                    currentButton.classList.remove("active");
+                });
 
             button.classList.add("active");
             displayMenu(category);
@@ -176,25 +182,51 @@ function displayMenu(selectedCategory = "All") {
 
         card.className = "menu-card";
 
+        const imageSection = item.image
+            ? `
+                <img
+                    src="${item.image}"
+                    alt="${item.name}"
+                    class="menu-card-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+                >
+
+                <div
+                    class="menu-card-placeholder"
+                    style="display:none;"
+                >
+                    🍽️
+                </div>
+            `
+            : `
+                <div class="menu-card-placeholder">
+                    🍽️
+                </div>
+            `;
+
         card.innerHTML = `
-            <h3>${item.name}</h3>
+            ${imageSection}
 
-            <p>${cleanCategory(item.category)}</p>
+            <div class="menu-card-content">
+                <h3>${item.name}</h3>
 
-            <div class="menu-card-bottom">
-                <strong>SAR ${Number(item.price)}</strong>
+                <p>${cleanCategory(item.category)}</p>
 
-                <button type="button" data-item-id="${item.id}">
-                    Add
-                </button>
+                <div class="menu-card-bottom">
+                    <strong>SAR ${Number(item.price)}</strong>
+
+                    <button type="button">
+                        Add
+                    </button>
+                </div>
             </div>
         `;
 
-        const addButton = card.querySelector("button");
-
-        addButton.addEventListener("click", function () {
-            addToCart(item.id);
-        });
+        card
+            .querySelector(".menu-card-bottom button")
+            .addEventListener("click", function () {
+                addToCart(item.id);
+            });
 
         menuContainer.appendChild(card);
     });

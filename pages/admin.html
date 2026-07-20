@@ -211,17 +211,41 @@
 
     <input id="foodName" placeholder="Food Name"
         style="width:100%;padding:12px;margin-bottom:10px;">
+        
 
-    <input id="foodCategory" placeholder="Category"
-        style="width:100%;padding:12px;margin-bottom:10px;">
+    <select
+    id="foodCategory"
+    style="width:100%;padding:12px;margin-bottom:10px;"
+>
+    <option value="">Select Category</option>
+</select>
 
-    <input id="foodPrice" type="number" placeholder="Price"
-        style="width:100%;padding:12px;margin-bottom:10px;">
+<input
+    id="newCategory"
+    placeholder="Or create a new category"
+    style="width:100%;padding:12px;margin-bottom:10px;"
+>
 
-    <button id="saveNewItem"
-        class="action-button edit-button">
-        Save Item
-    </button>
+    <input
+    id="foodPrice"
+    type="number"
+    placeholder="Price"
+    style="width:100%;padding:12px;margin-bottom:10px;"
+>
+
+<input
+    id="foodImage"
+    type="url"
+    placeholder="Food Image URL"
+    style="width:100%;padding:12px;margin-bottom:10px;"
+>
+
+<button
+    id="saveNewItem"
+    class="action-button edit-button"
+>
+    Save Item
+</button>
 
 </div>
             <table class="menu-table">
@@ -244,231 +268,330 @@
     </main>
 
     <script>
-        const defaultMenuItems = [
-            {
-                id: 1,
-                name: "Chicken Biryani Full",
-                category: "Traditional Dishes",
-                price: 22
-            },
-            {
-                id: 2,
-                name: "Mutton Biryani Full",
-                category: "Traditional Dishes",
-                price: 25
-            },
-            {
-                id: 3,
-                name: "Chicken 65",
-                category: "Starters",
-                price: 20
-            },
-            {
-                id: 4,
-                name: "Fish Fry Boneless",
-                category: "Starters",
-                price: 25
-            },
-            {
-                id: 5,
-                name: "Chicken Fried Rice",
-                category: "Fast Food",
-                price: 17
-            },
-            {
-                id: 6,
-                name: "Chicken Handi",
-                category: "Chicken Gravy",
-                price: 19
-            },
-            {
-                id: 7,
-                name: "Mutton Handi",
-                category: "Mutton Gravy",
-                price: 20
-            },
-            {
-                id: 8,
-                name: "Paneer Butter Masala",
-                category: "Vegetarian",
-                price: 24
-            }
-        ];
-
-        let menuItems =
-            JSON.parse(localStorage.getItem("tableTapMenu")) ||
-            defaultMenuItems;
-
-        const orders =
-            JSON.parse(localStorage.getItem("tableTapOrders")) || [];
-
-        function loadStats() {
-            const totalRevenue = orders.reduce(function (total, order) {
-                return total + Number(order.total || 0);
-            }, 0);
-
-            const activeOrders = orders.filter(function (order) {
-                return order.status !== "Completed";
-            }).length;
-
-            document.getElementById("totalOrders").textContent =
-                orders.length;
-
-            document.getElementById("totalRevenue").textContent =
-                totalRevenue;
-
-            document.getElementById("activeOrders").textContent =
-                activeOrders;
-
-            document.getElementById("menuCount").textContent =
-                menuItems.length;
+    const defaultMenuItems = [
+        {
+            id: 1,
+            name: "Chicken Biryani Full",
+            category: "Traditional Dishes",
+            price: 22,
+            image: ""
+        },
+        {
+            id: 2,
+            name: "Mutton Biryani Full",
+            category: "Traditional Dishes",
+            price: 25,
+            image: ""
+        },
+        {
+            id: 3,
+            name: "Chicken 65",
+            category: "Starters",
+            price: 20,
+            image: ""
+        },
+        {
+            id: 4,
+            name: "Fish Fry Boneless",
+            category: "Starters",
+            price: 25,
+            image: ""
+        },
+        {
+            id: 5,
+            name: "Chicken Fried Rice",
+            category: "Fast Food",
+            price: 17,
+            image: ""
+        },
+        {
+            id: 6,
+            name: "Chicken Handi",
+            category: "Chicken Gravy",
+            price: 19,
+            image: ""
+        },
+        {
+            id: 7,
+            name: "Mutton Handi",
+            category: "Mutton Gravy",
+            price: 20,
+            image: ""
+        },
+        {
+            id: 8,
+            name: "Paneer Butter Masala",
+            category: "Vegetarian",
+            price: 24,
+            image: ""
         }
+    ];
 
-        function renderMenuTable() {
-            const tableBody =
-                document.getElementById("menuTableBody");
+    let menuItems =
+        JSON.parse(localStorage.getItem("tableTapMenu")) ||
+        defaultMenuItems;
 
-            tableBody.innerHTML = "";
+    const orders =
+        JSON.parse(localStorage.getItem("tableTapOrders")) || [];
 
-            menuItems.forEach(function (item) {
-                const row = document.createElement("tr");
+    const addMenuItemBtn =
+        document.getElementById("addMenuItemBtn");
 
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td>${item.category}</td>
-                    <td>SAR ${item.price}</td>
-                    <td>
-                        <button
-                            class="action-button edit-button"
-                            onclick="editItem(${item.id})"
-                        >
-                            Edit
-                        </button>
+    const addItemForm =
+        document.getElementById("addItemForm");
 
-                        <button
-                            class="action-button delete-button"
-                            onclick="deleteItem(${item.id})"
-                        >
-                            Delete
-                        </button>
-                    </td>
-                `;
+    const saveNewItem =
+        document.getElementById("saveNewItem");
 
-                tableBody.appendChild(row);
-            });
-        }
+    const foodCategory =
+        document.getElementById("foodCategory");
 
-        function editItem(itemId) {
-            const item = menuItems.find(function (menuItem) {
-                return menuItem.id === itemId;
-            });
+    const newCategory =
+        document.getElementById("newCategory");
 
-            if (!item) {
-                return;
-            }
-
-            const newName =
-                prompt("Enter item name:", item.name);
-
-            const newPrice =
-                prompt("Enter item price:", item.price);
-
-            if (!newName || !newPrice) {
-                return;
-            }
-
-            item.name = newName;
-            item.price = Number(newPrice);
-
-            saveMenu();
-        }
-
-        function deleteItem(itemId) {
-            const confirmed =
-                confirm("Are you sure you want to delete this item?");
-
-            if (!confirmed) {
-                return;
-            }
-
-            menuItems = menuItems.filter(function (item) {
-                return item.id !== itemId;
-            });
-
-            saveMenu();
-        }
-
-        function saveMenu() {
-    localStorage.setItem(
-        "tableTapMenu",
-        JSON.stringify(menuItems)
-    );
-
-    loadStats();
-    renderMenuTable();
-}
-
-/* PASTE THE NEW ADD-ITEM CODE HERE */
-
-const addMenuItemBtn =
-    document.getElementById("addMenuItemBtn");
-
-const addItemForm =
-    document.getElementById("addItemForm");
-
-const saveNewItem =
-    document.getElementById("saveNewItem");
-
-addMenuItemBtn.addEventListener("click", function () {
-    if (addItemForm.style.display === "none") {
-        addItemForm.style.display = "block";
-        addMenuItemBtn.textContent = "Close Form";
-    } else {
-        addItemForm.style.display = "none";
-        addMenuItemBtn.textContent = "+ Add New Menu Item";
-    }
-});
-
-saveNewItem.addEventListener("click", function () {
-    const name =
-        document.getElementById("foodName").value.trim();
-
-    const category =
-        document.getElementById("foodCategory").value.trim();
-
-    const price =
-        Number(document.getElementById("foodPrice").value);
-
-    if (!name || !category || price <= 0) {
-        alert("Please enter a valid name, category and price.");
-        return;
+    function cleanCategory(value) {
+        return String(value || "")
+            .trim()
+            .replace(/\s+/g, " ");
     }
 
-    const newItem = {
-        id: Date.now(),
-        name: name,
-        category: category,
-        price: price
-    };
+    function categoryKey(value) {
+        return cleanCategory(value).toLowerCase();
+    }
 
-    menuItems.push(newItem);
+    function getCategories() {
+        const categoryMap = new Map();
 
-    document.getElementById("foodName").value = "";
-    document.getElementById("foodCategory").value = "";
-    document.getElementById("foodPrice").value = "";
+        menuItems.forEach(function (item) {
+            const category = cleanCategory(item.category);
+            const key = categoryKey(category);
 
-    addItemForm.style.display = "none";
-    addMenuItemBtn.textContent = "+ Add New Menu Item";
+            if (category && !categoryMap.has(key)) {
+                categoryMap.set(key, category);
+            }
+        });
 
-    saveMenu();
+        return Array.from(categoryMap.values());
+    }
 
-    alert("Menu item added successfully.");
-});
+    function loadCategoryOptions() {
+        foodCategory.innerHTML =
+            `<option value="">Select Category</option>`;
 
-saveMenu();
+        getCategories().forEach(function (category) {
+            const option = document.createElement("option");
+
+            option.value = category;
+            option.textContent = category;
+
+            foodCategory.appendChild(option);
+        });
+    }
+
+    function loadStats() {
+        const totalRevenue = orders.reduce(function (total, order) {
+            return total + Number(order.total || 0);
+        }, 0);
+
+        const activeOrders = orders.filter(function (order) {
+            return order.status !== "Completed";
+        }).length;
+
+        document.getElementById("totalOrders").textContent =
+            orders.length;
+
+        document.getElementById("totalRevenue").textContent =
+            totalRevenue;
+
+        document.getElementById("activeOrders").textContent =
+            activeOrders;
+
+        document.getElementById("menuCount").textContent =
+            menuItems.length;
+    }
+
+    function renderMenuTable() {
+        const tableBody =
+            document.getElementById("menuTableBody");
+
+        tableBody.innerHTML = "";
+
+        menuItems.forEach(function (item) {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>
+                    ${
+                        item.image
+                            ? `<img src="${item.image}"
+                                  alt="${item.name}"
+                                  style="width:60px;height:45px;
+                                  object-fit:cover;border-radius:8px;
+                                  margin-right:10px;vertical-align:middle;">`
+                            : ""
+                    }
+
+                    ${item.name}
+                </td>
+
+                <td>${item.category}</td>
+                <td>SAR ${item.price}</td>
+
+                <td>
+                    <button
+                        class="action-button edit-button"
+                        onclick="editItem(${item.id})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="action-button delete-button"
+                        onclick="deleteItem(${item.id})"
+                    >
+                        Delete
+                    </button>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+    }
+
+    function editItem(itemId) {
+        const item = menuItems.find(function (menuItem) {
+            return String(menuItem.id) === String(itemId);
+        });
+
+        if (!item) {
+            return;
+        }
+
+        const newName =
+            prompt("Enter item name:", item.name);
+
+        const newPrice =
+            prompt("Enter item price:", item.price);
+
+        const newImage =
+            prompt("Enter image URL:", item.image || "");
+
+        if (!newName || !newPrice) {
+            return;
+        }
+
+        item.name = newName.trim();
+        item.price = Number(newPrice);
+        item.image = newImage ? newImage.trim() : "";
 
         saveMenu();
-    </script>
+    }
 
+    function deleteItem(itemId) {
+        const confirmed =
+            confirm("Are you sure you want to delete this item?");
+
+        if (!confirmed) {
+            return;
+        }
+
+        menuItems = menuItems.filter(function (item) {
+            return String(item.id) !== String(itemId);
+        });
+
+        saveMenu();
+    }
+
+    function saveMenu() {
+        localStorage.setItem(
+            "tableTapMenu",
+            JSON.stringify(menuItems)
+        );
+
+        loadStats();
+        renderMenuTable();
+        loadCategoryOptions();
+    }
+
+    addMenuItemBtn.addEventListener("click", function () {
+        const isHidden =
+            addItemForm.style.display === "none";
+
+        addItemForm.style.display =
+            isHidden ? "block" : "none";
+
+        addMenuItemBtn.textContent =
+            isHidden
+                ? "Close Form"
+                : "+ Add New Menu Item";
+    });
+
+    saveNewItem.addEventListener("click", function () {
+        const name =
+            document.getElementById("foodName").value.trim();
+
+        const selectedCategory =
+            cleanCategory(foodCategory.value);
+
+        const typedCategory =
+            cleanCategory(newCategory.value);
+
+        const price =
+            Number(document.getElementById("foodPrice").value);
+
+        const image =
+            document.getElementById("foodImage").value.trim();
+
+        if (!name || price <= 0) {
+            alert("Please enter a valid food name and price.");
+            return;
+        }
+
+        if (!selectedCategory && !typedCategory) {
+            alert("Please select or create a category.");
+            return;
+        }
+
+        const existingCategory =
+            getCategories().find(function (category) {
+                return (
+                    categoryKey(category) ===
+                    categoryKey(typedCategory)
+                );
+            });
+
+        const finalCategory =
+            typedCategory
+                ? existingCategory || typedCategory
+                : selectedCategory;
+
+        const newItem = {
+            id: Date.now(),
+            name: name,
+            category: finalCategory,
+            price: price,
+            image: image
+        };
+
+        menuItems.push(newItem);
+
+        document.getElementById("foodName").value = "";
+        document.getElementById("foodPrice").value = "";
+        document.getElementById("foodImage").value = "";
+        foodCategory.value = "";
+        newCategory.value = "";
+
+        addItemForm.style.display = "none";
+        addMenuItemBtn.textContent =
+            "+ Add New Menu Item";
+
+        saveMenu();
+
+        alert("Menu item added successfully.");
+    });
+
+    loadCategoryOptions();
+    saveMenu();
+</script>
 </body>
 </html>
