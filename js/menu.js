@@ -49,10 +49,15 @@ const menuItems = [
     }
 ];
 
-let cartCount = 0;
+let cart = [];
 
 const menuContainer = document.getElementById("menuContainer");
 const categoryButtons = document.querySelectorAll(".category-list button");
+
+const openCartButton = document.getElementById("openCart");
+const closeCartButton = document.getElementById("closeCart");
+const cartPanel = document.getElementById("cartPanel");
+const cartOverlay = document.getElementById("cartOverlay");
 
 function displayMenu(category = "All") {
     menuContainer.innerHTML = "";
@@ -87,12 +92,104 @@ function displayMenu(category = "All") {
 function addToCart(itemId) {
     const selectedItem = menuItems.find(item => item.id === itemId);
 
-    cartCount++;
+    const existingItem = cart.find(item => item.id === itemId);
+
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({
+            ...selectedItem,
+            quantity: 1
+        });
+    }
+
+    updateCart();
+}
+
+function updateCart() {
+    const cartCount = cart.reduce((total, item) => {
+        return total + item.quantity;
+    }, 0);
+
+    const cartTotal = cart.reduce((total, item) => {
+        return total + item.price * item.quantity;
+    }, 0);
 
     document.getElementById("cartCount").textContent = cartCount;
+    document.getElementById("cartTotal").textContent = cartTotal;
 
-    console.log(selectedItem.name + " added to cart");
+    const cartItemsContainer = document.getElementById("cartItems");
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+            <p class="empty-cart">Your cart is empty.</p>
+        `;
+
+        return;
+    }
+
+    cartItemsContainer.innerHTML = "";
+
+    cart.forEach(item => {
+        const cartItem = document.createElement("div");
+
+        cartItem.className = "cart-item";
+
+        cartItem.innerHTML = `
+            <div>
+                <h3>${item.name}</h3>
+                <p>SAR ${item.price} × ${item.quantity}</p>
+            </div>
+
+            <div class="quantity-controls">
+                <button onclick="decreaseQuantity(${item.id})">−</button>
+                <span>${item.quantity}</span>
+                <button onclick="increaseQuantity(${item.id})">+</button>
+            </div>
+        `;
+
+        cartItemsContainer.appendChild(cartItem);
+    });
 }
+
+function increaseQuantity(itemId) {
+    const item = cart.find(item => item.id === itemId);
+
+    if (item) {
+        item.quantity++;
+        updateCart();
+    }
+}
+
+function decreaseQuantity(itemId) {
+    const item = cart.find(item => item.id === itemId);
+
+    if (!item) {
+        return;
+    }
+
+    item.quantity--;
+
+    if (item.quantity <= 0) {
+        cart = cart.filter(cartItem => cartItem.id !== itemId);
+    }
+
+    updateCart();
+}
+
+function openCart() {
+    cartPanel.classList.add("open");
+    cartOverlay.classList.add("show");
+}
+
+function closeCart() {
+    cartPanel.classList.remove("open");
+    cartOverlay.classList.remove("show");
+}
+
+openCartButton.addEventListener("click", openCart);
+closeCartButton.addEventListener("click", closeCart);
+cartOverlay.addEventListener("click", closeCart);
 
 categoryButtons.forEach(button => {
     button.addEventListener("click", function () {
@@ -109,3 +206,4 @@ categoryButtons.forEach(button => {
 });
 
 displayMenu();
+updateCart();

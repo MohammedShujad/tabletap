@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Green & Red Menu</title>
 
@@ -19,11 +15,7 @@
         <div class="logo">
             🍽️ Green & Red Restaurant
         </div>
-        
     </header>
-<div class="cart-bar">
-    🛒 Cart: <span id="cartCount">0</span>
-</div>
 
     <main class="menu-page">
 
@@ -49,6 +41,36 @@
         </section>
 
     </main>
+
+    <button id="openCart" class="cart-bar">
+        🛒 Cart: <span id="cartCount">0</span>
+    </button>
+
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <aside id="cartPanel" class="cart-panel">
+
+        <div class="cart-panel-header">
+            <h2>Your Cart</h2>
+
+            <button id="closeCart" class="close-cart">
+                ×
+            </button>
+        </div>
+
+        <div id="cartItems" class="cart-items">
+            <p class="empty-cart">Your cart is empty.</p>
+        </div>
+
+        <div class="cart-total">
+            Total: SAR <span id="cartTotal">0</span>
+        </div>
+
+        <button class="checkout-button">
+            Continue
+        </button>
+
+    </aside>
 
     <script src="../js/menu.js"></script>
 
