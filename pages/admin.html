@@ -203,7 +203,27 @@
         <section id="menuManagement" class="admin-section">
 
             <h2>Menu Management</h2>
+<button id="addMenuItemBtn" class="action-button edit-button" style="margin-bottom:20px;">
+    + Add New Menu Item
+</button>
 
+<div id="addItemForm" style="display:none; margin-bottom:20px;">
+
+    <input id="foodName" placeholder="Food Name"
+        style="width:100%;padding:12px;margin-bottom:10px;">
+
+    <input id="foodCategory" placeholder="Category"
+        style="width:100%;padding:12px;margin-bottom:10px;">
+
+    <input id="foodPrice" type="number" placeholder="Price"
+        style="width:100%;padding:12px;margin-bottom:10px;">
+
+    <button id="saveNewItem"
+        class="action-button edit-button">
+        Save Item
+    </button>
+
+</div>
             <table class="menu-table">
 
                 <thead>
@@ -379,14 +399,73 @@
         }
 
         function saveMenu() {
-            localStorage.setItem(
-                "tableTapMenu",
-                JSON.stringify(menuItems)
-            );
+    localStorage.setItem(
+        "tableTapMenu",
+        JSON.stringify(menuItems)
+    );
 
-            loadStats();
-            renderMenuTable();
-        }
+    loadStats();
+    renderMenuTable();
+}
+
+/* PASTE THE NEW ADD-ITEM CODE HERE */
+
+const addMenuItemBtn =
+    document.getElementById("addMenuItemBtn");
+
+const addItemForm =
+    document.getElementById("addItemForm");
+
+const saveNewItem =
+    document.getElementById("saveNewItem");
+
+addMenuItemBtn.addEventListener("click", function () {
+    if (addItemForm.style.display === "none") {
+        addItemForm.style.display = "block";
+        addMenuItemBtn.textContent = "Close Form";
+    } else {
+        addItemForm.style.display = "none";
+        addMenuItemBtn.textContent = "+ Add New Menu Item";
+    }
+});
+
+saveNewItem.addEventListener("click", function () {
+    const name =
+        document.getElementById("foodName").value.trim();
+
+    const category =
+        document.getElementById("foodCategory").value.trim();
+
+    const price =
+        Number(document.getElementById("foodPrice").value);
+
+    if (!name || !category || price <= 0) {
+        alert("Please enter a valid name, category and price.");
+        return;
+    }
+
+    const newItem = {
+        id: Date.now(),
+        name: name,
+        category: category,
+        price: price
+    };
+
+    menuItems.push(newItem);
+
+    document.getElementById("foodName").value = "";
+    document.getElementById("foodCategory").value = "";
+    document.getElementById("foodPrice").value = "";
+
+    addItemForm.style.display = "none";
+    addMenuItemBtn.textContent = "+ Add New Menu Item";
+
+    saveMenu();
+
+    alert("Menu item added successfully.");
+});
+
+saveMenu();
 
         saveMenu();
     </script>
