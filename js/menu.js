@@ -49,7 +49,7 @@ const menuItems = [
     }
 ];
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("tableTapCart")) || [];
 
 const menuContainer = document.getElementById("menuContainer");
 const categoryButtons = document.querySelectorAll(".category-list button");
@@ -58,6 +58,10 @@ const openCartButton = document.getElementById("openCart");
 const closeCartButton = document.getElementById("closeCart");
 const cartPanel = document.getElementById("cartPanel");
 const cartOverlay = document.getElementById("cartOverlay");
+
+function saveCart() {
+    localStorage.setItem("tableTapCart", JSON.stringify(cart));
+}
 
 function displayMenu(category = "All") {
     menuContainer.innerHTML = "";
@@ -91,7 +95,6 @@ function displayMenu(category = "All") {
 
 function addToCart(itemId) {
     const selectedItem = menuItems.find(item => item.id === itemId);
-
     const existingItem = cart.find(item => item.id === itemId);
 
     if (existingItem) {
@@ -103,6 +106,7 @@ function addToCart(itemId) {
         });
     }
 
+    saveCart();
     updateCart();
 }
 
@@ -157,6 +161,7 @@ function increaseQuantity(itemId) {
 
     if (item) {
         item.quantity++;
+        saveCart();
         updateCart();
     }
 }
@@ -174,6 +179,7 @@ function decreaseQuantity(itemId) {
         cart = cart.filter(cartItem => cartItem.id !== itemId);
     }
 
+    saveCart();
     updateCart();
 }
 

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Your Order</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8f5ef;
+            color: #2f2f2f;
+        }
+
+        .page-header {
+            background: #8b1014;
+            color: white;
+            padding: 22px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .tracking-card {
+            width: 90%;
+            max-width: 700px;
+            margin: 45px auto;
+            background: white;
+            padding: 38px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .checkmark {
+            text-align: center;
+            font-size: 65px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8b1014;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .order-number {
+            background: #faf7f2;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .tracking-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tracking-step {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 15px;
+            background: #f3f3f3;
+            border-radius: 12px;
+            color: #777;
+            font-weight: bold;
+        }
+
+        .tracking-step.active {
+            background: #fff2cf;
+            color: #8b1014;
+            border: 1px solid #d4af37;
+        }
+
+        .tracking-step.complete {
+            background: #e8f7ed;
+            color: #237944;
+        }
+
+        .step-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .refresh-note {
+            text-align: center;
+            color: #777;
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        .action-button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #8b1014;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #8b1014;
+            border: 1px solid #8b1014;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-header">
+        🍽️ Green & Red Restaurant
+    </div>
+
+    <main class="tracking-card">
+
+        <div class="checkmark">✅</div>
+
+        <h1>Order Confirmed</h1>
+
+        <p class="subtitle">
+            Track the progress of your order below.
+        </p>
+
+        <div id="orderNumber" class="order-number"></div>
+
+        <section class="tracking-steps">
+
+            <div id="stepNew" class="tracking-step">
+                <div class="step-icon">🕒</div>
+                <span>Waiting for Restaurant</span>
+            </div>
+
+            <div id="stepAccepted" class="tracking-step">
+                <div class="step-icon">👍</div>
+                <span>Order Accepted</span>
+            </div>
+
+            <div id="stepPreparing" class="tracking-step">
+                <div class="step-icon">🍳</div>
+                <span>Preparing Your Food</span>
+            </div>
+
+            <div id="stepReady" class="tracking-step">
+                <div class="step-icon">✅</div>
+                <span>Ready to Serve</span>
+            </div>
+
+        </section>
+
+        <p class="refresh-note">
+            Refresh this page after the kitchen updates your order.
+        </p>
+
+        <button id="refreshStatus" class="action-button">
+            Refresh Status
+        </button>
+
+        <button
+            class="action-button secondary-button"
+            onclick="window.location.href='menu.html'"
+        >
+            Order More
+        </button>
+
+    </main>
+
+    <script>
+        const stepNew = document.getElementById("stepNew");
+        const stepAccepted = document.getElementById("stepAccepted");
+        const stepPreparing = document.getElementById("stepPreparing");
+        const stepReady = document.getElementById("stepReady");
+
+        function loadOrderStatus() {
+            const latestOrder =
+                JSON.parse(
+                    localStorage.getItem("tableTapLatestOrder")
+                );
+
+            if (!latestOrder) {
+                document.getElementById("orderNumber").textContent =
+                    "Order information unavailable";
+
+                return;
+            }
+
+            document.getElementById("orderNumber").textContent =
+                `Order Number: ${latestOrder.id}`;
+
+            const orders =
+                JSON.parse(
+                    localStorage.getItem("tableTapOrders")
+                ) || [];
+
+            const currentOrder =
+                orders.find(function (order) {
+                    return order.id === latestOrder.id;
+                }) || latestOrder;
+
+            const statusOrder = [
+                "New",
+                "Accepted",
+                "Preparing",
+                "Ready"
+            ];
+
+            const currentIndex =
+                statusOrder.indexOf(currentOrder.status);
+
+            const steps = [
+                stepNew,
+                stepAccepted,
+                stepPreparing,
+                stepReady
+            ];
+
+            steps.forEach(function (step, index) {
+                step.classList.remove("active", "complete");
+
+                if (index < currentIndex) {
+                    step.classList.add("complete");
+                }
+
+                if (index === currentIndex) {
+                    step.classList.add("active");
+                }
+            });
+        }
+
+        document
+            .getElementById("refreshStatus")
+            .addEventListener("click", loadOrderStatus);
+
+        loadOrderStatus();
+    </script>
+
+</body>
+</html>

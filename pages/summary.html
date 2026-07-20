@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Order Summary</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8f5ef;
+            color: #2f2f2f;
+        }
+
+        .page-header {
+            background: #8b1014;
+            color: white;
+            padding: 22px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .summary-page {
+            width: 90%;
+            max-width: 750px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .summary-page h1 {
+            text-align: center;
+            color: #8b1014;
+            margin-bottom: 28px;
+        }
+
+        .info-card {
+            background: #faf7f2;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .info-card p {
+            margin: 8px 0;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .order-item p {
+            margin-top: 5px;
+            color: #666666;
+        }
+
+        .order-total {
+            margin-top: 22px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: right;
+            color: #8b1014;
+        }
+
+        .place-order-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #8b1014;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .back-button {
+            width: 100%;
+            margin-top: 12px;
+            padding: 14px;
+            border: 1px solid #8b1014;
+            border-radius: 10px;
+            background: white;
+            color: #8b1014;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #777777;
+            padding: 25px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-header">
+        🍽️ Green & Red Restaurant
+    </div>
+
+    <div class="summary-page">
+
+        <h1>Order Summary</h1>
+
+        <div id="customerInfo" class="info-card"></div>
+
+        <div id="orderItems"></div>
+
+        <div class="order-total">
+            Total: SAR <span id="orderTotal">0</span>
+        </div>
+
+        <button id="placeOrder" class="place-order-button">
+            Place Order
+        </button>
+
+        <button id="backToMenu" class="back-button">
+            Back to Menu
+        </button>
+
+    </div>
+
+    <script>
+        const customer =
+            JSON.parse(localStorage.getItem("tableTapCustomer")) || {};
+
+        const cart =
+            JSON.parse(localStorage.getItem("tableTapCart")) || [];
+
+        const customerInfo =
+            document.getElementById("customerInfo");
+
+        const orderItems =
+            document.getElementById("orderItems");
+
+        const orderTotal =
+            document.getElementById("orderTotal");
+
+        customerInfo.innerHTML = `
+            <p><strong>Name:</strong> ${customer.name || "-"}</p>
+            <p><strong>Phone:</strong> ${customer.phone || "-"}</p>
+            <p><strong>Table:</strong> ${customer.table || "-"}</p>
+            <p>
+                <strong>Instructions:</strong>
+                ${customer.request || "None"}
+            </p>
+        `;
+
+        let total = 0;
+
+        if (cart.length === 0) {
+            orderItems.innerHTML = `
+                <p class="empty-message">
+                    No items found in your cart.
+                </p>
+            `;
+        } else {
+            cart.forEach(function (item) {
+                const itemTotal = item.price * item.quantity;
+
+                total += itemTotal;
+
+                const row = document.createElement("div");
+
+                row.className = "order-item";
+
+                row.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong>
+                        <p>SAR ${item.price} × ${item.quantity}</p>
+                    </div>
+
+                    <strong>SAR ${itemTotal}</strong>
+                `;
+
+                orderItems.appendChild(row);
+            });
+        }
+
+        orderTotal.textContent = total;
+
+        document
+    .getElementById("placeOrder")
+    .addEventListener("click", function () {
+
+        if (cart.length === 0) {
+            alert("Your cart is empty.");
+            return;
+        }
+
+        const order = {
+            id: "TT" + Date.now(),
+            customer: customer,
+            items: cart,
+            total: total,
+            status: "New",
+            createdAt: new Date().toLocaleString()
+        };
+
+        const existingOrders =
+    JSON.parse(localStorage.getItem("tableTapOrders")) || [];
+
+existingOrders.push(order);
+
+localStorage.setItem(
+    "tableTapOrders",
+    JSON.stringify(existingOrders)
+);
+
+localStorage.setItem(
+    "tableTapLatestOrder",
+    JSON.stringify(order)
+);
+
+        localStorage.removeItem("tableTapCart");
+        localStorage.removeItem("tableTapCustomer");
+
+        window.location.href = "confirmation.html";
+    });
+
+        document
+            .getElementById("backToMenu")
+            .addEventListener("click", function () {
+
+                window.location.href = "menu.html";
+            });
+    </script>
+
+</body>
+
+</html>

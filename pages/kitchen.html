@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kitchen Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8f5ef;
+            color: #2f2f2f;
+        }
+
+        .page-header {
+            background: #8b1014;
+            color: white;
+            padding: 22px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            width: 92%;
+            max-width: 1250px;
+            margin: 35px auto;
+        }
+
+        .dashboard h1 {
+            color: #8b1014;
+            margin-bottom: 25px;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-card h2 {
+            color: #8b1014;
+            margin-bottom: 12px;
+            font-size: 21px;
+        }
+
+        .order-meta {
+            background: #faf7f2;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .order-meta p {
+            margin: 6px 0;
+        }
+
+        .status {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #ffe5e5;
+            color: #8b1014;
+            font-weight: bold;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .order-total {
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: right;
+        }
+
+        .status-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .status-buttons button {
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .accept {
+            background: #d4af37;
+        }
+
+        .preparing {
+            background: #f0a500;
+        }
+
+        .ready {
+            background: #2e9d56;
+            color: white;
+        }
+
+        .empty-state {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-header">
+        🍳 Green & Red Kitchen Dashboard
+    </div>
+
+    <main class="dashboard">
+
+        <h1>Incoming Orders</h1>
+
+        <section id="ordersContainer" class="orders-grid"></section>
+
+    </main>
+
+    <script>
+        const ordersContainer =
+            document.getElementById("ordersContainer");
+
+        let orders =
+            JSON.parse(localStorage.getItem("tableTapOrders")) || [];
+
+        function renderOrders() {
+            ordersContainer.innerHTML = "";
+
+            if (orders.length === 0) {
+                ordersContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No orders yet</h2>
+                        <p>New orders will appear here.</p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            orders
+                .slice()
+                .reverse()
+                .forEach(function (order) {
+
+                    const card = document.createElement("article");
+
+                    card.className = "order-card";
+
+                    let itemsHtml = "";
+
+                    order.items.forEach(function (item) {
+                        itemsHtml += `
+                            <div class="order-item">
+                                <span>
+                                    ${item.name} × ${item.quantity}
+                                </span>
+
+                                <strong>
+                                    SAR ${item.price * item.quantity}
+                                </strong>
+                            </div>
+                        `;
+                    });
+
+                    card.innerHTML = `
+                        <h2>${order.id}</h2>
+
+                        <div class="order-meta">
+                            <p>
+                                <strong>Customer:</strong>
+                                ${order.customer.name}
+                            </p>
+
+                            <p>
+                                <strong>Table:</strong>
+                                ${order.customer.table}
+                            </p>
+
+                            <p>
+                                <strong>Phone:</strong>
+                                ${order.customer.phone}
+                            </p>
+
+                            <p>
+                                <strong>Instructions:</strong>
+                                ${order.customer.request || "None"}
+                            </p>
+
+                            <p>
+                                <strong>Placed:</strong>
+                                ${order.createdAt}
+                            </p>
+                        </div>
+
+                        <div class="status">
+                            ${order.status}
+                        </div>
+
+                        <div>
+                            ${itemsHtml}
+                        </div>
+
+                        <div class="order-total">
+                            Total: SAR ${order.total}
+                        </div>
+
+                        <div class="status-buttons">
+
+                            <button
+                                class="accept"
+                                onclick="changeStatus('${order.id}', 'Accepted')"
+                            >
+                                Accept
+                            </button>
+
+                            <button
+                                class="preparing"
+                                onclick="changeStatus('${order.id}', 'Preparing')"
+                            >
+                                Preparing
+                            </button>
+
+                            <button
+                                class="ready"
+                                onclick="changeStatus('${order.id}', 'Ready')"
+                            >
+                                Ready
+                            </button>
+
+                        </div>
+                    `;
+
+                    ordersContainer.appendChild(card);
+                });
+        }
+
+        function changeStatus(orderId, newStatus) {
+            const selectedOrder =
+                orders.find(function (order) {
+                    return order.id === orderId;
+                });
+
+            if (!selectedOrder) {
+                return;
+            }
+
+            selectedOrder.status = newStatus;
+
+            localStorage.setItem(
+                "tableTapOrders",
+                JSON.stringify(orders)
+            );
+
+            if (
+                JSON.parse(
+                    localStorage.getItem("tableTapLatestOrder")
+                )?.id === orderId
+            ) {
+                localStorage.setItem(
+                    "tableTapLatestOrder",
+                    JSON.stringify(selectedOrder)
+                );
+            }
+
+            renderOrders();
+        }
+
+        renderOrders();
+    </script>
+
+</body>
+</html>

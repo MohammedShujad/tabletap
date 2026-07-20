@@ -89,4 +89,23 @@ button:hover {
     background: #b88c17;
 
     transform: scale(1.05);
+
+    
+}
+/* Existing CSS */
+
+/* ...lots of your previous CSS... */
+
+.some-existing-class {
+    color: red;
+}
+
+/* ← Paste here, after the last } */
+
+/* ===========================
+   CUSTOMER DETAILS
+=========================== */
+
+.customer-page{
+    ...
 }
