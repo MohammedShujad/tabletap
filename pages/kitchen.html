@@ -34,9 +34,23 @@
             margin: 35px auto;
         }
 
-        .dashboard h1 {
+        .dashboard-section {
+            margin-bottom: 45px;
+        }
+
+        .section-title {
             color: #8b1014;
-            margin-bottom: 25px;
+            margin-bottom: 22px;
+        }
+
+        .section-count {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #8b1014;
+            color: white;
+            font-size: 15px;
         }
 
         .orders-grid {
@@ -50,6 +64,11 @@
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .completed-card {
+            opacity: 0.85;
+            border: 2px solid #2e9d56;
         }
 
         .order-card h2 {
@@ -74,9 +93,32 @@
             margin-bottom: 14px;
             padding: 8px 12px;
             border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .status-new {
             background: #ffe5e5;
             color: #8b1014;
-            font-weight: bold;
+        }
+
+        .status-accepted {
+            background: #fff2c7;
+            color: #886700;
+        }
+
+        .status-preparing {
+            background: #ffe0a3;
+            color: #9a5d00;
+        }
+
+        .status-ready {
+            background: #dff5e5;
+            color: #237944;
+        }
+
+        .status-completed {
+            background: #d9f1df;
+            color: #176b36;
         }
 
         .order-item {
@@ -95,7 +137,7 @@
 
         .status-buttons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
         }
 
@@ -120,12 +162,34 @@
             color: white;
         }
 
+        .complete {
+            background: #226b3c;
+            color: white;
+        }
+
+        .status-buttons button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
         .empty-state {
             background: white;
             padding: 40px;
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .completed-time {
+            margin-top: 12px;
+            color: #237944;
+            font-weight: bold;
+        }
+
+        @media (max-width: 650px) {
+            .status-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -138,134 +202,231 @@
 
     <main class="dashboard">
 
-        <h1>Incoming Orders</h1>
+        <section class="dashboard-section">
+            <h1 class="section-title">
+                Active Orders
+                <span id="activeCount" class="section-count">0</span>
+            </h1>
 
-        <section id="ordersContainer" class="orders-grid"></section>
+            <div id="activeOrdersContainer" class="orders-grid"></div>
+        </section>
+
+        <section class="dashboard-section">
+            <h1 class="section-title">
+                Completed Orders
+                <span id="completedCount" class="section-count">0</span>
+            </h1>
+
+            <div id="completedOrdersContainer" class="orders-grid"></div>
+        </section>
 
     </main>
 
     <script>
-        const ordersContainer =
-            document.getElementById("ordersContainer");
+        const activeOrdersContainer =
+            document.getElementById("activeOrdersContainer");
+
+        const completedOrdersContainer =
+            document.getElementById("completedOrdersContainer");
+
+        const activeCount =
+            document.getElementById("activeCount");
+
+        const completedCount =
+            document.getElementById("completedCount");
 
         let orders =
             JSON.parse(localStorage.getItem("tableTapOrders")) || [];
 
-        function renderOrders() {
-            ordersContainer.innerHTML = "";
+        orders = orders.map(function (order) {
+            return {
+                ...order,
+                status: order.status || "New"
+            };
+        });
 
-            if (orders.length === 0) {
-                ordersContainer.innerHTML = `
-                    <div class="empty-state">
-                        <h2>No orders yet</h2>
-                        <p>New orders will appear here.</p>
+        function getStatusClass(status) {
+            const normalizedStatus =
+                String(status || "New").toLowerCase();
+
+            return `status-${normalizedStatus}`;
+        }
+
+        function createOrderCard(order, isCompleted) {
+            const card = document.createElement("article");
+
+            card.className =
+                isCompleted
+                    ? "order-card completed-card"
+                    : "order-card";
+
+            let itemsHtml = "";
+
+            order.items.forEach(function (item) {
+                itemsHtml += `
+                    <div class="order-item">
+                        <span>
+                            ${item.name} × ${item.quantity}
+                        </span>
+
+                        <strong>
+                            SAR ${Number(item.price) * Number(item.quantity)}
+                        </strong>
+                    </div>
+                `;
+            });
+
+            const actionButtons = isCompleted
+                ? `
+                    <div class="completed-time">
+                        Completed:
+                        ${order.completedAt || "Time unavailable"}
+                    </div>
+                `
+                : `
+                    <div class="status-buttons">
+
+                        <button
+                            class="accept"
+                            onclick="changeStatus('${order.id}', 'Accepted')"
+                            ${order.status === "Accepted" ? "disabled" : ""}
+                        >
+                            Accept
+                        </button>
+
+                        <button
+                            class="preparing"
+                            onclick="changeStatus('${order.id}', 'Preparing')"
+                            ${order.status === "Preparing" ? "disabled" : ""}
+                        >
+                            Preparing
+                        </button>
+
+                        <button
+                            class="ready"
+                            onclick="changeStatus('${order.id}', 'Ready')"
+                            ${order.status === "Ready" ? "disabled" : ""}
+                        >
+                            Ready
+                        </button>
+
+                        <button
+                            class="complete"
+                            onclick="changeStatus('${order.id}', 'Completed')"
+                            ${order.status !== "Ready" ? "disabled" : ""}
+                        >
+                            Complete
+                        </button>
+
                     </div>
                 `;
 
-                return;
+            card.innerHTML = `
+                <h2>${order.id}</h2>
+
+                <div class="order-meta">
+                    <p>
+                        <strong>Customer:</strong>
+                        ${order.customer?.name || "Unknown"}
+                    </p>
+
+                    <p>
+                        <strong>Table:</strong>
+                        ${order.customer?.table || "Not provided"}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${order.customer?.phone || "Not provided"}
+                    </p>
+
+                    <p>
+                        <strong>Instructions:</strong>
+                        ${order.customer?.request || "None"}
+                    </p>
+
+                    <p>
+                        <strong>Placed:</strong>
+                        ${order.createdAt || "Time unavailable"}
+                    </p>
+                </div>
+
+                <div class="status ${getStatusClass(order.status)}">
+                    ${order.status}
+                </div>
+
+                <div>
+                    ${itemsHtml}
+                </div>
+
+                <div class="order-total">
+                    Total: SAR ${order.total}
+                </div>
+
+                ${actionButtons}
+            `;
+
+            return card;
+        }
+
+        function renderOrders() {
+            activeOrdersContainer.innerHTML = "";
+            completedOrdersContainer.innerHTML = "";
+
+            const activeOrders =
+                orders.filter(function (order) {
+                    return order.status !== "Completed";
+                });
+
+            const completedOrders =
+                orders.filter(function (order) {
+                    return order.status === "Completed";
+                });
+
+            activeCount.textContent = activeOrders.length;
+            completedCount.textContent = completedOrders.length;
+
+            if (activeOrders.length === 0) {
+                activeOrdersContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No active orders</h2>
+                        <p>New orders will appear here.</p>
+                    </div>
+                `;
+            } else {
+                activeOrders
+                    .slice()
+                    .reverse()
+                    .forEach(function (order) {
+                        activeOrdersContainer.appendChild(
+                            createOrderCard(order, false)
+                        );
+                    });
             }
 
-            orders
-                .slice()
-                .reverse()
-                .forEach(function (order) {
-
-                    const card = document.createElement("article");
-
-                    card.className = "order-card";
-
-                    let itemsHtml = "";
-
-                    order.items.forEach(function (item) {
-                        itemsHtml += `
-                            <div class="order-item">
-                                <span>
-                                    ${item.name} × ${item.quantity}
-                                </span>
-
-                                <strong>
-                                    SAR ${item.price * item.quantity}
-                                </strong>
-                            </div>
-                        `;
+            if (completedOrders.length === 0) {
+                completedOrdersContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No completed orders</h2>
+                        <p>Completed orders will appear here.</p>
+                    </div>
+                `;
+            } else {
+                completedOrders
+                    .slice()
+                    .reverse()
+                    .forEach(function (order) {
+                        completedOrdersContainer.appendChild(
+                            createOrderCard(order, true)
+                        );
                     });
-
-                    card.innerHTML = `
-                        <h2>${order.id}</h2>
-
-                        <div class="order-meta">
-                            <p>
-                                <strong>Customer:</strong>
-                                ${order.customer.name}
-                            </p>
-
-                            <p>
-                                <strong>Table:</strong>
-                                ${order.customer.table}
-                            </p>
-
-                            <p>
-                                <strong>Phone:</strong>
-                                ${order.customer.phone}
-                            </p>
-
-                            <p>
-                                <strong>Instructions:</strong>
-                                ${order.customer.request || "None"}
-                            </p>
-
-                            <p>
-                                <strong>Placed:</strong>
-                                ${order.createdAt}
-                            </p>
-                        </div>
-
-                        <div class="status">
-                            ${order.status}
-                        </div>
-
-                        <div>
-                            ${itemsHtml}
-                        </div>
-
-                        <div class="order-total">
-                            Total: SAR ${order.total}
-                        </div>
-
-                        <div class="status-buttons">
-
-                            <button
-                                class="accept"
-                                onclick="changeStatus('${order.id}', 'Accepted')"
-                            >
-                                Accept
-                            </button>
-
-                            <button
-                                class="preparing"
-                                onclick="changeStatus('${order.id}', 'Preparing')"
-                            >
-                                Preparing
-                            </button>
-
-                            <button
-                                class="ready"
-                                onclick="changeStatus('${order.id}', 'Ready')"
-                            >
-                                Ready
-                            </button>
-
-                        </div>
-                    `;
-
-                    ordersContainer.appendChild(card);
-                });
+            }
         }
 
         function changeStatus(orderId, newStatus) {
             const selectedOrder =
                 orders.find(function (order) {
-                    return order.id === orderId;
+                    return String(order.id) === String(orderId);
                 });
 
             if (!selectedOrder) {
@@ -274,15 +435,24 @@
 
             selectedOrder.status = newStatus;
 
+            if (newStatus === "Completed") {
+                selectedOrder.completedAt =
+                    new Date().toLocaleString();
+            }
+
             localStorage.setItem(
                 "tableTapOrders",
                 JSON.stringify(orders)
             );
 
-            if (
+            const latestOrder =
                 JSON.parse(
                     localStorage.getItem("tableTapLatestOrder")
-                )?.id === orderId
+                );
+
+            if (
+                latestOrder &&
+                String(latestOrder.id) === String(orderId)
             ) {
                 localStorage.setItem(
                     "tableTapLatestOrder",
@@ -292,6 +462,15 @@
 
             renderOrders();
         }
+
+        window.addEventListener("storage", function (event) {
+            if (event.key === "tableTapOrders") {
+                orders =
+                    JSON.parse(event.newValue) || [];
+
+                renderOrders();
+            }
+        });
 
         renderOrders();
     </script>
