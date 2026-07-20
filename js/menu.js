@@ -204,30 +204,51 @@ function displayMenu(selectedCategory = "All") {
                 </div>
             `;
 
-        card.innerHTML = `
-            ${imageSection}
+        const isAvailable = item.available !== false;
 
-            <div class="menu-card-content">
-                <h3>${item.name}</h3>
+card.innerHTML = `
+    ${imageSection}
 
-                <p>${cleanCategory(item.category)}</p>
+    <div class="menu-card-content">
+        <h3>${item.name}</h3>
 
-                <div class="menu-card-bottom">
-                    <strong>SAR ${Number(item.price)}</strong>
+        <p>${cleanCategory(item.category)}</p>
 
-                    <button type="button">
-                        Add
-                    </button>
-                </div>
-            </div>
-        `;
+        <div class="menu-card-bottom">
+            <strong>SAR ${Number(item.price)}</strong>
 
-        card
-            .querySelector(".menu-card-bottom button")
-            .addEventListener("click", function () {
-                addToCart(item.id);
-            });
+            ${
+                isAvailable
+                    ? `
+                        <button
+                            type="button"
+                            class="add-item-button"
+                        >
+                            Add
+                        </button>
+                    `
+                    : `
+                        <button
+                            type="button"
+                            class="out-of-stock-button"
+                            disabled
+                        >
+                            Out of Stock
+                        </button>
+                    `
+            }
+        </div>
+    </div>
+`;
 
+        const addButton =
+    card.querySelector(".add-item-button");
+
+if (addButton) {
+    addButton.addEventListener("click", function () {
+        addToCart(item.id);
+    });
+}
         menuContainer.appendChild(card);
     });
 }
@@ -238,9 +259,10 @@ function addToCart(itemId) {
             return String(item.id) === String(itemId);
         });
 
-    if (!selectedItem) {
-        return;
-    }
+   if (!selectedItem || selectedItem.available === false) {
+    alert("This item is currently out of stock.");
+    return;
+}
 
     const existingItem =
         cart.find(function (item) {

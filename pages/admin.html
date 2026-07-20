@@ -252,11 +252,12 @@
 
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Price</th>
+    <th>Status</th>
+    <th>Actions</th>
+                 </tr>
                 </thead>
 
                 <tbody id="menuTableBody"></tbody>
@@ -328,8 +329,15 @@
     ];
 
     let menuItems =
-        JSON.parse(localStorage.getItem("tableTapMenu")) ||
-        defaultMenuItems;
+    JSON.parse(localStorage.getItem("tableTapMenu")) ||
+    defaultMenuItems;
+
+menuItems = menuItems.map(function (item) {
+    return {
+        ...item,
+        available: item.available !== false
+    };
+});
 
     const orders =
         JSON.parse(localStorage.getItem("tableTapOrders")) || [];
@@ -420,39 +428,59 @@
             const row = document.createElement("tr");
 
             row.innerHTML = `
-                <td>
-                    ${
-                        item.image
-                            ? `<img src="${item.image}"
-                                  alt="${item.name}"
-                                  style="width:60px;height:45px;
-                                  object-fit:cover;border-radius:8px;
-                                  margin-right:10px;vertical-align:middle;">`
-                            : ""
-                    }
+    <td>
+        ${
+            item.image
+                ? `<img src="${item.image}"
+                      alt="${item.name}"
+                      style="width:60px;height:45px;
+                      object-fit:cover;border-radius:8px;
+                      margin-right:10px;vertical-align:middle;">`
+                : ""
+        }
 
-                    ${item.name}
-                </td>
+        ${item.name}
+    </td>
 
-                <td>${item.category}</td>
-                <td>SAR ${item.price}</td>
+    <td>${item.category}</td>
 
-                <td>
-                    <button
-                        class="action-button edit-button"
-                        onclick="editItem(${item.id})"
-                    >
-                        Edit
-                    </button>
+    <td>SAR ${item.price}</td>
 
-                    <button
-                        class="action-button delete-button"
-                        onclick="deleteItem(${item.id})"
-                    >
-                        Delete
-                    </button>
-                </td>
-            `;
+    <td>
+        ${
+            item.available
+                ? `<strong style="color:#238636;">Available</strong>`
+                : `<strong style="color:#c0392b;">Out of Stock</strong>`
+        }
+    </td>
+
+    <td>
+        <button
+            class="action-button edit-button"
+            onclick="editItem(${item.id})"
+        >
+            Edit
+        </button>
+
+        <button
+            class="action-button"
+            style="
+                background:${item.available ? "#f0a500" : "#2e9d56"};
+                color:white;
+            "
+            onclick="toggleAvailability(${item.id})"
+        >
+            ${item.available ? "Disable" : "Enable"}
+        </button>
+
+        <button
+            class="action-button delete-button"
+            onclick="deleteItem(${item.id})"
+        >
+            Delete
+        </button>
+    </td>
+`;
 
             tableBody.appendChild(row);
         });
@@ -486,7 +514,19 @@
 
         saveMenu();
     }
+function toggleAvailability(itemId) {
+    const item = menuItems.find(function (menuItem) {
+        return String(menuItem.id) === String(itemId);
+    });
 
+    if (!item) {
+        return;
+    }
+
+    item.available = !item.available;
+
+    saveMenu();
+}
     function deleteItem(itemId) {
         const confirmed =
             confirm("Are you sure you want to delete this item?");
@@ -566,12 +606,13 @@
                 : selectedCategory;
 
         const newItem = {
-            id: Date.now(),
-            name: name,
-            category: finalCategory,
-            price: price,
-            image: image
-        };
+    id: Date.now(),
+    name: name,
+    category: finalCategory,
+    price: price,
+    image: image,
+    available: true
+};
 
         menuItems.push(newItem);
 

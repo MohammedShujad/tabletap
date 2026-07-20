@@ -356,3 +356,10 @@ body {
         padding: 22px;
     }
 }
+
+.out-of-stock-button {
+    background: #dddddd !important;
+    color: #777777 !important;
+    cursor: not-allowed !important;
+    padding: 11px 14px !important;
+}
