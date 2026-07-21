@@ -196,9 +196,19 @@
 
 <body>
 
-    <div class="page-header">
-        🍳 Green & Red Kitchen Dashboard
-    </div>
+   <div class="page-header">
+
+    <span id="kitchenLogo">🍳</span>
+
+    <span id="kitchenRestaurantName">
+        Green & Red Restaurant
+    </span>
+
+    <span>
+        Kitchen Dashboard
+    </span>
+
+</div>
 
     <main class="dashboard">
 
@@ -223,6 +233,53 @@
     </main>
 
     <script>
+        const defaultRestaurantSettings = {
+    restaurantName: "Green &Red Restaurant",
+    currency: "SAR",
+    logoUrl: ""
+};
+
+let restaurantSettings = {
+    ...defaultRestaurantSettings,
+    ...(JSON.parse(localStorage.getItem("tableTapSettings")) || {})
+};
+
+function applyRestaurantSettings() {
+
+    const restaurantName =
+        document.getElementById("kitchenRestaurantName");
+
+    const restaurantLogo =
+        document.getElementById("kitchenLogo");
+
+    if (restaurantName) {
+        restaurantName.textContent =
+            restaurantSettings.restaurantName;
+    }
+
+    if (
+        restaurantLogo &&
+        restaurantSettings.logoUrl
+    ) {
+
+        restaurantLogo.innerHTML = `
+            <img
+                src="${restaurantSettings.logoUrl}"
+                style="
+                    width:40px;
+                    height:40px;
+                    object-fit:cover;
+                    border-radius:8px;
+                    vertical-align:middle;
+                "
+            >`;
+
+    }
+
+    document.title =
+        restaurantSettings.restaurantName +
+        " Kitchen";
+}
         const activeOrdersContainer =
             document.getElementById("activeOrdersContainer");
 
@@ -270,7 +327,8 @@
                         </span>
 
                         <strong>
-                            SAR ${Number(item.price) * Number(item.quantity)}
+                           ${restaurantSettings.currency}
+${Number(item.price) * Number(item.quantity)}
                         </strong>
                     </div>
                 `;
@@ -360,7 +418,9 @@
                 </div>
 
                 <div class="order-total">
-                    Total: SAR ${order.total}
+                    Total: SAR ${order.total}Total:
+${restaurantSettings.currency}
+${order.total}
                 </div>
 
                 ${actionButtons}
@@ -463,16 +523,27 @@
             renderOrders();
         }
 
-        window.addEventListener("storage", function (event) {
-            if (event.key === "tableTapOrders") {
-                orders =
-                    JSON.parse(event.newValue) || [];
-
-                renderOrders();
-            }
-        });
+       window.addEventListener("storage", function (event) {
+    if (event.key === "tableTapOrders") {
+        orders =
+            JSON.parse(event.newValue) || [];
 
         renderOrders();
+    }
+
+    if (event.key === "tableTapSettings") {
+        restaurantSettings = {
+            ...defaultRestaurantSettings,
+            ...(JSON.parse(event.newValue) || {})
+        };
+
+        applyRestaurantSettings();
+        renderOrders();
+    }
+});
+
+        applyRestaurantSettings();
+renderOrders();
     </script>
 
 </body>

@@ -1,3 +1,64 @@
+const defaultRestaurantSettings = {
+    restaurantName: "Green & Red Restaurant",
+    currency: "SAR",
+    logoUrl: ""
+};
+
+let restaurantSettings = {
+    ...defaultRestaurantSettings,
+    ...(JSON.parse(localStorage.getItem("tableTapSettings")) || {})
+};
+
+function applyRestaurantSettings() {
+    const restaurantNameElement =
+        document.getElementById("restaurantName");
+
+    const restaurantLogoElement =
+        document.getElementById("restaurantLogo");
+
+    const cartCurrencyElement =
+        document.getElementById("cartCurrency");
+
+    if (restaurantNameElement) {
+        restaurantNameElement.textContent =
+            restaurantSettings.restaurantName;
+    }
+
+    if (cartCurrencyElement) {
+        cartCurrencyElement.textContent =
+            restaurantSettings.currency || "SAR";
+    }
+
+    if (
+        restaurantLogoElement &&
+        restaurantSettings.logoUrl
+    ) {
+        restaurantLogoElement.innerHTML = `
+            <img
+                src="${restaurantSettings.logoUrl}"
+                alt="${restaurantSettings.restaurantName}"
+                style="
+                    width:42px;
+                    height:42px;
+                    object-fit:cover;
+                    border-radius:8px;
+                    margin-right:10px;
+                    vertical-align:middle;
+                "
+            >
+
+            <span id="restaurantName">
+                ${restaurantSettings.restaurantName}
+            </span>
+        `;
+    }
+
+    document.title =
+        `${restaurantSettings.restaurantName} Menu`;
+}
+
+
+
 const defaultMenuItems = [
     {
         id: 1,
@@ -215,7 +276,10 @@ card.innerHTML = `
         <p>${cleanCategory(item.category)}</p>
 
         <div class="menu-card-bottom">
-            <strong>SAR ${Number(item.price)}</strong>
+           <strong>
+    ${restaurantSettings.currency || "SAR"}
+    ${Number(item.price)}
+</strong>
 
             ${
                 isAvailable
@@ -355,7 +419,10 @@ function updateCart() {
         cartItem.innerHTML = `
             <div>
                 <h3>${item.name}</h3>
-                <p>SAR ${item.price} × ${item.quantity}</p>
+                <p>
+    ${restaurantSettings.currency || "SAR"}
+    ${item.price} × ${item.quantity}
+</p>
             </div>
 
             <div class="quantity-controls">
@@ -395,6 +462,20 @@ openCartButton.addEventListener("click", openCart);
 closeCartButton.addEventListener("click", closeCart);
 cartOverlay.addEventListener("click", closeCart);
 
+applyRestaurantSettings();
 displayCategories();
 displayMenu("All");
 updateCart();
+
+window.addEventListener("storage", function (event) {
+    if (event.key === "tableTapSettings") {
+        restaurantSettings = {
+            ...defaultRestaurantSettings,
+            ...(JSON.parse(event.newValue) || {})
+        };
+
+        applyRestaurantSettings();
+        displayMenu("All");
+        updateCart();
+    }
+});

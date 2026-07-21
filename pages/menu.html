@@ -12,10 +12,10 @@
 <body>
 
     <header class="header">
-        <div class="logo">
-            🍽️ Green & Red Restaurant
-        </div>
-    </header>
+    <div id="restaurantLogo" class="logo">
+        🍽️ <span id="restaurantName">Green & Red Restaurant</span>
+    </div>
+</header>
 
     <main class="menu-page">
 
@@ -55,9 +55,10 @@
         </div>
 
         <div class="cart-total">
-            Total: SAR <span id="cartTotal">0</span>
-        </div>
-
+    Total:
+    <span id="cartCurrency">SAR</span>
+    <span id="cartTotal">0</span>
+</div>
        <button
     class="checkout-button"
     onclick="window.location.href='customer.html'"
