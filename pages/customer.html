@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Customer Details</title>
 
     <style>
@@ -34,7 +35,7 @@
             background: white;
             padding: 35px;
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
         }
 
         .customer-page h1 {
@@ -83,10 +84,9 @@
 
 <body>
 
-    <div class="page-header">
-        🍽️ Green & Red Restaurant
-    </div>
-
+  <div class="page-header">
+    🍽️ <span id="customerRestaurantName">Green & Red Restaurant</span>
+</div>
     <div class="customer-page">
 
         <h1>Customer Details</h1>
@@ -127,18 +127,29 @@
 
     </div>
 
-   <script>
+    <script>
+    const savedSettings =
+        JSON.parse(localStorage.getItem("tableTapSettings")) || {};
+
+    const savedRestaurantName =
+        savedSettings.restaurantName || "Green & Red Restaurant";
+
+    document.getElementById("customerRestaurantName").textContent =
+        savedRestaurantName;
+
+    document.title =
+        savedRestaurantName + " - Customer Details";
+
     document
         .getElementById("customerForm")
         .addEventListener("submit", function (event) {
-
             event.preventDefault();
 
             const customerDetails = {
-                name: document.getElementById("customerName").value,
-                phone: document.getElementById("customerPhone").value,
-                table: document.getElementById("tableNumber").value,
-                request: document.getElementById("specialRequest").value
+                name: document.getElementById("customerName").value.trim(),
+                phone: document.getElementById("customerPhone").value.trim(),
+                table: document.getElementById("tableNumber").value.trim(),
+                request: document.getElementById("specialRequest").value.trim()
             };
 
             localStorage.setItem(

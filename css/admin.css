@@ -706,3 +706,499 @@
         grid-column: 1;
     }
 }
+
+
+/* ===== BILLING & CASHIER ===== */
+
+.billing-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.billing-heading h2 {
+    margin-bottom: 6px;
+}
+
+.billing-heading p {
+    color: #777777;
+}
+
+.billing-count {
+    background: #fff2c7;
+    color: #886700;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.billing-orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+}
+
+.billing-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-left: 6px solid #d4af37;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.billing-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.billing-card-header h3 {
+    color: #8b1014;
+    margin-bottom: 5px;
+}
+
+.billing-order-id {
+    color: #777777;
+    font-size: 13px;
+}
+
+.billing-status {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #ffe0a3;
+    color: #9a5d00;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.billing-customer {
+    background: #faf7f2;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+}
+
+.billing-customer p {
+    margin: 5px 0;
+}
+
+.billing-items {
+    margin-bottom: 14px;
+}
+
+.billing-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.billing-totals {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.billing-total-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.billing-total-line.grand-total {
+    color: #8b1014;
+    font-size: 19px;
+    font-weight: bold;
+    border-top: 1px solid #dddddd;
+    padding-top: 10px;
+}
+
+.billing-payment-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+}
+
+.billing-payment-field label {
+    color: #555555;
+    font-weight: bold;
+}
+
+.billing-payment-field select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    background: #ffffff;
+    font: inherit;
+}
+
+.billing-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.billing-actions button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.generate-bill-button {
+    background: #d4af37;
+    color: #2f2f2f;
+}
+
+.mark-paid-button {
+    background: #2e9d56;
+    color: #ffffff;
+}
+
+/* ===== BILL MODAL / RECEIPT ===== */
+
+.bill-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+}
+
+.bill-modal.show {
+    display: block;
+}
+
+.bill-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.58);
+}
+
+.bill-modal-panel {
+    position: relative;
+    z-index: 1;
+    width: min(560px, calc(100% - 28px));
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    margin: 20px auto;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+.bill-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.bill-modal-header h2 {
+    color: #8b1014;
+    margin-bottom: 5px;
+}
+
+.bill-modal-header p {
+    color: #777777;
+}
+
+.bill-modal-close {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f1f1;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.printable-bill {
+    border: 1px dashed #bbbbbb;
+    border-radius: 12px;
+    padding: 20px;
+    background: #fffefb;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.receipt-header h2 {
+    color: #2f2f2f;
+    margin-bottom: 4px;
+}
+
+.receipt-header p {
+    margin: 3px 0;
+    color: #555555;
+}
+
+.receipt-meta {
+    display: grid;
+    gap: 5px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #bbbbbb;
+}
+
+.receipt-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 0;
+}
+
+.receipt-summary {
+    display: grid;
+    gap: 7px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed #bbbbbb;
+}
+
+.receipt-summary-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.receipt-summary-line.total {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.receipt-footer {
+    text-align: center;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed #bbbbbb;
+}
+
+.bill-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+@media (max-width: 650px) {
+    .billing-heading {
+        flex-direction: column;
+    }
+
+    .billing-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .bill-modal-actions {
+        flex-direction: column;
+    }
+
+    .bill-modal-actions button {
+        width: 100%;
+    }
+}
+
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    #printableBill,
+    #printableBill * {
+        visibility: visible !important;
+    }
+
+    #printableBill {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        border: none;
+        background: white;
+        padding: 20px;
+    }
+}
+
+
+/* ===== PAYMENT RECORDS ===== */
+
+.payment-records-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.payment-records-heading h2 {
+    margin-bottom: 6px;
+}
+
+.payment-records-heading p {
+    color: #777777;
+}
+
+.payment-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.payment-summary-card {
+    background: #faf7f2;
+    border: 1px solid #eeeeee;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.payment-summary-card small {
+    display: block;
+    color: #777777;
+    margin-bottom: 7px;
+}
+
+.payment-summary-card strong {
+    color: #8b1014;
+    font-size: 22px;
+}
+
+.payment-records-toolbar {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) 190px 210px;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.payment-records-toolbar input,
+.payment-records-toolbar select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    background: #ffffff;
+    font: inherit;
+}
+
+.payment-records-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+}
+
+.payment-record-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-left: 6px solid #2e9d56;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.payment-record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.payment-record-header h3 {
+    color: #8b1014;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+.payment-record-method {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #dff5e5;
+    color: #237944;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.payment-record-meta {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.payment-record-meta p {
+    margin: 0;
+}
+
+.payment-record-totals {
+    display: grid;
+    gap: 8px;
+    background: #faf7f2;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+}
+
+.payment-record-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.payment-record-line.total {
+    padding-top: 8px;
+    border-top: 1px solid #dddddd;
+    color: #8b1014;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.payment-record-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.payment-record-actions button {
+    border: none;
+    background: #d4af37;
+    color: #2f2f2f;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .payment-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .payment-records-toolbar {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .payment-records-heading {
+        flex-direction: column;
+    }
+
+    .payment-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}

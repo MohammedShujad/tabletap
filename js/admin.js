@@ -1,13 +1,3 @@
-const defaultMenuItems = [
-            { id: 1, name: "Chicken Biryani Full", category: "Traditional Dishes", price: 22, image: "", available: true },
-            { id: 2, name: "Mutton Biryani Full", category: "Traditional Dishes", price: 25, image: "", available: true },
-            { id: 3, name: "Chicken 65", category: "Starters", price: 20, image: "", available: true },
-            { id: 4, name: "Fish Fry Boneless", category: "Starters", price: 25, image: "", available: true },
-            { id: 5, name: "Chicken Fried Rice", category: "Fast Food", price: 17, image: "", available: true },
-            { id: 6, name: "Chicken Handi", category: "Chicken Gravy", price: 19, image: "", available: true },
-            { id: 7, name: "Mutton Handi", category: "Mutton Gravy", price: 20, image: "", available: true },
-            { id: 8, name: "Paneer Butter Masala", category: "Vegetarian", price: 24, image: "", available: true }
-        ];
 
         let menuItems =
             JSON.parse(localStorage.getItem("tableTapMenu")) ||
@@ -27,20 +17,7 @@ const defaultMenuItems = [
             JSON.parse(localStorage.getItem("tableTapTables")) || [];
 
 
-        const defaultRestaurantSettings = {
-            restaurantName: "Green & Red Restaurant",
-            branchName: "Main Branch",
-            phone: "",
-            whatsapp: "",
-            email: "",
-            address: "",
-            openingHours: "",
-            vatNumber: "",
-            vatPercent: 15,
-            currency: "SAR",
-            logoUrl: "",
-            receiptFooter: "Thank you. Please visit again."
-        };
+        
         let restaurantSettings = { ...defaultRestaurantSettings, ...(JSON.parse(localStorage.getItem("tableTapSettings")) || {}) };
 
         let selectedAnalyticsPeriod = "today";
@@ -70,6 +47,34 @@ const defaultMenuItems = [
         const openRestaurantSettingsLink = document.getElementById("openRestaurantSettingsLink");
         const restaurantFloorSection = document.getElementById("restaurantFloor");
         const openRestaurantFloorLink = document.getElementById("openRestaurantFloorLink");
+        const billingSection = document.getElementById("billingSection");
+        const openBillingLink = document.getElementById("openBillingLink");
+        const paymentRecordsSection = document.getElementById("paymentRecordsSection");
+        const openPaymentRecordsLink = document.getElementById("openPaymentRecordsLink");
+        const paymentRecordsCount = document.getElementById("paymentRecordsCount");
+        const paymentSummaryCount = document.getElementById("paymentSummaryCount");
+        const paymentSummaryCurrency1 = document.getElementById("paymentSummaryCurrency1");
+        const paymentSummaryCurrency2 = document.getElementById("paymentSummaryCurrency2");
+        const paymentSummaryCurrency3 = document.getElementById("paymentSummaryCurrency3");
+        const paymentSummarySubtotal = document.getElementById("paymentSummarySubtotal");
+        const paymentSummaryVat = document.getElementById("paymentSummaryVat");
+        const paymentSummaryTotal = document.getElementById("paymentSummaryTotal");
+        const paymentRecordSearch = document.getElementById("paymentRecordSearch");
+        const paymentRecordDateFilter = document.getElementById("paymentRecordDateFilter");
+        const paymentRecordMethodFilter = document.getElementById("paymentRecordMethodFilter");
+        const paymentRecordsGrid = document.getElementById("paymentRecordsGrid");
+        const paymentRecordsEmpty = document.getElementById("paymentRecordsEmpty");
+        const billingOrdersGrid = document.getElementById("billingOrdersGrid");
+        const billingEmptyState = document.getElementById("billingEmptyState");
+        const billingOrderCount = document.getElementById("billingOrderCount");
+        const billModal = document.getElementById("billModal");
+        const billModalOverlay = document.getElementById("billModalOverlay");
+        const closeBillModalButton = document.getElementById("closeBillModal");
+        const billModalSubtitle = document.getElementById("billModalSubtitle");
+        const printableBill = document.getElementById("printableBill");
+        const printBillButton = document.getElementById("printBillButton");
+        const modalMarkPaidButton = document.getElementById("modalMarkPaidButton");
+        let selectedBillingOrderId = null;
         const toggleAddTableForm = document.getElementById("toggleAddTableForm");
         const addTableForm = document.getElementById("addTableForm");
         const cancelAddTable = document.getElementById("cancelAddTable");
@@ -165,345 +170,370 @@ const defaultMenuItems = [
         }
 
 
-        function normalizeTableValue(value) {
-            return String(value || "").trim().toLowerCase();
+
+        function getPaymentRecordDate(order) {
+            const dateValue =
+                order.paidAt ||
+                order.completedAt ||
+                order.createdAt;
+
+            const parsedDate = new Date(dateValue);
+
+            return Number.isNaN(parsedDate.getTime())
+                ? null
+                : parsedDate;
         }
 
-        function saveTables() {
-            localStorage.setItem(
-                "tableTapTables",
-                JSON.stringify(tables)
-            );
-
-            renderRestaurantFloor();
+        function getPaidOrders() {
+            return orders.filter(function (order) {
+                return (
+                    order.paymentStatus === "Paid" ||
+                    (
+                        order.status === "Completed" &&
+                        Boolean(order.paymentMethod)
+                    )
+                );
+            });
         }
 
-        function getActiveOrderForTable(table) {
-            const matchingOrders =
-                orders.filter(function (order) {
-                    return (
-                        order.status !== "Completed" &&
-                        normalizeTableValue(order.customer?.table) ===
-                        normalizeTableValue(table.number)
-                    );
-                });
-
-            return matchingOrders.length > 0
-                ? matchingOrders[matchingOrders.length - 1]
-                : null;
-        }
-
-        function getTableStatus(table, activeOrder) {
-            if (!table.enabled) {
-                return "Disabled";
+        function matchesPaymentDateFilter(order, filterValue) {
+            if (filterValue === "all") {
+                return true;
             }
 
-            if (!activeOrder) {
-                return "Available";
-            }
-
-            return activeOrder.status || "New";
-        }
-
-        function getTableStatusClass(status) {
-            return `status-${String(status || "Available")
-                .toLowerCase()
-                .replace(/\s+/g, "-")}`;
-        }
-
-        function formatWaitingTime(order) {
-            const orderDate = getOrderDate(order);
+            const orderDate = getPaymentRecordDate(order);
 
             if (!orderDate) {
-                return "Time unavailable";
+                return false;
             }
 
-            const minutes = Math.max(
-                0,
-                Math.floor((Date.now() - orderDate.getTime()) / 60000)
+            const now = new Date();
+            const todayStart =
+                new Date(
+                    now.getFullYear(),
+                    now.getMonth(),
+                    now.getDate()
+                );
+
+            const tomorrowStart =
+                new Date(todayStart);
+
+            tomorrowStart.setDate(
+                tomorrowStart.getDate() + 1
             );
 
-            return `${minutes} min`;
+            if (filterValue === "today") {
+                return (
+                    orderDate >= todayStart &&
+                    orderDate < tomorrowStart
+                );
+            }
+
+            const yesterdayStart =
+                new Date(todayStart);
+
+            yesterdayStart.setDate(
+                yesterdayStart.getDate() - 1
+            );
+
+            if (filterValue === "yesterday") {
+                return (
+                    orderDate >= yesterdayStart &&
+                    orderDate < todayStart
+                );
+            }
+
+            if (filterValue === "week") {
+                const weekStart =
+                    new Date(todayStart);
+
+                weekStart.setDate(
+                    weekStart.getDate() - 6
+                );
+
+                return (
+                    orderDate >= weekStart &&
+                    orderDate < tomorrowStart
+                );
+            }
+
+            if (filterValue === "month") {
+                return (
+                    orderDate.getFullYear() ===
+                        now.getFullYear() &&
+                    orderDate.getMonth() ===
+                        now.getMonth()
+                );
+            }
+
+            return true;
         }
 
-        function updateFloorSummary() {
-            let available = 0;
-            let active = 0;
-            let ready = 0;
-            let disabled = 0;
+        function getFilteredPaymentRecords() {
+            const searchValue =
+                paymentRecordSearch.value
+                    .trim()
+                    .toLowerCase();
 
-            tables.forEach(function (table) {
-                const activeOrder =
-                    getActiveOrderForTable(table);
+            const dateFilter =
+                paymentRecordDateFilter.value;
 
-                const status =
-                    getTableStatus(table, activeOrder);
+            const methodFilter =
+                paymentRecordMethodFilter.value;
 
-                if (status === "Disabled") {
-                    disabled += 1;
-                } else if (status === "Available") {
-                    available += 1;
-                } else if (status === "Ready") {
-                    ready += 1;
-                } else {
-                    active += 1;
-                }
+            return getPaidOrders().filter(function (order) {
+                const orderId =
+                    String(order.id || "")
+                        .toLowerCase();
+
+                const customerName =
+                    String(order.customer?.name || "")
+                        .toLowerCase();
+
+                const phone =
+                    String(order.customer?.phone || "")
+                        .toLowerCase();
+
+                const table =
+                    String(order.customer?.table || "")
+                        .toLowerCase();
+
+                const matchesSearch =
+                    !searchValue ||
+                    orderId.includes(searchValue) ||
+                    customerName.includes(searchValue) ||
+                    phone.includes(searchValue) ||
+                    table.includes(searchValue);
+
+                const matchesMethod =
+                    methodFilter === "all" ||
+                    order.paymentMethod === methodFilter;
+
+                const matchesDate =
+                    matchesPaymentDateFilter(
+                        order,
+                        dateFilter
+                    );
+
+                return (
+                    matchesSearch &&
+                    matchesMethod &&
+                    matchesDate
+                );
             });
-
-            availableTableCount.textContent = available;
-            activeTableCount.textContent = active;
-            readyTableCount.textContent = ready;
-            disabledTableCount.textContent = disabled;
         }
 
-        function renderRestaurantFloor() {
-            restaurantFloorGrid.innerHTML = "";
+        function updatePaymentSummary(filteredOrders) {
+            const currency = getCurrency();
 
-            updateFloorSummary();
+            const totals =
+                filteredOrders.reduce(
+                    function (summary, order) {
+                        const fallbackBill =
+                            calculateBill(order);
 
-            if (tables.length === 0) {
-                restaurantFloorEmpty.hidden = false;
+                        summary.subtotal +=
+                            Number(
+                                order.billSubtotal ??
+                                fallbackBill.subtotal
+                            );
+
+                        summary.vat +=
+                            Number(
+                                order.vatAmount ??
+                                fallbackBill.vatAmount
+                            );
+
+                        summary.total +=
+                            Number(
+                                order.total ??
+                                fallbackBill.grandTotal
+                            );
+
+                        return summary;
+                    },
+                    {
+                        subtotal: 0,
+                        vat: 0,
+                        total: 0
+                    }
+                );
+
+            paymentSummaryCount.textContent =
+                filteredOrders.length;
+
+            paymentSummaryCurrency1.textContent =
+                currency;
+
+            paymentSummaryCurrency2.textContent =
+                currency;
+
+            paymentSummaryCurrency3.textContent =
+                currency;
+
+            paymentSummarySubtotal.textContent =
+                totals.subtotal.toFixed(2);
+
+            paymentSummaryVat.textContent =
+                totals.vat.toFixed(2);
+
+            paymentSummaryTotal.textContent =
+                totals.total.toFixed(2);
+        }
+
+        function renderPaymentRecords() {
+            const filteredOrders =
+                getFilteredPaymentRecords();
+
+            paymentRecordsGrid.innerHTML = "";
+
+            paymentRecordsCount.textContent =
+                `${filteredOrders.length} payment${
+                    filteredOrders.length === 1 ? "" : "s"
+                }`;
+
+            updatePaymentSummary(filteredOrders);
+
+            if (filteredOrders.length === 0) {
+                paymentRecordsEmpty.hidden = false;
                 return;
             }
 
-            restaurantFloorEmpty.hidden = true;
+            paymentRecordsEmpty.hidden = true;
 
-            tables
+            filteredOrders
                 .slice()
                 .sort(function (first, second) {
-                    return String(first.number)
-                        .localeCompare(
-                            String(second.number),
-                            undefined,
-                            { numeric: true }
-                        );
+                    const firstDate =
+                        getPaymentRecordDate(first);
+
+                    const secondDate =
+                        getPaymentRecordDate(second);
+
+                    return (
+                        (secondDate?.getTime() || 0) -
+                        (firstDate?.getTime() || 0)
+                    );
                 })
-                .forEach(function (table) {
-                    const activeOrder =
-                        getActiveOrderForTable(table);
+                .forEach(function (order) {
+                    const fallbackBill =
+                        calculateBill(order);
 
-                    const status =
-                        getTableStatus(table, activeOrder);
+                    const currency =
+                        getCurrency();
 
-                    const statusClass =
-                        getTableStatusClass(status);
+                    const subtotal =
+                        Number(
+                            order.billSubtotal ??
+                            fallbackBill.subtotal
+                        );
+
+                    const vatAmount =
+                        Number(
+                            order.vatAmount ??
+                            fallbackBill.vatAmount
+                        );
+
+                    const total =
+                        Number(
+                            order.total ??
+                            fallbackBill.grandTotal
+                        );
+
+                    const paidDate =
+                        getPaymentRecordDate(order);
 
                     const card =
                         document.createElement("article");
 
                     card.className =
-                        `floor-table-card ${statusClass}`;
-
-                    const orderInfo = activeOrder
-                        ? `
-                            <div class="floor-order-info">
-                                <p>
-                                    <strong>Order:</strong>
-                                    ${activeOrder.id || "Unknown"}
-                                </p>
-
-                                <p>
-                                    <strong>Customer:</strong>
-                                    ${activeOrder.customer?.name || "Unknown"}
-                                </p>
-
-                                <p>
-                                    <strong>Waiting:</strong>
-                                    ${formatWaitingTime(activeOrder)}
-                                </p>
-                            </div>
-                        `
-                        : "";
+                        "payment-record-card";
 
                     card.innerHTML = `
-                        <h3>🍽️ ${table.name}</h3>
+                        <div class="payment-record-header">
+                            <div>
+                                <h3>
+                                    ${order.id || "Unknown Order"}
+                                </h3>
 
-                        <div class="floor-table-meta">
-                            <span>
-                                <strong>Code:</strong>
-                                ${table.number}
-                            </span>
+                                <small>
+                                    ${
+                                        paidDate
+                                            ? paidDate.toLocaleString()
+                                            : "Payment date unavailable"
+                                    }
+                                </small>
+                            </div>
 
-                            <span>
-                                <strong>Seats:</strong>
-                                ${table.capacity}
-                            </span>
-
-                            <span>
-                                <strong>Area:</strong>
-                                ${table.area}
+                            <span class="payment-record-method">
+                                ${order.paymentMethod || "Unknown"}
                             </span>
                         </div>
 
-                        <span class="floor-table-status ${statusClass}">
-                            ${status}
-                        </span>
+                        <div class="payment-record-meta">
+                            <p>
+                                <strong>Customer:</strong>
+                                ${order.customer?.name || "Unknown"}
+                            </p>
 
-                        ${orderInfo}
+                            <p>
+                                <strong>Phone:</strong>
+                                ${order.customer?.phone || "Not provided"}
+                            </p>
 
-                        <div class="floor-table-actions">
+                            <p>
+                                <strong>Table:</strong>
+                                ${order.customer?.table || "—"}
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+                                ${order.paymentStatus || "Paid"}
+                            </p>
+                        </div>
+
+                        <div class="payment-record-totals">
+                            <div class="payment-record-line">
+                                <span>Subtotal</span>
+                                <strong>
+                                    ${currency}
+                                    ${subtotal.toFixed(2)}
+                                </strong>
+                            </div>
+
+                            <div class="payment-record-line">
+                                <span>VAT</span>
+                                <strong>
+                                    ${currency}
+                                    ${vatAmount.toFixed(2)}
+                                </strong>
+                            </div>
+
+                            <div class="payment-record-line total">
+                                <span>Total</span>
+                                <strong>
+                                    ${currency}
+                                    ${total.toFixed(2)}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="payment-record-actions">
                             <button
                                 type="button"
-                                class="floor-edit-button"
-                                onclick="editTable('${table.id}')"
+                                onclick="openBill('${order.id}')"
                             >
-                                Edit
-                            </button>
-
-                            <button
-                                type="button"
-                                class="floor-toggle-button"
-                                onclick="toggleTable('${table.id}')"
-                            >
-                                ${table.enabled ? "Disable" : "Enable"}
-                            </button>
-
-                            <button
-                                type="button"
-                                class="floor-delete-button"
-                                onclick="deleteTable('${table.id}')"
-                            >
-                                Delete
+                                Reprint Receipt
                             </button>
                         </div>
                     `;
 
-                    restaurantFloorGrid.appendChild(card);
+                    paymentRecordsGrid.appendChild(card);
                 });
         }
 
-        function resetTableForm() {
-            addTableForm.reset();
-            tableEnabledInput.value = "true";
-            addTableForm.hidden = true;
-            toggleAddTableForm.textContent = "+ Add Table";
-        }
-
-        function editTable(tableId) {
-            const table =
-                tables.find(function (item) {
-                    return String(item.id) === String(tableId);
-                });
-
-            if (!table) {
-                return;
-            }
-
-            const newName =
-                prompt("Enter table name:", table.name);
-
-            const newNumber =
-                prompt("Enter table number/code:", table.number);
-
-            const newCapacity =
-                prompt("Enter seating capacity:", table.capacity);
-
-            const newArea =
-                prompt("Enter table area:", table.area);
-
-            if (
-                newName === null ||
-                newNumber === null ||
-                newCapacity === null ||
-                newArea === null
-            ) {
-                return;
-            }
-
-            const duplicate =
-                tables.some(function (item) {
-                    return (
-                        String(item.id) !== String(tableId) &&
-                        normalizeTableValue(item.number) ===
-                        normalizeTableValue(newNumber)
-                    );
-                });
-
-            if (duplicate) {
-                alert("Another table already uses this table number/code.");
-                return;
-            }
-
-            const capacity = Number(newCapacity);
-
-            if (
-                !newName.trim() ||
-                !newNumber.trim() ||
-                !newArea.trim() ||
-                !Number.isInteger(capacity) ||
-                capacity < 1
-            ) {
-                alert("Please enter valid table information.");
-                return;
-            }
-
-            table.name = newName.trim();
-            table.number = newNumber.trim();
-            table.capacity = capacity;
-            table.area = newArea.trim();
-
-            saveTables();
-        }
-
-        function toggleTable(tableId) {
-            const table =
-                tables.find(function (item) {
-                    return String(item.id) === String(tableId);
-                });
-
-            if (!table) {
-                return;
-            }
-
-            table.enabled = !table.enabled;
-            saveTables();
-        }
-
-        function deleteTable(tableId) {
-            const table =
-                tables.find(function (item) {
-                    return String(item.id) === String(tableId);
-                });
-
-            if (!table) {
-                return;
-            }
-
-            const activeOrder =
-                getActiveOrderForTable(table);
-
-            if (activeOrder) {
-                alert(
-                    "This table has an active order. Complete the order before deleting the table."
-                );
-                return;
-            }
-
-            const confirmed =
-                confirm(`Delete ${table.name}?`);
-
-            if (!confirmed) {
-                return;
-            }
-
-            tables =
-                tables.filter(function (item) {
-                    return String(item.id) !== String(tableId);
-                });
-
-            saveTables();
-        }
-
-        function cleanCategory(value) {
-            return String(value || "")
-                .trim()
-                .replace(/\s+/g, " ");
-        }
-
-        function categoryKey(value) {
-            return cleanCategory(value).toLowerCase();
-        }
-
+        
+        
         function getCategories() {
             const categoryMap = new Map();
 
@@ -531,24 +561,8 @@ const defaultMenuItems = [
             });
         }
 
-        function getOrderDate(order) {
-            const dateValue = order.createdAt || order.completedAt;
-            const parsedDate = new Date(dateValue);
-
-            return Number.isNaN(parsedDate.getTime())
-                ? null
-                : parsedDate;
-        }
-
-        function isSameDay(firstDate, secondDate) {
-            return (
-                firstDate.getFullYear() === secondDate.getFullYear() &&
-                firstDate.getMonth() === secondDate.getMonth() &&
-                firstDate.getDate() === secondDate.getDate()
-            );
-        }
-
-        function filterOrdersByPeriod(period) {
+      
+              function filterOrdersByPeriod(period) {
             const now = new Date();
 
             return orders.filter(function (order) {
@@ -1010,80 +1024,16 @@ const defaultMenuItems = [
         }
 
 
-        openRestaurantFloorLink.addEventListener("click", function () {
-            restaurantFloorSection.open = true;
+     
+        openPaymentRecordsLink.addEventListener("click", function () {
+            paymentRecordsSection.open = true;
         });
 
-        toggleAddTableForm.addEventListener("click", function () {
-            const willOpen = addTableForm.hidden;
+        paymentRecordSearch.addEventListener("input", renderPaymentRecords);
+        paymentRecordDateFilter.addEventListener("change", renderPaymentRecords);
+        paymentRecordMethodFilter.addEventListener("change", renderPaymentRecords);
 
-            addTableForm.hidden = !willOpen;
-            toggleAddTableForm.textContent =
-                willOpen ? "Close Form" : "+ Add Table";
-
-            if (willOpen) {
-                tableNameInput.focus();
-            }
-        });
-
-        cancelAddTable.addEventListener("click", resetTableForm);
-
-        addTableForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const name =
-                tableNameInput.value.trim();
-
-            const number =
-                tableNumberInput.value.trim();
-
-            const capacity =
-                Number(tableCapacityInput.value);
-
-            const area =
-                tableAreaInput.value;
-
-            const enabled =
-                tableEnabledInput.value === "true";
-
-            if (
-                !name ||
-                !number ||
-                !area ||
-                !Number.isInteger(capacity) ||
-                capacity < 1
-            ) {
-                alert("Please complete all table fields correctly.");
-                return;
-            }
-
-            const duplicate =
-                tables.some(function (table) {
-                    return (
-                        normalizeTableValue(table.number) ===
-                        normalizeTableValue(number)
-                    );
-                });
-
-            if (duplicate) {
-                alert("This table number/code already exists.");
-                return;
-            }
-
-            tables.push({
-                id: Date.now(),
-                name: name,
-                number: number,
-                capacity: capacity,
-                area: area,
-                enabled: enabled,
-                createdAt: new Date().toISOString()
-            });
-
-            saveTables();
-            resetTableForm();
-        });
-
+    
         addMenuItemBtn.addEventListener("click", function () {
             const isHidden =
                 addItemForm.style.display === "none";
@@ -1248,6 +1198,8 @@ const defaultMenuItems = [
                 restaurantSettings = { ...defaultRestaurantSettings, ...(JSON.parse(event.newValue) || {}) };
                 loadRestaurantSettingsForm();
                 applyRestaurantBranding();
+                renderBilling();
+                renderPaymentRecords();
             }
 
             if (event.key === "tableTapOrders") {
@@ -1257,6 +1209,8 @@ const defaultMenuItems = [
                 loadStats();
                 renderOrderHistory();
                 renderRestaurantFloor();
+                renderBilling();
+                renderPaymentRecords();
             }
 
             if (event.key === "tableTapTables") {
@@ -1283,6 +1237,11 @@ const defaultMenuItems = [
 
         orderDateFilter.value = "today";
         orderStatusFilter.value = "all";
+        paymentRecordDateFilter.value = "today";
+        paymentRecordMethodFilter.value = "all";
+    
+        initRestaurantFloorModule();
+        initBillingModule();
 
         loadRestaurantSettingsForm();
         applyRestaurantBranding();
@@ -1290,4 +1249,6 @@ const defaultMenuItems = [
         loadStats();
         renderMenuTable();
         renderOrderHistory();
-        renderRestaurantFloor();
+        renderRestaurantFloor();       
+        renderBilling();
+        renderPaymentRecords();

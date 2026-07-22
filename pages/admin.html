@@ -106,6 +106,8 @@
                 <a class="admin-link" href="kitchen.html">🍳 Kitchen Dashboard</a>
                 <a class="admin-link" href="menu.html">🍽️ Customer Menu</a>
                 <a id="openRestaurantFloorLink" class="admin-link" href="#restaurantFloor">🏠 Restaurant Floor</a>
+                <a id="openBillingLink" class="admin-link" href="#billingSection">💳 Billing & Cashier</a>
+                <a id="openPaymentRecordsLink" class="admin-link" href="#paymentRecordsSection">💰 Payment Records</a>
                 <a id="openRestaurantSettingsLink" class="admin-link" href="#restaurantSettings">⚙️ Restaurant Settings</a>
                 <a id="openMenuManagementLink" class="admin-link" href="#menuManagement">📦 Manage Menu</a>
             </div>
@@ -228,6 +230,158 @@
             </div>
         </details>
 
+
+        <details id="billingSection" class="collapsible-section" open>
+            <summary>💳 Billing & Cashier</summary>
+
+            <div class="collapsible-content">
+                <div class="billing-heading">
+                    <div>
+                        <h2>Unpaid Orders</h2>
+                        <p>Generate bills, record payment and release tables.</p>
+                    </div>
+
+                    <span id="billingOrderCount" class="billing-count">
+                        0 unpaid orders
+                    </span>
+                </div>
+
+                <div id="billingOrdersGrid" class="billing-orders-grid"></div>
+
+                <div id="billingEmptyState" class="history-empty" hidden>
+                    <h3>No unpaid orders</h3>
+                    <p>Active customer orders will appear here automatically.</p>
+                </div>
+            </div>
+        </details>
+
+        <div id="billModal" class="bill-modal" aria-hidden="true">
+            <div id="billModalOverlay" class="bill-modal-overlay"></div>
+
+            <section
+                class="bill-modal-panel"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="billModalTitle"
+            >
+                <div class="bill-modal-header">
+                    <div>
+                        <h2 id="billModalTitle">Customer Bill</h2>
+                        <p id="billModalSubtitle"></p>
+                    </div>
+
+                    <button
+                        id="closeBillModal"
+                        type="button"
+                        class="bill-modal-close"
+                        aria-label="Close bill"
+                    >
+                        ×
+                    </button>
+                </div>
+
+                <div id="printableBill" class="printable-bill"></div>
+
+                <div class="bill-modal-actions">
+                    <button
+                        id="printBillButton"
+                        type="button"
+                        class="secondary-button"
+                    >
+                        🖨️ Print Bill
+                    </button>
+
+                    <button
+                        id="modalMarkPaidButton"
+                        type="button"
+                        class="primary-button"
+                    >
+                        Mark Paid
+                    </button>
+                </div>
+            </section>
+        </div>
+
+
+        <details id="paymentRecordsSection" class="collapsible-section" open>
+            <summary>💰 Payment Records</summary>
+
+            <div class="collapsible-content">
+                <div class="payment-records-heading">
+                    <div>
+                        <h2>Completed Payments</h2>
+                        <p>Review paid orders, payment methods, VAT and totals.</p>
+                    </div>
+
+                    <span id="paymentRecordsCount" class="billing-count">
+                        0 payments
+                    </span>
+                </div>
+
+                <div class="payment-summary-grid">
+                    <div class="payment-summary-card">
+                        <small>Payments</small>
+                        <strong id="paymentSummaryCount">0</strong>
+                    </div>
+
+                    <div class="payment-summary-card">
+                        <small>Subtotal</small>
+                        <strong>
+                            <span id="paymentSummaryCurrency1">SAR</span>
+                            <span id="paymentSummarySubtotal">0.00</span>
+                        </strong>
+                    </div>
+
+                    <div class="payment-summary-card">
+                        <small>VAT Collected</small>
+                        <strong>
+                            <span id="paymentSummaryCurrency2">SAR</span>
+                            <span id="paymentSummaryVat">0.00</span>
+                        </strong>
+                    </div>
+
+                    <div class="payment-summary-card">
+                        <small>Total Collected</small>
+                        <strong>
+                            <span id="paymentSummaryCurrency3">SAR</span>
+                            <span id="paymentSummaryTotal">0.00</span>
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="payment-records-toolbar">
+                    <input
+                        id="paymentRecordSearch"
+                        type="search"
+                        placeholder="Search order ID, customer, phone or table"
+                    >
+
+                    <select id="paymentRecordDateFilter">
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="week">Last 7 Days</option>
+                        <option value="month">This Month</option>
+                        <option value="all">All Time</option>
+                    </select>
+
+                    <select id="paymentRecordMethodFilter">
+                        <option value="all">All Payment Methods</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                        <option value="Apple Pay">Apple Pay</option>
+                        <option value="Pay at Counter">Pay at Counter</option>
+                    </select>
+                </div>
+
+                <div id="paymentRecordsGrid" class="payment-records-grid"></div>
+
+                <div id="paymentRecordsEmpty" class="history-empty" hidden>
+                    <h3>No payment records found</h3>
+                    <p>Paid orders will appear here automatically.</p>
+                </div>
+            </div>
+        </details>
+
         <section id="orderHistory" class="admin-section">
             <h2>Order History</h2>
 
@@ -346,6 +500,10 @@
         </details>
 
     </main>
+<script src="../js/shared.js"></script>
+<script src="../js/restaurant-floor.js"></script>
+<script src="../js/billing.js"></script>
+<script src="../js/payment-records.js"></script>
 <script src="../js/admin.js"></script>
 </body>
 </html>

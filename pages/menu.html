@@ -12,10 +12,13 @@
 <body>
 
     <header class="header">
-    <div id="restaurantLogo" class="logo">
-        🍽️ <span id="restaurantName">Green & Red Restaurant</span>
-    </div>
-</header>
+        <div id="restaurantLogo" class="logo">
+            🍽️
+            <span id="restaurantName">
+                Green & Red Restaurant
+            </span>
+        </div>
+    </header>
 
     <main class="menu-page">
 
@@ -27,44 +30,71 @@
             </p>
         </section>
 
-        <section id="categoryList" class="category-list"></section>
+        <section
+            id="categoryList"
+            class="category-list"
+        ></section>
 
-        <section id="menuContainer" class="menu-container">
-        </section>
+        <section
+            id="menuContainer"
+            class="menu-container"
+        ></section>
 
     </main>
 
-    <button id="openCart" class="cart-bar">
-        🛒 Cart: <span id="cartCount">0</span>
+    <button
+        id="openCart"
+        class="cart-bar"
+        type="button"
+    >
+        🛒 Cart:
+        <span id="cartCount">0</span>
     </button>
 
-    <div id="cartOverlay" class="cart-overlay"></div>
+    <div
+        id="cartOverlay"
+        class="cart-overlay"
+    ></div>
 
-    <aside id="cartPanel" class="cart-panel">
+    <aside
+        id="cartPanel"
+        class="cart-panel"
+    >
 
         <div class="cart-panel-header">
             <h2>Your Cart</h2>
 
-            <button id="closeCart" class="close-cart">
+            <button
+                id="closeCart"
+                class="close-cart"
+                type="button"
+            >
                 ×
             </button>
         </div>
 
-        <div id="cartItems" class="cart-items">
-            <p class="empty-cart">Your cart is empty.</p>
+        <div
+            id="cartItems"
+            class="cart-items"
+        >
+            <p class="empty-cart">
+                Your cart is empty.
+            </p>
         </div>
 
         <div class="cart-total">
-    Total:
-    <span id="cartCurrency">SAR</span>
-    <span id="cartTotal">0</span>
-</div>
-       <button
-    class="checkout-button"
-    onclick="window.location.href='customer.html'"
->
-    Continue
-</button>
+            Total:
+            <span id="cartCurrency">SAR</span>
+            <span id="cartTotal">0</span>
+        </div>
+
+        <button
+            class="checkout-button"
+            type="button"
+            onclick="window.location.href='customer.html'"
+        >
+            Continue
+        </button>
 
     </aside>
 
