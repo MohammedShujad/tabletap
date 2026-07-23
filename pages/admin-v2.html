@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>
+   TableTap Admin V2
+  </title>
+  <link href="../css/admin.css" rel="stylesheet">
+ </head>
+ <body>
+  <div class="admin-app-shell" id="adminApp">
+   <aside aria-label="Admin navigation" class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-header">
+     <div class="admin-brand">
+      <div class="admin-brand-mark">
+       TT
+      </div>
+      <div class="admin-brand-copy">
+       <strong>
+        TableTap
+       </strong>
+       <small>
+        Restaurant Admin
+       </small>
+      </div>
+     </div>
+     <button aria-label="Close sidebar" class="admin-sidebar-close" id="sidebarClose" type="button">
+      &times;
+     </button>
+    </div>
+    <nav class="admin-sidebar-nav">
+     <p class="admin-nav-label">
+      Workspace
+     </p>
+     <button class="admin-nav-button active" data-admin-view="dashboard" data-view-title="Dashboard" type="button">
+      <span class="admin-nav-icon">
+       ⌂
+      </span>
+      <span>
+       Dashboard
+      </span>
+     </button>
+     <button class="admin-nav-button" data-admin-view="floor" data-view-title="Restaurant Floor" type="button">
+      <span class="admin-nav-icon">
+       ▦
+      </span>
+      <span>
+       Restaurant Floor
+      </span>
+     </button>
+     <a class="admin-nav-link" href="kitchen.html">
+      <span class="admin-nav-icon">
+       ♨
+      </span>
+      <span>
+       Kitchen
+      </span>
+     </a>
+     <button class="admin-nav-button" data-admin-view="billing" data-view-title="Billing & Cashier" type="button">
+      <span class="admin-nav-icon">
+       ▤
+      </span>
+      <span>
+       Billing
+      </span>
+     </button>
+     <button class="admin-nav-button" data-admin-view="payments" data-view-title="Payment Records" type="button">
+      <span class="admin-nav-icon">
+       ◉
+      </span>
+      <span>
+       Payment Records
+      </span>
+     </button>
+     <button class="admin-nav-button" data-admin-view="orders" data-view-title="Order History" type="button">
+      <span class="admin-nav-icon">
+       ◷
+      </span>
+      <span>
+       Order History
+      </span>
+     </button>
+     <button class="admin-nav-button" data-admin-view="menu" data-view-title="Menu Management" type="button">
+      <span class="admin-nav-icon">
+       ◫
+      </span>
+      <span>
+       Menu Management
+      </span>
+     </button>
+     <button class="admin-nav-button" data-admin-view="settings" data-view-title="Restaurant Settings" type="button">
+      <span class="admin-nav-icon">
+       ⚙
+      </span>
+      <span>
+       Restaurant Settings
+      </span>
+     </button>
+     <p class="admin-nav-label">
+      Open pages
+     </p>
+     <a class="admin-nav-link" href="menu.html">
+      <span class="admin-nav-icon">
+       &nearrow;
+      </span>
+      <span>
+       Customer Menu
+      </span>
+     </a>
+    </nav>
+    <div class="admin-sidebar-footer">
+     <div class="admin-restaurant-profile">
+      <div class="admin-profile-avatar">
+       TT
+      </div>
+      <div class="admin-profile-copy">
+       <strong id="sidebarRestaurantName">
+        Green & Red Restaurant
+       </strong>
+       <small id="sidebarBranchName">
+        Main Branch
+       </small>
+      </div>
+     </div>
+    </div>
+   </aside>
+   <div class="sidebar-overlay" id="sidebarOverlay">
+   </div>
+   <div class="admin-main-shell">
+    <header class="admin-topbar">
+     <div class="admin-topbar-left">
+      <button aria-label="Open sidebar" class="admin-sidebar-toggle" id="sidebarToggle" type="button">
+       ☰
+      </button>
+      <div class="admin-workspace-heading">
+       <h1 id="workspaceTitle">
+        Dashboard
+       </h1>
+       <p>
+        Manage restaurant operations from one workspace.
+       </p>
+      </div>
+     </div>
+     <div class="admin-topbar-actions">
+      <div class="admin-date-card" id="adminCurrentDate">
+       TableTap Admin
+      </div>
+      <button aria-label="Notifications" class="admin-topbar-action" type="button">
+       🔔
+      </button>
+      <button aria-label="Profile" class="admin-topbar-action" type="button">
+       👤
+      </button>
+     </div>
+    </header>
+    <main class="admin-content">
+     <div class="page-header" id="adminPageHeader">
+      ⚙️ Green & Red Restaurant Admin
+     </div>
+     <section aria-label="Dashboard" class="admin-workspace" data-workspace-view="dashboard">
+      <section class="dashboard-hero">
+       <div>
+        <span class="dashboard-eyebrow">
+         Restaurant overview
+        </span>
+        <h2>
+         Welcome back to TableTap
+        </h2>
+        <p>
+         Track sales, orders and daily restaurant activity from one place.
+        </p>
+       </div>
+       <div class="dashboard-status-pill">
+        <span>
+        </span>
+        Restaurant is operational
+       </div>
+      </section>
+      <section class="dashboard-analytics-card">
+       <div class="dashboard-section-heading">
+        <div>
+         <span class="dashboard-eyebrow">
+          Performance
+         </span>
+         <h2>
+          Sales Analytics
+         </h2>
+         <p>
+          Review revenue and order performance for the selected period.
+         </p>
+        </div>
+        <div class="analytics-toolbar">
+         <div class="analytics-presets">
+          <button class="analytics-filter active" data-period="today" type="button">
+           Today
+          </button>
+          <button class="analytics-filter" data-period="yesterday" type="button">
+           Yesterday
+          </button>
+          <button class="analytics-filter" data-period="month" type="button">
+           This Month
+          </button>
+          <button class="analytics-filter" data-period="all" type="button">
+           All Time
+          </button>
+         </div>
+         <button class="analytics-filter custom-range-button" id="toggleCustomDate" type="button">
+          📅 Custom Range
+         </button>
+        </div>
+       </div>
+       <div class="custom-date-panel" id="customDatePanel">
+        <div class="date-field">
+         <label for="analyticsStartDate">
+          From date
+         </label>
+         <input id="analyticsStartDate" type="date">
+        </div>
+        <div class="date-field">
+         <label for="analyticsEndDate">
+          To date
+         </label>
+         <input id="analyticsEndDate" type="date">
+        </div>
+        <button class="secondary-button" id="clearCustomDate" type="button">
+         Clear
+        </button>
+        <button class="primary-button" id="applyCustomDate" type="button">
+         Apply Range
+        </button>
+       </div>
+       <section class="dashboard-stats-grid">
+        <article class="dashboard-stat-card dashboard-stat-primary">
+         <div class="dashboard-stat-icon">
+          💰
+         </div>
+         <div>
+          <span>
+           Revenue
+          </span>
+          <strong>
+           SAR
+           <span id="totalRevenue">
+            0.00
+           </span>
+          </strong>
+          <small>
+           Selected period
+          </small>
+         </div>
+        </article>
+        <article class="dashboard-stat-card">
+         <div class="dashboard-stat-icon">
+          🧾
+         </div>
+         <div>
+          <span>
+           Total Orders
+          </span>
+          <strong id="totalOrders">
+           0
+          </strong>
+          <small>
+           All received orders
+          </small>
+         </div>
+        </article>
+        <article class="dashboard-stat-card">
+         <div class="dashboard-stat-icon">
+          ✅
+         </div>
+         <div>
+          <span>
+           Completed Orders
+          </span>
+          <strong id="completedOrders">
+           0
+          </strong>
+          <small>
+           Successfully completed
+          </small>
+         </div>
+        </article>
+        <article class="dashboard-stat-card">
+         <div class="dashboard-stat-icon">
+          🔥
+         </div>
+         <div>
+          <span>
+           Active Orders
+          </span>
+          <strong id="activeOrders">
+           0
+          </strong>
+          <small>
+           Currently in progress
+          </small>
+         </div>
+        </article>
+        <article class="dashboard-stat-card">
+         <div class="dashboard-stat-icon">
+          📊
+         </div>
+         <div>
+          <span>
+           Average Order
+          </span>
+          <strong>
+           SAR
+           <span id="averageOrder">
+            0.00
+           </span>
+          </strong>
+          <small>
+           Average completed order
+          </small>
+         </div>
+        </article>
+        <article class="dashboard-stat-card">
+         <div class="dashboard-stat-icon">
+          ⭐
+         </div>
+         <div>
+          <span>
+           Best-Selling Item
+          </span>
+          <strong id="bestSellingItem">
+           &mdash;
+          </strong>
+          <small>
+           Most ordered item
+          </small>
+         </div>
+        </article>
+        <article class="dashboard-stat-card">
+         <div class="dashboard-stat-icon">
+          🏷️
+         </div>
+         <div>
+          <span>
+           Top Category
+          </span>
+          <strong id="topCategory">
+           &mdash;
+          </strong>
+          <small>
+           Most popular category
+          </small>
+         </div>
+        </article>
+        <article class="dashboard-stat-card">
+         <div class="dashboard-stat-icon">
+          🍽️
+         </div>
+         <div>
+          <span>
+           Menu Items
+          </span>
+          <strong id="menuCount">
+           0
+          </strong>
+          <small>
+           Total menu products
+          </small>
+         </div>
+        </article>
+       </section>
+      </section>
+      <section class="dashboard-lower-grid">
+       <article class="dashboard-panel">
+        <div class="dashboard-panel-heading">
+         <div>
+          <span class="dashboard-eyebrow">
+           Shortcuts
+          </span>
+          <h2>
+           Quick Actions
+          </h2>
+         </div>
+        </div>
+        <div class="dashboard-action-grid">
+         <a class="dashboard-action-card" href="kitchen.html">
+          <span class="dashboard-action-icon">
+           🍳
+          </span>
+          <span>
+           <strong>
+            Kitchen Dashboard
+           </strong>
+           <small>
+            Manage kitchen orders
+           </small>
+          </span>
+         </a>
+         <a class="dashboard-action-card" href="menu.html">
+          <span class="dashboard-action-icon">
+           🍽️
+          </span>
+          <span>
+           <strong>
+            Customer Menu
+           </strong>
+           <small>
+            Open the live menu
+           </small>
+          </span>
+         </a>
+         <a class="dashboard-action-card" href="#" id="openRestaurantFloorLink" data-admin-view="floor" data-view-title="Restaurant Floor">
+          <span class="dashboard-action-icon">
+           🏠
+          </span>
+          <span>
+           <strong>
+            Restaurant Floor
+           </strong>
+           <small>
+            Manage tables and seating
+           </small>
+          </span>
+         </a>
+         <a class="dashboard-action-card" href="#" id="openBillingLink" data-admin-view="billing" data-view-title="Billing & Cashier">
+          <span class="dashboard-action-icon">
+           💳
+          </span>
+          <span>
+           <strong>
+            Billing & Cashier
+           </strong>
+           <small>
+            Process customer payments
+           </small>
+          </span>
+         </a>
+         <a class="dashboard-action-card" href="#" id="openPaymentRecordsLink" data-admin-view="payments" data-view-title="Payment Records">
+          <span class="dashboard-action-icon">
+           💰
+          </span>
+          <span>
+           <strong>
+            Payment Records
+           </strong>
+           <small>
+            Review completed payments
+           </small>
+          </span>
+         </a>
+         <a class="dashboard-action-card" href="#" id="openMenuManagementLink" data-admin-view="menu" data-view-title="Menu Management">
+          <span class="dashboard-action-icon">
+           📦
+          </span>
+          <span>
+           <strong>
+            Menu Management
+           </strong>
+           <small>
+            Add and update menu items
+           </small>
+          </span>
+         </a>
+         <a class="dashboard-action-card" href="#" id="openRestaurantSettingsLink" data-admin-view="settings" data-view-title="Restaurant Settings">
+          <span class="dashboard-action-icon">
+           ⚙️
+          </span>
+          <span>
+           <strong>
+            Restaurant Settings
+           </strong>
+           <small>
+            Manage branding and VAT
+           </small>
+          </span>
+         </a>
+        </div>
+       </article>
+       <article class="dashboard-panel">
+        <div class="dashboard-panel-heading">
+         <div>
+          <span class="dashboard-eyebrow">
+           Live status
+          </span>
+          <h2>
+           Restaurant Snapshot
+          </h2>
+         </div>
+        </div>
+        <div class="dashboard-snapshot-list">
+         <div class="dashboard-snapshot-item">
+          <span class="snapshot-dot snapshot-success">
+          </span>
+          <div>
+           <strong>
+            Restaurant online
+           </strong>
+           <small>
+            Customer ordering is available
+           </small>
+          </div>
+         </div>
+         <div class="dashboard-snapshot-item">
+          <span class="snapshot-dot snapshot-warning">
+          </span>
+          <div>
+           <strong>
+            Active orders
+           </strong>
+           <small>
+            <span id="dashboardActiveOrdersMirror">
+             0
+            </span>
+            orders require attention
+           </small>
+          </div>
+         </div>
+         <div class="dashboard-snapshot-item">
+          <span class="snapshot-dot snapshot-info">
+          </span>
+          <div>
+           <strong>
+            Menu availability
+           </strong>
+           <small>
+            <span id="dashboardMenuItemsMirror">
+             0
+            </span>
+            menu items configured
+           </small>
+          </div>
+         </div>
+        </div>
+       </article>
+      </section>
+     </section>
+     <section aria-label="Restaurant Floor" class="admin-workspace" data-workspace-view="floor" hidden>
+      <details class="collapsible-section" id="restaurantFloor" open>
+       <summary>
+        🏠 Restaurant Floor
+       </summary>
+       <div class="collapsible-content">
+        <div class="floor-heading">
+         <div>
+          <h2>
+           Live Table Overview
+          </h2>
+          <p>
+           Monitor tables, seating capacity, areas and availability.
+          </p>
+         </div>
+         <button class="primary-button" id="toggleAddTableForm" type="button">
+          + Add Table
+         </button>
+        </div>
+        <div class="floor-summary" id="floorSummary">
+         <div class="floor-summary-card">
+          <span class="floor-dot floor-dot-available">
+          </span>
+          <div>
+           <small>
+            Available
+           </small>
+           <strong id="availableTableCount">
+            0
+           </strong>
+          </div>
+         </div>
+         <div class="floor-summary-card">
+          <span class="floor-dot floor-dot-active">
+          </span>
+          <div>
+           <small>
+            Active Orders
+           </small>
+           <strong id="activeTableCount">
+            0
+           </strong>
+          </div>
+         </div>
+         <div class="floor-summary-card">
+          <span class="floor-dot floor-dot-ready">
+          </span>
+          <div>
+           <small>
+            Ready
+           </small>
+           <strong id="readyTableCount">
+            0
+           </strong>
+          </div>
+         </div>
+         <div class="floor-summary-card">
+          <span class="floor-dot floor-dot-disabled">
+          </span>
+          <div>
+           <small>
+            Disabled
+           </small>
+           <strong id="disabledTableCount">
+            0
+           </strong>
+          </div>
+         </div>
+        </div>
+        <form class="table-form" hidden id="addTableForm">
+         <input id="tableName" placeholder="Table name, e.g. Table 1 or VIP 1" required type="text">
+         <input id="tableNumber" placeholder="Table number/code, e.g. 1 or VIP-1" required type="text">
+         <input id="tableCapacity" max="50" min="1" placeholder="Seating capacity" required type="number">
+         <select id="tableArea" required>
+          <option value>
+           Select area
+          </option>
+          <option value="Main Hall">
+           Main Hall
+          </option>
+          <option value="Family">
+           Family
+          </option>
+          <option value="VIP">
+           VIP
+          </option>
+          <option value="Outdoor">
+           Outdoor
+          </option>
+          <option value="Terrace">
+           Terrace
+          </option>
+         </select>
+         <select id="tableEnabled" required>
+          <option value="true">
+           Active
+          </option>
+          <option value="false">
+           Disabled
+          </option>
+         </select>
+         <div class="table-form-actions">
+          <button class="primary-button" type="submit">
+           Save Table
+          </button>
+          <button class="secondary-button" id="cancelAddTable" type="button">
+           Cancel
+          </button>
+         </div>
+        </form>
+        <div class="restaurant-floor-grid" id="restaurantFloorGrid">
+        </div>
+        <div class="history-empty" hidden id="restaurantFloorEmpty">
+         <h3>
+          No tables created yet
+         </h3>
+         <p>
+          Click &ldquo;Add Table&rdquo; to create the restaurant floor.
+         </p>
+        </div>
+       </div>
+      </details>
+     </section>
+     <section aria-label="Billing & Cashier" class="admin-workspace" data-workspace-view="billing" hidden>
+      <details class="collapsible-section" id="billingSection" open>
+       <summary>
+        💳 Billing & Cashier
+       </summary>
+       <div class="collapsible-content">
+        <div class="billing-heading">
+         <div>
+          <h2>
+           Unpaid Orders
+          </h2>
+          <p>
+           Generate bills, record payment and release tables.
+          </p>
+         </div>
+         <span class="billing-count" id="billingOrderCount">
+          0 unpaid orders
+         </span>
+        </div>
+        <div class="billing-orders-grid" id="billingOrdersGrid">
+        </div>
+        <div class="history-empty" hidden id="billingEmptyState">
+         <h3>
+          No unpaid orders
+         </h3>
+         <p>
+          Active customer orders will appear here automatically.
+         </p>
+        </div>
+       </div>
+      </details>
+      <div aria-hidden="true" class="bill-modal" id="billModal">
+       <div class="bill-modal-overlay" id="billModalOverlay">
+       </div>
+       <section aria-labelledby="billModalTitle" aria-modal="true" class="bill-modal-panel" role="dialog">
+        <div class="bill-modal-header">
+         <div>
+          <h2 id="billModalTitle">
+           Customer Bill
+          </h2>
+          <p id="billModalSubtitle">
+          </p>
+         </div>
+         <button aria-label="Close bill" class="bill-modal-close" id="closeBillModal" type="button">
+          &times;
+         </button>
+        </div>
+        <div class="printable-bill" id="printableBill">
+        </div>
+        <div class="bill-modal-actions">
+         <button class="secondary-button" id="printBillButton" type="button">
+          🖨️ Print Bill
+         </button>
+         <button class="primary-button" id="modalMarkPaidButton" type="button">
+          Mark Paid
+         </button>
+        </div>
+       </section>
+      </div>
+     </section>
+     <section aria-label="Payment Records" class="admin-workspace" data-workspace-view="payments" hidden>
+      <details class="collapsible-section" id="paymentRecordsSection" open>
+       <summary>
+        💰 Payment Records
+       </summary>
+       <div class="collapsible-content">
+        <div class="payment-records-heading">
+         <div>
+          <h2>
+           Completed Payments
+          </h2>
+          <p>
+           Review paid orders, payment methods, VAT and totals.
+          </p>
+         </div>
+         <span class="billing-count" id="paymentRecordsCount">
+          0 payments
+         </span>
+        </div>
+        <div class="payment-summary-grid">
+         <div class="payment-summary-card">
+          <small>
+           Payments
+          </small>
+          <strong id="paymentSummaryCount">
+           0
+          </strong>
+         </div>
+         <div class="payment-summary-card">
+          <small>
+           Subtotal
+          </small>
+          <strong>
+           <span id="paymentSummaryCurrency1">
+            SAR
+           </span>
+           <span id="paymentSummarySubtotal">
+            0.00
+           </span>
+          </strong>
+         </div>
+         <div class="payment-summary-card">
+          <small>
+           VAT Collected
+          </small>
+          <strong>
+           <span id="paymentSummaryCurrency2">
+            SAR
+           </span>
+           <span id="paymentSummaryVat">
+            0.00
+           </span>
+          </strong>
+         </div>
+         <div class="payment-summary-card">
+          <small>
+           Total Collected
+          </small>
+          <strong>
+           <span id="paymentSummaryCurrency3">
+            SAR
+           </span>
+           <span id="paymentSummaryTotal">
+            0.00
+           </span>
+          </strong>
+         </div>
+        </div>
+        <div class="payment-records-toolbar">
+         <input id="paymentRecordSearch" placeholder="Search order ID, customer, phone or table" type="search">
+         <select id="paymentRecordDateFilter">
+          <option value="today">
+           Today
+          </option>
+          <option value="yesterday">
+           Yesterday
+          </option>
+          <option value="week">
+           Last 7 Days
+          </option>
+          <option value="month">
+           This Month
+          </option>
+          <option value="all">
+           All Time
+          </option>
+         </select>
+         <select id="paymentRecordMethodFilter">
+          <option value="all">
+           All Payment Methods
+          </option>
+          <option value="Cash">
+           Cash
+          </option>
+          <option value="Card">
+           Card
+          </option>
+          <option value="Apple Pay">
+           Apple Pay
+          </option>
+          <option value="Pay at Counter">
+           Pay at Counter
+          </option>
+         </select>
+        </div>
+        <div class="payment-records-grid" id="paymentRecordsGrid">
+        </div>
+        <div class="history-empty" hidden id="paymentRecordsEmpty">
+         <h3>
+          No payment records found
+         </h3>
+         <p>
+          Paid orders will appear here automatically.
+         </p>
+        </div>
+       </div>
+      </details>
+     </section>
+     <section aria-label="Order History" class="admin-workspace" data-workspace-view="orders" hidden>
+      <section class="admin-section" id="orderHistory">
+       <h2>
+        Order History
+       </h2>
+       <div class="order-history-toolbar">
+        <input id="orderSearch" placeholder="Search order ID, customer name or phone" type="search">
+        <select aria-label="Order date filter" id="orderDateFilter">
+         <option value="today">
+          Today&rsquo;s Orders
+         </option>
+         <option value="yesterday">
+          Yesterday
+         </option>
+         <option value="week">
+          Last 7 Days
+         </option>
+         <option value="all">
+          All Time
+         </option>
+        </select>
+        <select aria-label="Order status filter" id="orderStatusFilter">
+         <option value="all">
+          All Statuses
+         </option>
+         <option value="New">
+          New
+         </option>
+         <option value="Accepted">
+          Accepted
+         </option>
+         <option value="Preparing">
+          Preparing
+         </option>
+         <option value="Ready">
+          Ready
+         </option>
+         <option value="Completed">
+          Completed
+         </option>
+        </select>
+       </div>
+       <div class="order-history-summary">
+        <p class="order-history-count" id="orderHistoryCount">
+         0 orders found
+        </p>
+        <span class="active-history-filter" id="activeHistoryFilter">
+         Showing today&rsquo;s orders
+        </span>
+       </div>
+       <div class="order-history-grid" id="orderHistoryContainer">
+       </div>
+      </section>
+     </section>
+     <section aria-label="Menu Management" class="admin-workspace" data-workspace-view="menu" hidden>
+      <details class="collapsible-section" id="menuManagement">
+       <summary>
+        Menu Management
+       </summary>
+       <div class="collapsible-content">
+        <button class="action-button edit-button" id="addMenuItemBtn" style="margin-bottom:20px;">
+         + Add New Menu Item
+        </button>
+        <div id="addItemForm" style="display:none; margin-bottom:20px;">
+         <input class="form-control" id="foodName" placeholder="Food Name">
+         <select class="form-control" id="foodCategory">
+          <option value>
+           Select Category
+          </option>
+         </select>
+         <input class="form-control" id="newCategory" placeholder="Or create a new category">
+         <input class="form-control" id="foodPrice" placeholder="Price" type="number">
+         <input class="form-control" id="foodImage" placeholder="Food Image URL" type="url">
+         <button class="action-button edit-button" id="saveNewItem">
+          Save Item
+         </button>
+        </div>
+        <table class="menu-table">
+         <thead>
+          <tr>
+           <th>
+            Name
+           </th>
+           <th>
+            Category
+           </th>
+           <th>
+            Price
+           </th>
+           <th>
+            Status
+           </th>
+           <th>
+            Actions
+           </th>
+          </tr>
+         </thead>
+         <tbody id="menuTableBody">
+         </tbody>
+        </table>
+       </div>
+      </details>
+     </section>
+     <section aria-label="Restaurant Settings" class="admin-workspace" data-workspace-view="settings" hidden>
+      <details class="collapsible-section" id="restaurantSettings">
+       <summary>
+        Restaurant Settings
+       </summary>
+       <div class="collapsible-content">
+        <div class="settings-grid">
+         <div class="settings-field">
+          <label for="settingRestaurantName">
+           Restaurant Name
+          </label>
+          <input id="settingRestaurantName" placeholder="Green & Red Restaurant" type="text">
+         </div>
+         <div class="settings-field">
+          <label for="settingBranchName">
+           Branch Name
+          </label>
+          <input id="settingBranchName" placeholder="Main Branch" type="text">
+         </div>
+         <div class="settings-field">
+          <label for="settingPhone">
+           Phone Number
+          </label>
+          <input id="settingPhone" placeholder="+966 5X XXX XXXX" type="tel">
+         </div>
+         <div class="settings-field">
+          <label for="settingWhatsApp">
+           WhatsApp Number
+          </label>
+          <input id="settingWhatsApp" placeholder="+966 5X XXX XXXX" type="tel">
+         </div>
+         <div class="settings-field">
+          <label for="settingEmail">
+           Email
+          </label>
+          <input id="settingEmail" placeholder="restaurant@example.com" type="email">
+         </div>
+         <div class="settings-field">
+          <label for="settingOpeningHours">
+           Opening Hours
+          </label>
+          <input id="settingOpeningHours" placeholder="10:00 AM &ndash; 12:00 AM" type="text">
+         </div>
+         <div class="settings-field full-width">
+          <label for="settingAddress">
+           Address
+          </label>
+          <textarea id="settingAddress" placeholder="Restaurant address"></textarea>
+         </div>
+         <div class="settings-field">
+          <label for="settingVatNumber">
+           VAT Registration Number
+          </label>
+          <input id="settingVatNumber" placeholder="15-digit VAT number" type="text">
+         </div>
+         <div class="settings-field">
+          <label for="settingVatPercent">
+           VAT Percentage
+          </label>
+          <input id="settingVatPercent" max="100" min="0" placeholder="15" step="0.01" type="number">
+         </div>
+         <div class="settings-field">
+          <label for="settingCurrency">
+           Currency
+          </label>
+          <select id="settingCurrency">
+           <option value="SAR">
+            SAR &mdash; Saudi Riyal
+           </option>
+           <option value="AED">
+            AED &mdash; UAE Dirham
+           </option>
+           <option value="USD">
+            USD &mdash; US Dollar
+           </option>
+           <option value="INR">
+            INR &mdash; Indian Rupee
+           </option>
+          </select>
+         </div>
+         <div class="settings-field">
+          <label for="settingLogoUrl">
+           Logo URL
+          </label>
+          <input id="settingLogoUrl" placeholder="https://example.com/logo.png" type="url">
+         </div>
+         <div class="settings-field full-width">
+          <label for="settingReceiptFooter">
+           Receipt Footer
+          </label>
+          <textarea id="settingReceiptFooter" placeholder="Thank you. Please visit again."></textarea>
+         </div>
+         <div class="settings-actions">
+          <button class="save-settings-button" id="saveRestaurantSettings" type="button">
+           Save Settings
+          </button>
+          <span class="settings-message" id="settingsSavedMessage">
+          </span>
+         </div>
+        </div>
+       </div>
+      </details>
+     </section>
+    </main>
+   </div>
+  </div>
+  <script src="../js/shared.js">
+  </script>
+  <script src="../js/restaurant-settings.js">
+  </script>
+  <script src="../js/restaurant-floor.js">
+  </script>
+  <script src="../js/billing.js">
+  </script>
+  <script src="../js/payment-records.js">
+  </script>
+  <script src="../js/analytics.js">
+  </script>
+  <script src="../js/order-history.js">
+  </script>
+  <script src="../js/menu-management.js">
+  </script>
+  <script src="../js/admin-navigation.js">
+  </script>
+  <script src="../js/admin.js">
+  </script>
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    initAdminNavigation();
+
+    const settings = JSON.parse(localStorage.getItem("tableTapSettings")) || {};
+    const restaurantName = settings.restaurantName || "Green & Red Restaurant";
+    const branchName = settings.branchName || "Main Branch";
+
+    const sidebarRestaurantName = document.getElementById("sidebarRestaurantName");
+    const sidebarBranchName = document.getElementById("sidebarBranchName");
+    const adminCurrentDate = document.getElementById("adminCurrentDate");
+
+    if (sidebarRestaurantName) sidebarRestaurantName.textContent = restaurantName;
+    if (sidebarBranchName) sidebarBranchName.textContent = branchName;
+
+    if (adminCurrentDate) {
+        adminCurrentDate.textContent = new Intl.DateTimeFormat("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }).format(new Date());
+    }
+});
+  </script>
+ </body>
+</html>
