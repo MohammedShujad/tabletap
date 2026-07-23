@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
    TableTap Admin V2
   </title>
-  <link href="../css/admin.css" rel="stylesheet">
+  <link href="../css/admin.css" rel="stylesheet"/>
  </head>
  <body>
   <div class="admin-app-shell" id="adminApp">
@@ -57,7 +57,7 @@
        Kitchen
       </span>
      </a>
-     <button class="admin-nav-button" data-admin-view="billing" data-view-title="Billing & Cashier" type="button">
+     <button class="admin-nav-button" data-admin-view="billing" data-view-title="Billing &amp; Cashier" type="button">
       <span class="admin-nav-icon">
        ▤
       </span>
@@ -116,7 +116,7 @@
       </div>
       <div class="admin-profile-copy">
        <strong id="sidebarRestaurantName">
-        Green & Red Restaurant
+        Green &amp; Red Restaurant
        </strong>
        <small id="sidebarBranchName">
         Main Branch
@@ -156,7 +156,7 @@
     </header>
     <main class="admin-content">
      <div class="page-header" id="adminPageHeader">
-      ⚙️ Green & Red Restaurant Admin
+      ⚙️ Green &amp; Red Restaurant Admin
      </div>
      <section aria-label="Dashboard" class="admin-workspace" data-workspace-view="dashboard">
       <section class="dashboard-hero">
@@ -215,13 +215,13 @@
          <label for="analyticsStartDate">
           From date
          </label>
-         <input id="analyticsStartDate" type="date">
+         <input id="analyticsStartDate" type="date"/>
         </div>
         <div class="date-field">
          <label for="analyticsEndDate">
           To date
          </label>
-         <input id="analyticsEndDate" type="date">
+         <input id="analyticsEndDate" type="date"/>
         </div>
         <button class="secondary-button" id="clearCustomDate" type="button">
          Clear
@@ -406,7 +406,7 @@
            </small>
           </span>
          </a>
-         <a class="dashboard-action-card" href="#" id="openRestaurantFloorLink" data-admin-view="floor" data-view-title="Restaurant Floor">
+         <a class="dashboard-action-card" data-admin-view="floor" data-view-title="Restaurant Floor" href="#" id="openRestaurantFloorLink">
           <span class="dashboard-action-icon">
            🏠
           </span>
@@ -419,20 +419,20 @@
            </small>
           </span>
          </a>
-         <a class="dashboard-action-card" href="#" id="openBillingLink" data-admin-view="billing" data-view-title="Billing & Cashier">
+         <a class="dashboard-action-card" data-admin-view="billing" data-view-title="Billing &amp; Cashier" href="#" id="openBillingLink">
           <span class="dashboard-action-icon">
            💳
           </span>
           <span>
            <strong>
-            Billing & Cashier
+            Billing &amp; Cashier
            </strong>
            <small>
             Process customer payments
            </small>
           </span>
          </a>
-         <a class="dashboard-action-card" href="#" id="openPaymentRecordsLink" data-admin-view="payments" data-view-title="Payment Records">
+         <a class="dashboard-action-card" data-admin-view="payments" data-view-title="Payment Records" href="#" id="openPaymentRecordsLink">
           <span class="dashboard-action-icon">
            💰
           </span>
@@ -445,7 +445,7 @@
            </small>
           </span>
          </a>
-         <a class="dashboard-action-card" href="#" id="openMenuManagementLink" data-admin-view="menu" data-view-title="Menu Management">
+         <a class="dashboard-action-card" data-admin-view="menu" data-view-title="Menu Management" href="#" id="openMenuManagementLink">
           <span class="dashboard-action-icon">
            📦
           </span>
@@ -458,7 +458,7 @@
            </small>
           </span>
          </a>
-         <a class="dashboard-action-card" href="#" id="openRestaurantSettingsLink" data-admin-view="settings" data-view-title="Restaurant Settings">
+         <a class="dashboard-action-card" data-admin-view="settings" data-view-title="Restaurant Settings" href="#" id="openRestaurantSettingsLink">
           <span class="dashboard-action-icon">
            ⚙️
           </span>
@@ -531,107 +531,169 @@
        </article>
       </section>
      </section>
-     <section aria-label="Restaurant Floor" class="admin-workspace" data-workspace-view="floor" hidden>
-      <details class="collapsible-section" id="restaurantFloor" open>
-       <summary>
+     <section aria-label="Restaurant Floor" class="admin-workspace floor-workspace" data-workspace-view="floor" hidden="">
+      <details class="collapsible-section floor-workspace-card" id="restaurantFloor" open="">
+       <summary class="floor-native-summary">
         🏠 Restaurant Floor
        </summary>
-       <div class="collapsible-content">
-        <div class="floor-heading">
+       <div class="collapsible-content floor-v2-content">
+        <section class="floor-v2-hero">
          <div>
+          <span class="dashboard-eyebrow">
+           Live operations
+          </span>
           <h2>
-           Live Table Overview
+           Restaurant Floor
           </h2>
           <p>
-           Monitor tables, seating capacity, areas and availability.
+           Monitor table availability, active orders, seating capacity and service status.
           </p>
          </div>
-         <button class="primary-button" id="toggleAddTableForm" type="button">
-          + Add Table
+         <button class="primary-button floor-add-button" id="toggleAddTableForm" type="button">
+          <span>
+           ＋
+          </span>
+          Add Table
          </button>
-        </div>
-        <div class="floor-summary" id="floorSummary">
-         <div class="floor-summary-card">
-          <span class="floor-dot floor-dot-available">
-          </span>
-          <div>
-           <small>
-            Available
-           </small>
-           <strong id="availableTableCount">
-            0
-           </strong>
-          </div>
+        </section>
+        <section aria-label="Table status summary" class="floor-v2-summary">
+         <div class="floor-summary" id="floorSummary">
+          <article class="floor-summary-card floor-summary-available">
+           <span class="floor-summary-icon">
+            &cir;
+           </span>
+           <div>
+            <small>
+             Available
+            </small>
+            <strong id="availableTableCount">
+             0
+            </strong>
+            <p>
+             Ready for guests
+            </p>
+           </div>
+          </article>
+          <article class="floor-summary-card floor-summary-active">
+           <span class="floor-summary-icon">
+            ●
+           </span>
+           <div>
+            <small>
+             Active Orders
+            </small>
+            <strong id="activeTableCount">
+             0
+            </strong>
+            <p>
+             Currently occupied
+            </p>
+           </div>
+          </article>
+          <article class="floor-summary-card floor-summary-ready">
+           <span class="floor-summary-icon">
+            &checkmark;
+           </span>
+           <div>
+            <small>
+             Ready
+            </small>
+            <strong id="readyTableCount">
+             0
+            </strong>
+            <p>
+             Food ready to serve
+            </p>
+           </div>
+          </article>
+          <article class="floor-summary-card floor-summary-disabled">
+           <span class="floor-summary-icon">
+            &mdash;
+           </span>
+           <div>
+            <small>
+             Disabled
+            </small>
+            <strong id="disabledTableCount">
+             0
+            </strong>
+            <p>
+             Unavailable tables
+            </p>
+           </div>
+          </article>
          </div>
-         <div class="floor-summary-card">
-          <span class="floor-dot floor-dot-active">
-          </span>
+        </section>
+        <form class="table-form floor-v2-form" hidden="" id="addTableForm">
+         <div class="floor-form-heading">
           <div>
-           <small>
-            Active Orders
-           </small>
-           <strong id="activeTableCount">
-            0
-           </strong>
+           <span class="dashboard-eyebrow">
+            Table setup
+           </span>
+           <h3>
+            Add a new table
+           </h3>
           </div>
+          <p>
+           Create the table, assign its area and set its availability.
+          </p>
          </div>
-         <div class="floor-summary-card">
-          <span class="floor-dot floor-dot-ready">
+         <label class="floor-form-field">
+          <span>
+           Table name
           </span>
-          <div>
-           <small>
-            Ready
-           </small>
-           <strong id="readyTableCount">
-            0
-           </strong>
-          </div>
-         </div>
-         <div class="floor-summary-card">
-          <span class="floor-dot floor-dot-disabled">
+          <input id="tableName" placeholder="Example: Table 1 or VIP 1" required="" type="text"/>
+         </label>
+         <label class="floor-form-field">
+          <span>
+           Table number or code
           </span>
-          <div>
-           <small>
+          <input id="tableNumber" placeholder="Example: 1 or VIP-1" required="" type="text"/>
+         </label>
+         <label class="floor-form-field">
+          <span>
+           Seating capacity
+          </span>
+          <input id="tableCapacity" max="50" min="1" placeholder="Number of seats" required="" type="number"/>
+         </label>
+         <label class="floor-form-field">
+          <span>
+           Restaurant area
+          </span>
+          <select id="tableArea" required="">
+           <option value="">
+            Select area
+           </option>
+           <option value="Main Hall">
+            Main Hall
+           </option>
+           <option value="Family">
+            Family
+           </option>
+           <option value="VIP">
+            VIP
+           </option>
+           <option value="Outdoor">
+            Outdoor
+           </option>
+           <option value="Terrace">
+            Terrace
+           </option>
+          </select>
+         </label>
+         <label class="floor-form-field">
+          <span>
+           Availability
+          </span>
+          <select id="tableEnabled" required="">
+           <option value="true">
+            Active
+           </option>
+           <option value="false">
             Disabled
-           </small>
-           <strong id="disabledTableCount">
-            0
-           </strong>
-          </div>
-         </div>
-        </div>
-        <form class="table-form" hidden id="addTableForm">
-         <input id="tableName" placeholder="Table name, e.g. Table 1 or VIP 1" required type="text">
-         <input id="tableNumber" placeholder="Table number/code, e.g. 1 or VIP-1" required type="text">
-         <input id="tableCapacity" max="50" min="1" placeholder="Seating capacity" required type="number">
-         <select id="tableArea" required>
-          <option value>
-           Select area
-          </option>
-          <option value="Main Hall">
-           Main Hall
-          </option>
-          <option value="Family">
-           Family
-          </option>
-          <option value="VIP">
-           VIP
-          </option>
-          <option value="Outdoor">
-           Outdoor
-          </option>
-          <option value="Terrace">
-           Terrace
-          </option>
-         </select>
-         <select id="tableEnabled" required>
-          <option value="true">
-           Active
-          </option>
-          <option value="false">
-           Disabled
-          </option>
-         </select>
+           </option>
+          </select>
+         </label>
          <div class="table-form-actions">
           <button class="primary-button" type="submit">
            Save Table
@@ -641,23 +703,63 @@
           </button>
          </div>
         </form>
-        <div class="restaurant-floor-grid" id="restaurantFloorGrid">
-        </div>
-        <div class="history-empty" hidden id="restaurantFloorEmpty">
-         <h3>
-          No tables created yet
-         </h3>
-         <p>
-          Click &ldquo;Add Table&rdquo; to create the restaurant floor.
-         </p>
-        </div>
+        <section class="floor-v2-tables-panel">
+         <div class="floor-v2-panel-heading">
+          <div>
+           <span class="dashboard-eyebrow">
+            Live table map
+           </span>
+           <h2>
+            Tables
+           </h2>
+           <p>
+            Select a table to review its status and available actions.
+           </p>
+          </div>
+          <div aria-label="Table status legend" class="floor-v2-legend">
+           <span>
+            <i class="legend-dot legend-available">
+            </i>
+            Available
+           </span>
+           <span>
+            <i class="legend-dot legend-active">
+            </i>
+            Active
+           </span>
+           <span>
+            <i class="legend-dot legend-ready">
+            </i>
+            Ready
+           </span>
+           <span>
+            <i class="legend-dot legend-disabled">
+            </i>
+            Disabled
+           </span>
+          </div>
+         </div>
+         <div class="restaurant-floor-grid" id="restaurantFloorGrid">
+         </div>
+         <div class="history-empty floor-v2-empty" hidden="" id="restaurantFloorEmpty">
+          <div class="floor-empty-icon">
+           ▦
+          </div>
+          <h3>
+           No tables created yet
+          </h3>
+          <p>
+           Add your first table to start building the live restaurant floor.
+          </p>
+         </div>
+        </section>
        </div>
       </details>
      </section>
-     <section aria-label="Billing & Cashier" class="admin-workspace" data-workspace-view="billing" hidden>
-      <details class="collapsible-section" id="billingSection" open>
+     <section aria-label="Billing &amp; Cashier" class="admin-workspace" data-workspace-view="billing" hidden="">
+      <details class="collapsible-section" id="billingSection" open="">
        <summary>
-        💳 Billing & Cashier
+        💳 Billing &amp; Cashier
        </summary>
        <div class="collapsible-content">
         <div class="billing-heading">
@@ -675,7 +777,7 @@
         </div>
         <div class="billing-orders-grid" id="billingOrdersGrid">
         </div>
-        <div class="history-empty" hidden id="billingEmptyState">
+        <div class="history-empty" hidden="" id="billingEmptyState">
          <h3>
           No unpaid orders
          </h3>
@@ -714,8 +816,8 @@
        </section>
       </div>
      </section>
-     <section aria-label="Payment Records" class="admin-workspace" data-workspace-view="payments" hidden>
-      <details class="collapsible-section" id="paymentRecordsSection" open>
+     <section aria-label="Payment Records" class="admin-workspace" data-workspace-view="payments" hidden="">
+      <details class="collapsible-section" id="paymentRecordsSection" open="">
        <summary>
         💰 Payment Records
        </summary>
@@ -783,7 +885,7 @@
          </div>
         </div>
         <div class="payment-records-toolbar">
-         <input id="paymentRecordSearch" placeholder="Search order ID, customer, phone or table" type="search">
+         <input id="paymentRecordSearch" placeholder="Search order ID, customer, phone or table" type="search"/>
          <select id="paymentRecordDateFilter">
           <option value="today">
            Today
@@ -821,7 +923,7 @@
         </div>
         <div class="payment-records-grid" id="paymentRecordsGrid">
         </div>
-        <div class="history-empty" hidden id="paymentRecordsEmpty">
+        <div class="history-empty" hidden="" id="paymentRecordsEmpty">
          <h3>
           No payment records found
          </h3>
@@ -832,13 +934,13 @@
        </div>
       </details>
      </section>
-     <section aria-label="Order History" class="admin-workspace" data-workspace-view="orders" hidden>
+     <section aria-label="Order History" class="admin-workspace" data-workspace-view="orders" hidden="">
       <section class="admin-section" id="orderHistory">
        <h2>
         Order History
        </h2>
        <div class="order-history-toolbar">
-        <input id="orderSearch" placeholder="Search order ID, customer name or phone" type="search">
+        <input id="orderSearch" placeholder="Search order ID, customer name or phone" type="search"/>
         <select aria-label="Order date filter" id="orderDateFilter">
          <option value="today">
           Today&rsquo;s Orders
@@ -886,7 +988,7 @@
        </div>
       </section>
      </section>
-     <section aria-label="Menu Management" class="admin-workspace" data-workspace-view="menu" hidden>
+     <section aria-label="Menu Management" class="admin-workspace" data-workspace-view="menu" hidden="">
       <details class="collapsible-section" id="menuManagement">
        <summary>
         Menu Management
@@ -896,15 +998,15 @@
          + Add New Menu Item
         </button>
         <div id="addItemForm" style="display:none; margin-bottom:20px;">
-         <input class="form-control" id="foodName" placeholder="Food Name">
+         <input class="form-control" id="foodName" placeholder="Food Name"/>
          <select class="form-control" id="foodCategory">
-          <option value>
+          <option value="">
            Select Category
           </option>
          </select>
-         <input class="form-control" id="newCategory" placeholder="Or create a new category">
-         <input class="form-control" id="foodPrice" placeholder="Price" type="number">
-         <input class="form-control" id="foodImage" placeholder="Food Image URL" type="url">
+         <input class="form-control" id="newCategory" placeholder="Or create a new category"/>
+         <input class="form-control" id="foodPrice" placeholder="Price" type="number"/>
+         <input class="form-control" id="foodImage" placeholder="Food Image URL" type="url"/>
          <button class="action-button edit-button" id="saveNewItem">
           Save Item
          </button>
@@ -935,7 +1037,7 @@
        </div>
       </details>
      </section>
-     <section aria-label="Restaurant Settings" class="admin-workspace" data-workspace-view="settings" hidden>
+     <section aria-label="Restaurant Settings" class="admin-workspace" data-workspace-view="settings" hidden="">
       <details class="collapsible-section" id="restaurantSettings">
        <summary>
         Restaurant Settings
@@ -946,37 +1048,37 @@
           <label for="settingRestaurantName">
            Restaurant Name
           </label>
-          <input id="settingRestaurantName" placeholder="Green & Red Restaurant" type="text">
+          <input id="settingRestaurantName" placeholder="Green &amp; Red Restaurant" type="text"/>
          </div>
          <div class="settings-field">
           <label for="settingBranchName">
            Branch Name
           </label>
-          <input id="settingBranchName" placeholder="Main Branch" type="text">
+          <input id="settingBranchName" placeholder="Main Branch" type="text"/>
          </div>
          <div class="settings-field">
           <label for="settingPhone">
            Phone Number
           </label>
-          <input id="settingPhone" placeholder="+966 5X XXX XXXX" type="tel">
+          <input id="settingPhone" placeholder="+966 5X XXX XXXX" type="tel"/>
          </div>
          <div class="settings-field">
           <label for="settingWhatsApp">
            WhatsApp Number
           </label>
-          <input id="settingWhatsApp" placeholder="+966 5X XXX XXXX" type="tel">
+          <input id="settingWhatsApp" placeholder="+966 5X XXX XXXX" type="tel"/>
          </div>
          <div class="settings-field">
           <label for="settingEmail">
            Email
           </label>
-          <input id="settingEmail" placeholder="restaurant@example.com" type="email">
+          <input id="settingEmail" placeholder="restaurant@example.com" type="email"/>
          </div>
          <div class="settings-field">
           <label for="settingOpeningHours">
            Opening Hours
           </label>
-          <input id="settingOpeningHours" placeholder="10:00 AM &ndash; 12:00 AM" type="text">
+          <input id="settingOpeningHours" placeholder="10:00 AM &ndash; 12:00 AM" type="text"/>
          </div>
          <div class="settings-field full-width">
           <label for="settingAddress">
@@ -988,13 +1090,13 @@
           <label for="settingVatNumber">
            VAT Registration Number
           </label>
-          <input id="settingVatNumber" placeholder="15-digit VAT number" type="text">
+          <input id="settingVatNumber" placeholder="15-digit VAT number" type="text"/>
          </div>
          <div class="settings-field">
           <label for="settingVatPercent">
            VAT Percentage
           </label>
-          <input id="settingVatPercent" max="100" min="0" placeholder="15" step="0.01" type="number">
+          <input id="settingVatPercent" max="100" min="0" placeholder="15" step="0.01" type="number"/>
          </div>
          <div class="settings-field">
           <label for="settingCurrency">
@@ -1019,7 +1121,7 @@
           <label for="settingLogoUrl">
            Logo URL
           </label>
-          <input id="settingLogoUrl" placeholder="https://example.com/logo.png" type="url">
+          <input id="settingLogoUrl" placeholder="https://example.com/logo.png" type="url"/>
          </div>
          <div class="settings-field full-width">
           <label for="settingReceiptFooter">
