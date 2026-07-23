@@ -20,13 +20,17 @@
         }
 
         .page-header {
-            background: #8b1014;
-            color: white;
-            padding: 22px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-        }
+        background: #8b1014;
+        color: white;
+        padding: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+}
 
         .tracking-card {
             width: 90%;
@@ -135,8 +139,11 @@
 <body>
 
     <div class="page-header">
-        🍽️ Green & Red Restaurant
+    <div id="confirmationRestaurantLogo">🍽️</div>
+    <div id="confirmationRestaurantName">
+        Restaurant
     </div>
+</div>
 
     <main class="tracking-card">
 
@@ -192,6 +199,48 @@
     </main>
 
     <script>
+
+        const savedSettings =
+    JSON.parse(
+        localStorage.getItem("tableTapSettings")
+    ) || {};
+
+const confirmationRestaurantName =
+    document.getElementById(
+        "confirmationRestaurantName"
+    );
+
+const confirmationRestaurantLogo =
+    document.getElementById(
+        "confirmationRestaurantLogo"
+    );
+
+const restaurantName =
+    savedSettings.restaurantName ||
+    "Green & Red Restaurant";
+
+confirmationRestaurantName.textContent =
+    restaurantName;
+
+document.title =
+    `${restaurantName} Order Tracking`;
+
+if (savedSettings.logoUrl) {
+    confirmationRestaurantLogo.innerHTML = `
+        <img
+            src="${savedSettings.logoUrl}"
+            alt="${restaurantName} logo"
+            style="
+                width:42px;
+                height:42px;
+                object-fit:cover;
+                border-radius:10px;
+                vertical-align:middle;
+            "
+        >
+    `;
+}
+
         const stepNew = document.getElementById("stepNew");
         const stepAccepted = document.getElementById("stepAccepted");
         const stepPreparing = document.getElementById("stepPreparing");

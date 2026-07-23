@@ -9,9 +9,45 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#7f1117"
+    >
+
     <title>Order Summary</title>
 
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <style>
+        :root {
+            --primary: #8b1117;
+            --primary-dark: #650b10;
+            --primary-soft: #f8e8e8;
+            --gold: #d5aa31;
+            --surface: #ffffff;
+            --surface-soft: #faf8f4;
+            --background: #f3f0ea;
+            --border: #e9e2d9;
+            --text: #25221f;
+            --text-soft: #726b64;
+            --danger: #c33a30;
+            --shadow: 0 20px 55px rgba(38, 25, 18, 0.13);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,136 +55,514 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f8f5ef;
-            color: #2f2f2f;
+            min-height: 100vh;
+            font-family: "DM Sans", Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(213, 170, 49, 0.12),
+                    transparent 32%
+                ),
+                var(--background);
         }
 
         .page-header {
-            background: #8b1014;
+            min-height: 190px;
+            padding: 35px 22px 70px;
+            position: relative;
+            overflow: hidden;
             color: white;
-            padding: 22px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary-dark),
+                    var(--primary)
+                );
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -110px;
+            top: -190px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .header-content {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .restaurant-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .restaurant-logo {
+            width: 58px;
+            height: 58px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            background: rgba(255, 255, 255, 0.13);
+            font-size: 27px;
+        }
+
+        .restaurant-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-name {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(25px, 4vw, 38px);
+            font-weight: 700;
+        }
+
+        .page-step {
+            padding: 10px 15px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 13px;
+            font-weight: 700;
         }
 
         .summary-page {
-            width: 90%;
-            max-width: 750px;
-            margin: 40px auto;
-            background: white;
-            padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            width: min(850px, 92%);
+            margin: -48px auto 70px;
+            position: relative;
+            z-index: 5;
+            padding: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            border-radius: 26px;
+            background: var(--surface);
+            box-shadow: var(--shadow);
         }
 
-        .summary-page h1 {
-            text-align: center;
-            color: #8b1014;
+        .summary-heading {
             margin-bottom: 28px;
         }
 
-        .info-card {
-            background: #faf7f2;
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
         }
 
-        .info-card p {
-            margin: 8px 0;
+        .section-label::before {
+            content: "";
+            width: 23px;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--gold);
+        }
+
+        .summary-heading h1 {
+            margin-top: 9px;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(34px, 5vw, 48px);
+            line-height: 1.1;
+        }
+
+        .summary-heading p {
+            margin-top: 9px;
+            color: var(--text-soft);
+            font-size: 15px;
+        }
+
+        .info-card {
+            margin-bottom: 24px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: var(--surface-soft);
+        }
+
+        .customer-detail {
+            padding: 13px 14px;
+            border-radius: 13px;
+            background: white;
+        }
+
+        .customer-detail small {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--text-soft);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .customer-detail strong {
+            font-size: 15px;
+            word-break: break-word;
+        }
+
+        .customer-detail.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .order-section-title {
+            margin-bottom: 12px;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 25px;
+        }
+
+        .order-items {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
         }
 
         .order-item {
+            padding: 17px 18px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            padding: 14px 0;
-            border-bottom: 1px solid #eeeeee;
-        }
-
-        .order-item p {
-            margin-top: 5px;
-            color: #666666;
-        }
-
-        .order-total {
-            margin-top: 22px;
-            font-size: 22px;
-            font-weight: bold;
-            text-align: right;
-            color: #8b1014;
-        }
-
-        .place-order-button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 16px;
-            border: none;
-            border-radius: 10px;
-            background: #8b1014;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .back-button {
-            width: 100%;
-            margin-top: 12px;
-            padding: 14px;
-            border: 1px solid #8b1014;
-            border-radius: 10px;
+            gap: 20px;
             background: white;
-            color: #8b1014;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-main {
+            min-width: 0;
+        }
+
+        .item-main strong {
+            display: block;
             font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
+        }
+
+        .item-main p {
+            margin-top: 4px;
+            color: var(--text-soft);
+            font-size: 13px;
+        }
+
+        .item-total {
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 800;
+            white-space: nowrap;
         }
 
         .empty-message {
+            padding: 40px 20px;
             text-align: center;
-            color: #777777;
-            padding: 25px 0;
+            color: var(--text-soft);
+            background: var(--surface-soft);
+        }
+
+        .pricing-card {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 18px;
+            background: var(--primary-soft);
+        }
+
+        .price-row {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            color: var(--text-soft);
+            font-size: 14px;
+        }
+
+        .price-row strong {
+            color: var(--text);
+        }
+
+        .price-row.total-row {
+            margin-top: 8px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(139, 17, 23, 0.14);
+            color: var(--primary);
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .button-group {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .place-order-button,
+        .back-button {
+            min-height: 54px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .place-order-button {
+            border: none;
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-dark)
+                );
+            box-shadow: 0 12px 28px rgba(139, 17, 23, 0.23);
+        }
+
+        .back-button {
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            background: white;
+        }
+
+        .place-order-button:hover,
+        .back-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .place-order-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .summary-note {
+            margin-top: 13px;
+            text-align: center;
+            color: var(--text-soft);
+            font-size: 11px;
+        }
+
+        @media (max-width: 650px) {
+            .page-header {
+                min-height: 170px;
+            }
+
+            .page-step {
+                display: none;
+            }
+
+            .summary-page {
+                padding: 25px 20px;
+                margin-top: -38px;
+            }
+
+            .info-card {
+                grid-template-columns: 1fr;
+            }
+
+            .customer-detail.full-width {
+                grid-column: auto;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .order-item {
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="page-header">
-        🍽️ Green & Red Restaurant
-    </div>
+    <header class="page-header">
 
-    <div class="summary-page">
+        <div class="header-content">
 
-        <h1>Order Summary</h1>
+            <div class="restaurant-brand">
 
-        <div id="customerInfo" class="info-card"></div>
+                <div
+                    id="restaurantLogo"
+                    class="restaurant-logo"
+                >
+                    🍽️
+                </div>
 
-        <div id="orderItems"></div>
+                <div
+                    id="restaurantName"
+                    class="restaurant-name"
+                >
+                    Restaurant
+                </div>
 
-        <div class="order-total">
-            Total: SAR <span id="orderTotal">0</span>
+            </div>
+
+            <div class="page-step">
+                Step 3 of 3 · Review order
+            </div>
+
         </div>
 
-        <button id="placeOrder" class="place-order-button">
-            Place Order
-        </button>
+    </header>
 
-        <button id="backToMenu" class="back-button">
-            Back to Menu
-        </button>
+    <main class="summary-page">
 
-    </div>
+        <section class="summary-heading">
+
+            <span class="section-label">
+                Final review
+            </span>
+
+            <h1>
+                Order Summary
+            </h1>
+
+            <p>
+                Review your information and items before placing the order.
+            </p>
+
+        </section>
+
+        <section
+            id="customerInfo"
+            class="info-card"
+        ></section>
+
+        <h2 class="order-section-title">
+            Your items
+        </h2>
+
+        <section
+            id="orderItems"
+            class="order-items"
+        ></section>
+
+        <section class="pricing-card">
+
+            <div class="price-row">
+                <span>Subtotal</span>
+
+                <strong>
+                    <span id="subtotalCurrency">SAR</span>
+                    <span id="orderSubtotal">0.00</span>
+                </strong>
+            </div>
+
+            <div class="price-row">
+                <span>
+                    VAT
+                    (<span id="vatPercentLabel">15</span>%)
+                </span>
+
+                <strong>
+                    <span id="vatCurrency">SAR</span>
+                    <span id="orderVat">0.00</span>
+                </strong>
+            </div>
+
+            <div class="price-row total-row">
+                <span>Total</span>
+
+                <strong>
+                    <span id="totalCurrency">SAR</span>
+                    <span id="orderTotal">0.00</span>
+                </strong>
+            </div>
+
+        </section>
+
+        <div class="button-group">
+
+            <button
+                id="backToMenu"
+                class="back-button"
+                type="button"
+            >
+                ← Back to Menu
+            </button>
+
+            <button
+                id="placeOrder"
+                class="place-order-button"
+                type="button"
+            >
+                Place Order →
+            </button>
+
+        </div>
+
+        <p class="summary-note">
+            Your order will be sent directly to the restaurant kitchen.
+        </p>
+
+    </main>
 
     <script>
         const customer =
-            JSON.parse(localStorage.getItem("tableTapCustomer")) || {};
+            JSON.parse(
+                localStorage.getItem("tableTapCustomer")
+            ) || {};
 
         const cart =
-            JSON.parse(localStorage.getItem("tableTapCart")) || [];
+            JSON.parse(
+                localStorage.getItem("tableTapCart")
+            ) || [];
+
+        const savedSettings =
+            JSON.parse(
+                localStorage.getItem("tableTapSettings")
+            ) || {};
+
+        const restaurantSettings = {
+            restaurantName:
+                savedSettings.restaurantName ||
+                "Green & Red Restaurant",
+
+            logoUrl:
+                savedSettings.logoUrl || "",
+
+            vatPercent:
+                Number(savedSettings.vatPercent ?? 15),
+
+            currency:
+                savedSettings.currency || "SAR"
+        };
+
+        const restaurantName =
+            document.getElementById("restaurantName");
+
+        const restaurantLogo =
+            document.getElementById("restaurantLogo");
 
         const customerInfo =
             document.getElementById("customerInfo");
@@ -156,97 +570,254 @@
         const orderItems =
             document.getElementById("orderItems");
 
+        const orderSubtotal =
+            document.getElementById("orderSubtotal");
+
+        const orderVat =
+            document.getElementById("orderVat");
+
         const orderTotal =
             document.getElementById("orderTotal");
 
+        const vatPercentLabel =
+            document.getElementById("vatPercentLabel");
+
+        const currencyElements = [
+            document.getElementById("subtotalCurrency"),
+            document.getElementById("vatCurrency"),
+            document.getElementById("totalCurrency")
+        ];
+
+        const placeOrderButton =
+            document.getElementById("placeOrder");
+
+        restaurantName.textContent =
+            restaurantSettings.restaurantName;
+
+        document.title =
+            `${restaurantSettings.restaurantName} Order Summary`;
+
+        if (restaurantSettings.logoUrl) {
+            restaurantLogo.innerHTML = `
+                <img
+                    src="${restaurantSettings.logoUrl}"
+                    alt="${restaurantSettings.restaurantName} logo"
+                >
+            `;
+        }
+
+        currencyElements.forEach(function (element) {
+            element.textContent =
+                restaurantSettings.currency;
+        });
+
+        vatPercentLabel.textContent =
+            restaurantSettings.vatPercent;
+
         customerInfo.innerHTML = `
-            <p><strong>Name:</strong> ${customer.name || "-"}</p>
-            <p><strong>Phone:</strong> ${customer.phone || "-"}</p>
-            <p><strong>Table:</strong> ${customer.table || "-"}</p>
-            <p>
-                <strong>Instructions:</strong>
-                ${customer.request || "None"}
-            </p>
+            <div class="customer-detail">
+                <small>Customer name</small>
+                <strong>${customer.name || "-"}</strong>
+            </div>
+
+            <div class="customer-detail">
+                <small>Phone number</small>
+                <strong>${customer.phone || "-"}</strong>
+            </div>
+
+            <div class="customer-detail">
+                <small>Table number</small>
+                <strong>${customer.table || "-"}</strong>
+            </div>
+
+            <div class="customer-detail">
+                <small>Order type</small>
+                <strong>Dine-in</strong>
+            </div>
+
+            <div class="customer-detail full-width">
+                <small>Special instructions</small>
+                <strong>${customer.request || "None"}</strong>
+            </div>
         `;
 
-        let total = 0;
+        let subtotal = 0;
 
         if (cart.length === 0) {
             orderItems.innerHTML = `
                 <p class="empty-message">
-                    No items found in your cart.
+                    Your cart is empty. Please return to the menu
+                    and add at least one item.
                 </p>
             `;
+
+            placeOrderButton.disabled = true;
         } else {
             cart.forEach(function (item) {
-                const itemTotal = item.price * item.quantity;
+                const price =
+                    Number(item.price || 0);
 
-                total += itemTotal;
+                const quantity =
+                    Number(item.quantity || 0);
 
-                const row = document.createElement("div");
+                const itemTotal =
+                    price * quantity;
+
+                subtotal += itemTotal;
+
+                const row =
+                    document.createElement("article");
 
                 row.className = "order-item";
 
                 row.innerHTML = `
-                    <div>
+                    <div class="item-main">
                         <strong>${item.name}</strong>
-                        <p>SAR ${item.price} × ${item.quantity}</p>
+
+                        <p>
+                            ${restaurantSettings.currency}
+                            ${price.toFixed(2)}
+                            ×
+                            ${quantity}
+                        </p>
                     </div>
 
-                    <strong>SAR ${itemTotal}</strong>
+                    <div class="item-total">
+                        ${restaurantSettings.currency}
+                        ${itemTotal.toFixed(2)}
+                    </div>
                 `;
 
                 orderItems.appendChild(row);
             });
         }
 
-        orderTotal.textContent = total;
+        const vatAmount =
+            subtotal *
+            (
+                restaurantSettings.vatPercent /
+                100
+            );
 
-        document
-    .getElementById("placeOrder")
-    .addEventListener("click", function () {
+        const grandTotal =
+            subtotal + vatAmount;
 
-        if (cart.length === 0) {
-            alert("Your cart is empty.");
-            return;
-        }
+        orderSubtotal.textContent =
+            subtotal.toFixed(2);
 
-        const order = {
-            id: "TT" + Date.now(),
-            customer: customer,
-            items: cart,
-            total: total,
-            status: "New",
-            createdAt: new Date().toLocaleString()
-        };
+        orderVat.textContent =
+            vatAmount.toFixed(2);
 
-        const existingOrders =
-    JSON.parse(localStorage.getItem("tableTapOrders")) || [];
+        orderTotal.textContent =
+            grandTotal.toFixed(2);
 
-existingOrders.push(order);
+        placeOrderButton.addEventListener(
+            "click",
+            function () {
 
-localStorage.setItem(
-    "tableTapOrders",
-    JSON.stringify(existingOrders)
-);
+                if (cart.length === 0) {
+                    alert(
+                        "Your cart is empty. Please add items before placing the order."
+                    );
+                    return;
+                }
 
-localStorage.setItem(
-    "tableTapLatestOrder",
-    JSON.stringify(order)
-);
+                if (
+                    !customer.name ||
+                    !customer.phone ||
+                    !customer.table
+                ) {
+                    alert(
+                        "Customer details are incomplete. Please go back and complete all required fields."
+                    );
+                    return;
+                }
 
-        localStorage.removeItem("tableTapCart");
-        localStorage.removeItem("tableTapCustomer");
+                const existingOrders =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "tableTapOrders"
+                        )
+                    ) || [];
 
-        window.location.href = "confirmation.html";
-    });
+                const duplicateActiveOrder =
+                    existingOrders.some(
+                        function (order) {
+                            return (
+                                String(
+                                    order.customer?.table || ""
+                                ).trim() ===
+                                String(
+                                    customer.table || ""
+                                ).trim() &&
+                                order.status !== "Completed" &&
+                                order.paymentStatus !== "Paid"
+                            );
+                        }
+                    );
+
+                if (duplicateActiveOrder) {
+                    const continueOrder =
+                        confirm(
+                            "This table already has an active order. Do you still want to place another order?"
+                        );
+
+                    if (!continueOrder) {
+                        return;
+                    }
+                }
+
+                const order = {
+                    id: "TT" + Date.now(),
+                    customer: customer,
+                    items: cart,
+                    subtotal: subtotal,
+                    vatPercent:
+                        restaurantSettings.vatPercent,
+                    vatAmount: vatAmount,
+                    total: grandTotal,
+                    currency:
+                        restaurantSettings.currency,
+                    status: "New",
+                    paymentStatus: "Unpaid",
+                    createdAt:
+                        new Date().toISOString()
+                };
+
+                existingOrders.push(order);
+
+                localStorage.setItem(
+                    "tableTapOrders",
+                    JSON.stringify(existingOrders)
+                );
+
+                localStorage.setItem(
+                    "tableTapLatestOrder",
+                    JSON.stringify(order)
+                );
+
+                localStorage.removeItem(
+                    "tableTapCart"
+                );
+
+                localStorage.removeItem(
+                    "tableTapCustomer"
+                );
+
+                window.location.href =
+                    "confirmation.html";
+            }
+        );
 
         document
             .getElementById("backToMenu")
-            .addEventListener("click", function () {
-
-                window.location.href = "menu.html";
-            });
+            .addEventListener(
+                "click",
+                function () {
+                    window.location.href =
+                        "menu.html";
+                }
+            );
     </script>
 
 </body>

@@ -2,43 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Green & Red Menu</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="../css/menu.css">
+    <meta
+        name="theme-color"
+        content="#7f1117"
+    >
+
+    <title>Restaurant Menu</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/menu.css"
+    >
 </head>
 
 <body>
 
     <header class="header">
-        <div id="restaurantLogo" class="logo">
-            🍽️
-            <span id="restaurantName">
-                Green & Red Restaurant
-            </span>
+
+        <div class="header-background-shape"></div>
+
+        <div class="header-content">
+
+            <div
+                id="restaurantLogo"
+                class="logo"
+            >
+                <span class="logo-icon">🍽️</span>
+
+                <span
+                    id="restaurantName"
+                    class="restaurant-name"
+                >
+                    Green & Red Restaurant
+                </span>
+            </div>
+
+            <div class="header-badge">
+                Fresh food · Easy ordering
+            </div>
+
         </div>
+
     </header>
 
     <main class="menu-page">
 
         <section class="menu-heading">
-            <h1>Our Menu</h1>
 
-            <p>
-                Select your favourite dishes and add them to your order.
-            </p>
+            <div class="heading-content">
+
+                <span class="section-label">
+                    Made with care
+                </span>
+
+                <h1>
+                    Explore our menu
+                </h1>
+
+                <p>
+                    Choose your favourites, customize your quantity
+                    and place your order in just a few steps.
+                </p>
+
+            </div>
+
+            <div class="heading-decoration">
+                <span>Fresh</span>
+                <strong>Every day</strong>
+            </div>
+
         </section>
 
-        <section
-            id="categoryList"
-            class="category-list"
-        ></section>
+        <section class="category-section">
 
-        <section
-            id="menuContainer"
-            class="menu-container"
-        ></section>
+            <div class="section-heading-row">
+                <div>
+                    <span class="mini-label">
+                        Browse
+                    </span>
+
+                    <h2>
+                        Menu categories
+                    </h2>
+                </div>
+
+                <span class="swipe-hint">
+                    Swipe to explore →
+                </span>
+            </div>
+
+            <div
+                id="categoryList"
+                class="category-list"
+            ></div>
+
+        </section>
+
+        <section class="dishes-section">
+
+            <div class="section-heading-row">
+                <div>
+                    <span class="mini-label">
+                        Our selection
+                    </span>
+
+                    <h2>
+                        Popular dishes
+                    </h2>
+                </div>
+            </div>
+
+            <section
+                id="menuContainer"
+                class="menu-container"
+            ></section>
+
+        </section>
 
     </main>
 
@@ -46,9 +147,22 @@
         id="openCart"
         class="cart-bar"
         type="button"
+        aria-label="Open shopping cart"
     >
-        🛒 Cart:
-        <span id="cartCount">0</span>
+        <span class="cart-bar-icon">
+            🛒
+        </span>
+
+        <span class="cart-bar-text">
+            View Cart
+        </span>
+
+        <span
+            id="cartCount"
+            class="cart-count"
+        >
+            0
+        </span>
     </button>
 
     <div
@@ -59,18 +173,54 @@
     <aside
         id="cartPanel"
         class="cart-panel"
+        aria-label="Shopping cart"
     >
 
         <div class="cart-panel-header">
-            <h2>Your Cart</h2>
+
+            <div>
+                <span class="mini-label">
+                    Your order
+                </span>
+
+                <h2>
+                    Shopping Cart
+                </h2>
+            </div>
 
             <button
                 id="closeCart"
                 class="close-cart"
                 type="button"
+                aria-label="Close shopping cart"
             >
                 ×
             </button>
+
+        </div>
+
+        <div class="cart-progress">
+            <span class="cart-progress-step active">
+                1
+            </span>
+
+            <span class="cart-progress-line"></span>
+
+            <span class="cart-progress-step">
+                2
+            </span>
+
+            <span class="cart-progress-line"></span>
+
+            <span class="cart-progress-step">
+                3
+            </span>
+        </div>
+
+        <div class="cart-progress-labels">
+            <span>Cart</span>
+            <span>Details</span>
+            <span>Confirm</span>
         </div>
 
         <div
@@ -82,10 +232,26 @@
             </p>
         </div>
 
-        <div class="cart-total">
-            Total:
-            <span id="cartCurrency">SAR</span>
-            <span id="cartTotal">0</span>
+        <div class="cart-summary">
+
+            <div class="cart-summary-label">
+                <span>Order total</span>
+
+                <small>
+                    Taxes calculated during checkout
+                </small>
+            </div>
+
+            <div class="cart-total">
+                <span id="cartCurrency">
+                    SAR
+                </span>
+
+                <span id="cartTotal">
+                    0
+                </span>
+            </div>
+
         </div>
 
         <button
@@ -93,8 +259,16 @@
             type="button"
             onclick="window.location.href='customer.html'"
         >
-            Continue
+            Continue to customer details
+
+            <span>
+                →
+            </span>
         </button>
+
+        <p class="checkout-note">
+            Your order will not be submitted until confirmation.
+        </p>
 
     </aside>
 
