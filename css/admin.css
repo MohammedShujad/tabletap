@@ -2419,3 +2419,701 @@ body.sidebar-open {
         white-space: normal;
     }
 }
+
+
+/* =========================================================
+   TABLETAP ADMIN V2 — PREMIUM MULTI-TABLE FLOOR
+   ========================================================= */
+
+.floor-operations-toolbar {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.9fr) minmax(360px, 2fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid var(--admin-border);
+    border-radius: 15px;
+    background: #f8fafc;
+}
+
+.floor-search-control {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 11px;
+    background: #ffffff;
+    color: #64748b;
+}
+
+.floor-search-control:focus-within {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.floor-search-control input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--admin-text);
+    font: inherit;
+    font-size: 13px;
+}
+
+.floor-area-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 2px;
+    scrollbar-width: thin;
+}
+
+.floor-filter-button {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    padding: 8px 11px;
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    background: #ffffff;
+    color: #475569;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.floor-filter-button span {
+    min-width: 21px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 10px;
+    text-align: center;
+}
+
+.floor-filter-button:hover {
+    border-color: #bfdbfe;
+    background: #f8fbff;
+}
+
+.floor-filter-button.active {
+    border-color: var(--admin-primary);
+    background: var(--admin-primary);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+}
+
+.floor-filter-button.active span {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+}
+
+.floor-view-toggle {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid var(--admin-border);
+    border-radius: 11px;
+    background: #ffffff;
+}
+
+.floor-view-button {
+    width: 39px;
+    height: 36px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #64748b;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.floor-view-button.active {
+    background: var(--admin-primary-soft);
+    color: var(--admin-primary);
+}
+
+.floor-results-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 0 2px 18px;
+    color: var(--admin-muted);
+    font-size: 12px;
+}
+
+.floor-results-summary strong {
+    color: var(--admin-text);
+    font-size: 13px;
+}
+
+.floor-grouped-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+}
+
+.floor-area-group {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid #e8edf4;
+    border-radius: 16px;
+    background: #fbfcfe;
+}
+
+.floor-area-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.floor-area-heading > div {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.floor-area-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: var(--admin-primary-soft);
+    color: var(--admin-primary);
+    font-size: 17px;
+}
+
+.floor-area-heading h3 {
+    margin: 0 0 3px;
+    color: var(--admin-text);
+    font-size: 16px;
+}
+
+.floor-area-heading p {
+    margin: 0;
+    color: var(--admin-muted);
+    font-size: 11px;
+}
+
+.floor-area-table-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    gap: 14px;
+}
+
+.floor-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.floor-table-identity {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.floor-table-symbol {
+    width: 39px;
+    height: 39px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 17px;
+}
+
+.floor-table-identity h3 {
+    overflow: hidden;
+    margin: 0 0 3px !important;
+    color: var(--admin-text) !important;
+    font-size: 16px !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.floor-table-identity small {
+    color: var(--admin-muted);
+    font-size: 10px;
+}
+
+.floor-table-meta-premium {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.floor-table-meta-premium > span {
+    padding: 10px;
+    border: 1px solid #edf1f6;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.floor-table-meta-premium small,
+.floor-table-meta-premium strong {
+    display: block;
+}
+
+.floor-table-meta-premium small {
+    margin-bottom: 3px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.floor-table-meta-premium strong {
+    overflow: hidden;
+    color: #334155;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.floor-live-order {
+    display: grid;
+    gap: 0;
+    padding: 0;
+    border: 1px solid #e7edf5;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.floor-live-order-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    border-bottom: 1px solid #eef2f7;
+    font-size: 11px;
+}
+
+.floor-live-order-row:last-child {
+    border-bottom: 0;
+}
+
+.floor-live-order-row span {
+    color: var(--admin-muted);
+}
+
+.floor-live-order-row strong {
+    overflow: hidden;
+    color: var(--admin-text);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.floor-running-total {
+    background: #f8fbff;
+}
+
+.floor-running-total strong {
+    color: var(--admin-primary);
+    font-size: 13px;
+}
+
+.floor-available-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 44px;
+    margin-bottom: 13px;
+    border: 1px dashed #bbf7d0;
+    border-radius: 10px;
+    background: #f0fdf4;
+    color: #166534;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.floor-operational-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.floor-operational-actions:empty {
+    display: none;
+}
+
+.floor-order-button,
+.floor-billing-button {
+    min-height: 36px;
+    border: 0;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.floor-order-button {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.floor-billing-button {
+    background: var(--admin-primary);
+    color: #ffffff;
+}
+
+.floor-management-actions {
+    padding-top: 10px;
+    border-top: 1px solid #eef2f7;
+}
+
+.floor-management-actions button {
+    flex: 1;
+    min-width: 58px;
+    padding-inline: 8px;
+    font-size: 10px;
+}
+
+.floor-grouped-grid.compact-view .floor-area-table-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.floor-grouped-grid.compact-view .floor-table-card {
+    min-height: 0;
+    padding: 13px;
+}
+
+.floor-grouped-grid.compact-view .floor-table-symbol {
+    width: 32px;
+    height: 32px;
+}
+
+.floor-grouped-grid.compact-view .floor-table-meta-premium {
+    margin-bottom: 9px;
+}
+
+.floor-grouped-grid.compact-view .floor-live-order-row {
+    padding: 6px 8px;
+}
+
+.floor-grouped-grid.compact-view .floor-management-actions {
+    display: none;
+}
+
+@media (max-width: 1150px) {
+    .floor-operations-toolbar {
+        grid-template-columns: 1fr auto;
+    }
+
+    .floor-area-filters {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 700px) {
+    .floor-operations-toolbar {
+        grid-template-columns: 1fr auto;
+    }
+
+    .floor-search-control {
+        grid-column: 1 / -1;
+    }
+
+    .floor-area-filters {
+        grid-column: 1 / 2;
+        grid-row: auto;
+    }
+
+    .floor-results-summary {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .floor-area-group {
+        padding: 14px;
+    }
+
+    .floor-area-table-grid,
+    .floor-grouped-grid.compact-view .floor-area-table-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   TABLETAP RESTAURANT FLOOR — BALANCED AREA CARD LAYOUT
+   Each area is one full-width section; tables sit inside it.
+   ========================================================= */
+
+.floor-grouped-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 18px;
+}
+
+.floor-area-group {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    align-self: start;
+    padding: 18px;
+    border: 1px solid #e3e9f1;
+    border-radius: 16px;
+    background: #fbfcfe;
+    box-shadow: none;
+}
+
+.floor-area-heading {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e9eef5;
+}
+
+.floor-area-table-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    align-items: start;
+    gap: 14px;
+}
+
+/* Prevent one table from stretching across the whole area. */
+.floor-area-table-grid .floor-table-card {
+    width: 100%;
+    max-width: 420px;
+    min-width: 0;
+    min-height: 0;
+    align-self: start;
+    padding: 15px;
+    border-radius: 14px;
+}
+
+/* Two cards stay together at the left side of an area section. */
+.floor-area-table-grid:has(.floor-table-card:only-child) {
+    grid-template-columns: minmax(280px, 420px);
+}
+
+.floor-card-header {
+    gap: 10px;
+    margin-bottom: 11px;
+}
+
+.floor-table-symbol {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.floor-table-identity h3 {
+    font-size: 16px !important;
+}
+
+.floor-table-status {
+    flex-shrink: 0;
+    padding: 5px 9px;
+    margin-bottom: 0;
+    font-size: 10px;
+}
+
+.floor-table-meta-premium {
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.floor-table-meta-premium > span {
+    min-width: 0;
+    padding: 8px 10px;
+}
+
+.floor-live-order {
+    margin-bottom: 10px;
+}
+
+.floor-live-order-row {
+    padding: 7px 9px;
+    font-size: 10px;
+}
+
+.floor-available-message {
+    min-height: 39px;
+    margin-bottom: 10px;
+}
+
+.floor-operational-actions {
+    gap: 8px;
+    margin-bottom: 9px;
+}
+
+.floor-order-button,
+.floor-billing-button {
+    min-height: 34px;
+}
+
+.floor-management-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    padding-top: 9px;
+}
+
+.floor-management-actions button {
+    width: 100%;
+    min-width: 0;
+    min-height: 33px !important;
+    padding: 7px 6px !important;
+    font-size: 10px;
+}
+
+/* Compact mode: four smaller cards per area on wide screens. */
+.floor-grouped-grid.compact-view .floor-area-table-grid {
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.floor-grouped-grid.compact-view .floor-area-table-grid .floor-table-card {
+    max-width: none;
+}
+
+@media (max-width: 1250px) {
+    .floor-area-table-grid {
+        grid-template-columns: repeat(2, minmax(230px, 1fr));
+    }
+
+    .floor-grouped-grid.compact-view .floor-area-table-grid {
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 850px) {
+    .floor-area-table-grid,
+    .floor-grouped-grid.compact-view .floor-area-table-grid,
+    .floor-area-table-grid:has(.floor-table-card:only-child) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .floor-area-table-grid .floor-table-card {
+        max-width: none;
+    }
+}
+
+/* =========================================================
+   RESTAURANT FLOOR — FINAL AREA GROUP FIX
+   ========================================================= */
+
+/* Every area occupies one full row */
+#restaurantFloorGrid.floor-grouped-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 18px !important;
+}
+
+/* Main Hall / Outdoor / Terrace container */
+#restaurantFloorGrid .floor-area-group {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    padding: 16px !important;
+    align-self: start !important;
+    border: 1px solid #e3e9f1 !important;
+    border-radius: 16px !important;
+    background: #fbfcfe !important;
+}
+
+/* Tables inside one area */
+#restaurantFloorGrid .floor-area-table-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(260px, 380px)) !important;
+    justify-content: start !important;
+    align-items: start !important;
+    gap: 14px !important;
+}
+
+/* Never allow cards to overlap */
+#restaurantFloorGrid .floor-table-card {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    align-self: start !important;
+    margin: 0 !important;
+    padding: 15px !important;
+    transform: none;
+}
+
+/* Keep all three management buttons in one row */
+#restaurantFloorGrid .floor-management-actions {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+}
+
+#restaurantFloorGrid .floor-management-actions button {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 34px !important;
+    padding: 7px 5px !important;
+    font-size: 10px !important;
+}
+
+/* View Order and Open Billing */
+#restaurantFloorGrid .floor-operational-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+}
+
+/* Compact view can display more cards inside each area */
+#restaurantFloorGrid.floor-grouped-grid.compact-view
+.floor-area-table-grid {
+    grid-template-columns:
+        repeat(4, minmax(170px, 1fr)) !important;
+}
+
+#restaurantFloorGrid.floor-grouped-grid.compact-view
+.floor-table-card {
+    max-width: none !important;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+    #restaurantFloorGrid .floor-area-table-grid,
+    #restaurantFloorGrid.floor-grouped-grid.compact-view
+    .floor-area-table-grid {
+        grid-template-columns:
+            repeat(2, minmax(220px, 1fr)) !important;
+    }
+
+    #restaurantFloorGrid .floor-table-card {
+        max-width: none !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+    #restaurantFloorGrid .floor-area-table-grid,
+    #restaurantFloorGrid.floor-grouped-grid.compact-view
+    .floor-area-table-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

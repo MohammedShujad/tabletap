@@ -2,6 +2,10 @@
 // TABLETAP - RESTAURANT FLOOR MODULE
 // =====================================
 
+let floorAreaFilter = "all";
+let floorSearchTerm = "";
+let floorViewMode = "comfortable";
+
 function saveTables() {
     localStorage.setItem(
         "tableTapTables",
@@ -55,7 +59,66 @@ function formatWaitingTime(order) {
         Math.floor((Date.now() - orderDate.getTime()) / 60000)
     );
 
-    return `${minutes} min`;
+    if (minutes < 60) {
+        return `${minutes} min`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    return `${hours}h ${remainingMinutes}m`;
+}
+
+function escapeFloorHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function getFloorCurrency() {
+    const settings = JSON.parse(
+        localStorage.getItem("tableTapSettings") || "{}"
+    );
+
+    return settings.currency || "SAR";
+}
+
+function getOrderRunningTotal(order) {
+    const directTotal = Number(
+        order.total ??
+        order.grandTotal ??
+        order.totalAmount
+    );
+
+    if (Number.isFinite(directTotal)) {
+        return directTotal;
+    }
+
+    const items = Array.isArray(order.items)
+        ? order.items
+        : [];
+
+    return items.reduce(function (sum, item) {
+        const price = Number(item.price) || 0;
+        const quantity = Number(item.quantity) || 1;
+
+        return sum + (price * quantity);
+    }, 0);
+}
+
+function getFloorElements() {
+    return {
+        search: document.getElementById("floorTableSearch"),
+        filters: document.getElementById("floorAreaFilters"),
+        comfortableView: document.getElementById("floorComfortableView"),
+        compactView: document.getElementById("floorCompactView"),
+        visibleCount: document.getElementById("floorVisibleCount"),
+        activeFilterText: document.getElementById("floorActiveFilterText"),
+        allCount: document.getElementById("floorAllCount")
+    };
 }
 
 function updateFloorSummary() {
@@ -85,112 +148,357 @@ function updateFloorSummary() {
     disabledTableCount.textContent = disabled;
 }
 
-function renderRestaurantFloor() {
-    restaurantFloorGrid.innerHTML = "";
+function getFloorAreas() {
+    return Array.from(
+        new Set(
+            tables
+                .map(function (table) {
+                    return String(table.area || "Unassigned").trim();
+                })
+                .filter(Boolean)
+        )
+    ).sort(function (first, second) {
+        return first.localeCompare(second);
+    });
+}
 
-    updateFloorSummary();
+function renderFloorAreaFilters() {
+    const elements = getFloorElements();
 
-    if (tables.length === 0) {
-        restaurantFloorEmpty.hidden = false;
+    if (!elements.filters) {
         return;
     }
 
-    restaurantFloorEmpty.hidden = true;
+    const areaCounts = tables.reduce(function (counts, table) {
+        const area = String(table.area || "Unassigned").trim();
 
-    tables
-        .slice()
+        counts[area] = (counts[area] || 0) + 1;
+        return counts;
+    }, {});
+
+    const filterButtons = [
+        `
+            <button
+                class="floor-filter-button ${floorAreaFilter === "all" ? "active" : ""}"
+                type="button"
+                data-floor-area="all"
+            >
+                All
+                <span>${tables.length}</span>
+            </button>
+        `
+    ];
+
+    getFloorAreas().forEach(function (area) {
+        filterButtons.push(`
+            <button
+                class="floor-filter-button ${floorAreaFilter === area ? "active" : ""}"
+                type="button"
+                data-floor-area="${escapeFloorHtml(area)}"
+            >
+                ${escapeFloorHtml(area)}
+                <span>${areaCounts[area] || 0}</span>
+            </button>
+        `);
+    });
+
+    elements.filters.innerHTML = filterButtons.join("");
+}
+
+function getVisibleFloorTables() {
+    const normalizedSearch = normalizeTableValue(floorSearchTerm);
+
+    return tables
+        .filter(function (table) {
+            const tableArea = String(table.area || "Unassigned").trim();
+
+            const matchesArea =
+                floorAreaFilter === "all" ||
+                tableArea === floorAreaFilter;
+
+            const matchesSearch =
+                !normalizedSearch ||
+                normalizeTableValue(table.name).includes(normalizedSearch) ||
+                normalizeTableValue(table.number).includes(normalizedSearch) ||
+                normalizeTableValue(tableArea).includes(normalizedSearch);
+
+            return matchesArea && matchesSearch;
+        })
         .sort(function (first, second) {
+            const areaComparison = String(first.area || "")
+                .localeCompare(String(second.area || ""));
+
+            if (areaComparison !== 0) {
+                return areaComparison;
+            }
+
             return String(first.number).localeCompare(
                 String(second.number),
                 undefined,
                 { numeric: true }
             );
+        });
+}
+
+function createFloorTableCard(table) {
+    const activeOrder = getActiveOrderForTable(table);
+    const status = getTableStatus(table, activeOrder);
+    const statusClass = getTableStatusClass(status);
+    const currency = getFloorCurrency();
+    const runningTotal = activeOrder
+        ? getOrderRunningTotal(activeOrder)
+        : 0;
+
+    const card = document.createElement("article");
+
+    card.className =
+        `floor-table-card ${statusClass}`;
+
+    card.dataset.tableId = String(table.id);
+
+    const orderInfo = activeOrder
+        ? `
+            <div class="floor-order-info floor-live-order">
+                <div class="floor-live-order-row">
+                    <span>Order</span>
+                    <strong>${escapeFloorHtml(activeOrder.id || "Unknown")}</strong>
+                </div>
+
+                <div class="floor-live-order-row">
+                    <span>Guest</span>
+                    <strong>${escapeFloorHtml(activeOrder.customer?.name || "Walk-in")}</strong>
+                </div>
+
+                <div class="floor-live-order-row">
+                    <span>Elapsed</span>
+                    <strong>${escapeFloorHtml(formatWaitingTime(activeOrder))}</strong>
+                </div>
+
+                <div class="floor-live-order-row floor-running-total">
+                    <span>Running bill</span>
+                    <strong>${escapeFloorHtml(currency)} ${runningTotal.toFixed(2)}</strong>
+                </div>
+            </div>
+        `
+        : `
+            <div class="floor-available-message">
+                <span>✓</span>
+                Ready for the next guest
+            </div>
+        `;
+
+    const operationalActions = activeOrder
+        ? `
+            <button
+                type="button"
+                class="floor-order-button"
+                onclick="openFloorWorkspace('orders')"
+            >
+                View Order
+            </button>
+
+            <button
+                type="button"
+                class="floor-billing-button"
+                onclick="openFloorWorkspace('billing')"
+            >
+                Open Billing
+            </button>
+        `
+        : "";
+
+    card.innerHTML = `
+        <div class="floor-card-header">
+            <div class="floor-table-identity">
+                <span class="floor-table-symbol">▦</span>
+
+                <div>
+                    <h3>${escapeFloorHtml(table.name)}</h3>
+                    <small>Table ${escapeFloorHtml(table.number)}</small>
+                </div>
+            </div>
+
+            <span class="floor-table-status ${statusClass}">
+                ${escapeFloorHtml(status)}
+            </span>
+        </div>
+
+    <div class="floor-table-meta floor-table-meta-premium">
+    <span>
+        <small>Seats</small>
+        <strong>${escapeFloorHtml(table.capacity)}</strong>
+    </span>
+
+    <span>
+        <small>Table Code</small>
+        <strong>${escapeFloorHtml(table.number)}</strong>
+    </span>
+    </div>
+
+        ${orderInfo}
+
+        <div class="floor-operational-actions">
+            ${operationalActions}
+        </div>
+
+        <div class="floor-table-actions floor-management-actions">
+            <button
+                type="button"
+                class="floor-edit-button"
+                onclick="editTable('${escapeFloorHtml(table.id)}')"
+            >
+                Edit
+            </button>
+
+            <button
+                type="button"
+                class="floor-toggle-button"
+                onclick="toggleTable('${escapeFloorHtml(table.id)}')"
+            >
+                ${table.enabled ? "Disable" : "Enable"}
+            </button>
+
+            <button
+                type="button"
+                class="floor-delete-button"
+                onclick="deleteTable('${escapeFloorHtml(table.id)}')"
+            >
+                Delete
+            </button>
+        </div>
+    `;
+
+    return card;
+}
+
+function openFloorWorkspace(view) {
+    const navigationControl = document.querySelector(
+        `[data-admin-view="${view}"]`
+    );
+
+    if (navigationControl) {
+        navigationControl.click();
+    }
+}
+
+function renderRestaurantFloor() {
+    restaurantFloorGrid.innerHTML = "";
+
+    updateFloorSummary();
+    renderFloorAreaFilters();
+
+    const elements = getFloorElements();
+    const visibleTables = getVisibleFloorTables();
+
+    restaurantFloorGrid.classList.toggle(
+        "compact-view",
+        floorViewMode === "compact"
+    );
+
+    if (elements.comfortableView) {
+        elements.comfortableView.classList.toggle(
+            "active",
+            floorViewMode === "comfortable"
+        );
+    }
+
+    if (elements.compactView) {
+        elements.compactView.classList.toggle(
+            "active",
+            floorViewMode === "compact"
+        );
+    }
+
+    if (elements.visibleCount) {
+        elements.visibleCount.textContent =
+            `${visibleTables.length} ${visibleTables.length === 1 ? "table" : "tables"}`;
+    }
+
+    if (elements.activeFilterText) {
+        const areaText =
+            floorAreaFilter === "all"
+                ? "all areas"
+                : floorAreaFilter;
+
+        elements.activeFilterText.textContent =
+            floorSearchTerm
+                ? `Searching “${floorSearchTerm}” in ${areaText}`
+                : `Showing ${areaText}`;
+    }
+
+    if (tables.length === 0) {
+        restaurantFloorEmpty.hidden = false;
+        restaurantFloorEmpty.querySelector("h3").textContent =
+            "No tables created yet";
+        restaurantFloorEmpty.querySelector("p").textContent =
+            "Add your first table to start building the live restaurant floor.";
+        return;
+    }
+
+    if (visibleTables.length === 0) {
+        restaurantFloorEmpty.hidden = false;
+        restaurantFloorEmpty.querySelector("h3").textContent =
+            "No matching tables";
+        restaurantFloorEmpty.querySelector("p").textContent =
+            "Try another search term or select a different restaurant area.";
+        return;
+    }
+
+    restaurantFloorEmpty.hidden = true;
+
+    const groupedTables = visibleTables.reduce(function (groups, table) {
+        const area = String(table.area || "Unassigned").trim();
+
+        if (!groups[area]) {
+            groups[area] = [];
+        }
+
+        groups[area].push(table);
+        return groups;
+    }, {});
+
+    Object.keys(groupedTables)
+        .sort(function (first, second) {
+            return first.localeCompare(second);
         })
-        .forEach(function (table) {
-            const activeOrder = getActiveOrderForTable(table);
-            const status = getTableStatus(table, activeOrder);
-            const statusClass = getTableStatusClass(status);
+        .forEach(function (area) {
+            const areaSection = document.createElement("section");
+            const areaTables = groupedTables[area];
+            const activeAreaTables = areaTables.filter(function (table) {
+                const status = getTableStatus(
+                    table,
+                    getActiveOrderForTable(table)
+                );
 
-            const card = document.createElement("article");
+                return !["Available", "Disabled"].includes(status);
+            }).length;
 
-            card.className =
-                `floor-table-card ${statusClass}`;
-
-            const orderInfo = activeOrder
-                ? `
-                    <div class="floor-order-info">
-                        <p>
-                            <strong>Order:</strong>
-                            ${activeOrder.id || "Unknown"}
-                        </p>
-
-                        <p>
-                            <strong>Customer:</strong>
-                            ${activeOrder.customer?.name || "Unknown"}
-                        </p>
-
-                        <p>
-                            <strong>Waiting:</strong>
-                            ${formatWaitingTime(activeOrder)}
-                        </p>
+            areaSection.className = "floor-area-group";
+            areaSection.innerHTML = `
+                <div class="floor-area-heading">
+                    <div>
+                        <span class="floor-area-icon">⌂</span>
+                        <div>
+                            <h3>${escapeFloorHtml(area)}</h3>
+                            <p>
+                                ${areaTables.length} ${areaTables.length === 1 ? "table" : "tables"}
+                                · ${activeAreaTables} active
+                            </p>
+                        </div>
                     </div>
-                `
-                : "";
-
-            card.innerHTML = `
-                <h3>🍽️ ${table.name}</h3>
-
-                <div class="floor-table-meta">
-                    <span>
-                        <strong>Code:</strong>
-                        ${table.number}
-                    </span>
-
-                    <span>
-                        <strong>Seats:</strong>
-                        ${table.capacity}
-                    </span>
-
-                    <span>
-                        <strong>Area:</strong>
-                        ${table.area}
-                    </span>
                 </div>
 
-                <span class="floor-table-status ${statusClass}">
-                    ${status}
-                </span>
-
-                ${orderInfo}
-
-                <div class="floor-table-actions">
-                    <button
-                        type="button"
-                        class="floor-edit-button"
-                        onclick="editTable('${table.id}')"
-                    >
-                        Edit
-                    </button>
-
-                    <button
-                        type="button"
-                        class="floor-toggle-button"
-                        onclick="toggleTable('${table.id}')"
-                    >
-                        ${table.enabled ? "Disable" : "Enable"}
-                    </button>
-
-                    <button
-                        type="button"
-                        class="floor-delete-button"
-                        onclick="deleteTable('${table.id}')"
-                    >
-                        Delete
-                    </button>
-                </div>
+                <div class="floor-area-table-grid"></div>
             `;
 
-            restaurantFloorGrid.appendChild(card);
+            const areaGrid =
+                areaSection.querySelector(".floor-area-table-grid");
+
+            areaTables.forEach(function (table) {
+                areaGrid.appendChild(createFloorTableCard(table));
+            });
+
+            restaurantFloorGrid.appendChild(areaSection);
         });
 }
 
@@ -198,7 +506,8 @@ function resetTableForm() {
     addTableForm.reset();
     tableEnabledInput.value = "true";
     addTableForm.hidden = true;
-    toggleAddTableForm.textContent = "+ Add Table";
+    toggleAddTableForm.innerHTML =
+        "<span>＋</span> Add Table";
 }
 
 function editTable(tableId) {
@@ -315,12 +624,16 @@ function deleteTable(tableId) {
 }
 
 function initRestaurantFloorModule() {
-    openRestaurantFloorLink.addEventListener(
-        "click",
-        function () {
-            restaurantFloorSection.open = true;
-        }
-    );
+    const elements = getFloorElements();
+
+    if (openRestaurantFloorLink) {
+        openRestaurantFloorLink.addEventListener(
+            "click",
+            function () {
+                restaurantFloorSection.open = true;
+            }
+        );
+    }
 
     toggleAddTableForm.addEventListener(
         "click",
@@ -329,10 +642,10 @@ function initRestaurantFloorModule() {
 
             addTableForm.hidden = !willOpen;
 
-            toggleAddTableForm.textContent =
+            toggleAddTableForm.innerHTML =
                 willOpen
-                    ? "Close Form"
-                    : "+ Add Table";
+                    ? "<span>×</span> Close Form"
+                    : "<span>＋</span> Add Table";
 
             if (willOpen) {
                 tableNameInput.focus();
@@ -344,6 +657,58 @@ function initRestaurantFloorModule() {
         "click",
         resetTableForm
     );
+
+    if (elements.search) {
+        elements.search.addEventListener(
+            "input",
+            function (event) {
+                floorSearchTerm = event.target.value.trim();
+                renderRestaurantFloor();
+            }
+        );
+    }
+
+    if (elements.filters) {
+        elements.filters.addEventListener(
+            "click",
+            function (event) {
+                const button =
+                    event.target.closest("[data-floor-area]");
+
+                if (!button) {
+                    return;
+                }
+
+                floorAreaFilter =
+                    button.dataset.floorArea || "all";
+
+                renderRestaurantFloor();
+            }
+        );
+    }
+
+    document
+        .querySelectorAll("[data-floor-view]")
+        .forEach(function (button) {
+            button.addEventListener(
+                "click",
+                function () {
+                    floorViewMode =
+                        button.dataset.floorView || "comfortable";
+
+                    localStorage.setItem(
+                        "tableTapFloorView",
+                        floorViewMode
+                    );
+
+                    renderRestaurantFloor();
+                }
+            );
+        });
+
+    floorViewMode =
+        localStorage.getItem("tableTapFloorView") ||
+        "comfortable";
 
     addTableForm.addEventListener(
         "submit",
@@ -407,4 +772,6 @@ function initRestaurantFloorModule() {
             resetTableForm();
         }
     );
+
+    renderRestaurantFloor();
 }

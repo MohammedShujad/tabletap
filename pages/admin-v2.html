@@ -739,7 +739,39 @@
            </span>
           </div>
          </div>
-         <div class="restaurant-floor-grid" id="restaurantFloorGrid">
+         <div aria-label="Restaurant floor controls" class="floor-operations-toolbar">
+          <label class="floor-search-control" for="floorTableSearch">
+           <span aria-hidden="true">
+            &telrec;
+           </span>
+           <input autocomplete="off" id="floorTableSearch" placeholder="Search table name or code" type="search"/>
+          </label>
+          <div aria-label="Filter tables by area" class="floor-area-filters" id="floorAreaFilters">
+           <button class="floor-filter-button active" data-floor-area="all" type="button">
+            All
+            <span id="floorAllCount">
+             0
+            </span>
+           </button>
+          </div>
+          <div aria-label="Table card density" class="floor-view-toggle">
+           <button class="floor-view-button active" data-floor-view="comfortable" id="floorComfortableView" title="Comfortable view" type="button">
+            ▦
+           </button>
+           <button class="floor-view-button" data-floor-view="compact" id="floorCompactView" title="Compact view" type="button">
+            ▦▦
+           </button>
+          </div>
+         </div>
+         <div class="floor-results-summary">
+          <strong id="floorVisibleCount">
+           0 tables
+          </strong>
+          <span id="floorActiveFilterText">
+           Showing all areas
+          </span>
+         </div>
+         <div aria-live="polite" class="restaurant-floor-grid floor-grouped-grid" id="restaurantFloorGrid">
          </div>
          <div class="history-empty floor-v2-empty" hidden="" id="restaurantFloorEmpty">
           <div class="floor-empty-icon">
