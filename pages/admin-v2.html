@@ -7,7 +7,7 @@
     <title>
         TableTap Admin V2
     </title>
- <link href="../css/admin.css?v=4" rel="stylesheet">
+<link href="../css/admin.css?v=5" rel="stylesheet">
 </head>
 
 <body>
@@ -1255,55 +1255,151 @@
         </section>
     </div>
 </section>
-                <section aria-label="Menu Management" class="admin-workspace" data-workspace-view="menu" hidden="">
-                    <details class="collapsible-section" id="menuManagement">
-                        <summary>
-                            Menu Management
-                        </summary>
-                        <div class="collapsible-content">
-                            <button class="action-button edit-button" id="addMenuItemBtn" style="margin-bottom:20px;">
-                                + Add New Menu Item
-                            </button>
-                            <div id="addItemForm" style="display:none; margin-bottom:20px;">
-                                <input class="form-control" id="foodName" placeholder="Food Name" />
-                                <select class="form-control" id="foodCategory">
-                                    <option value="">
-                                        Select Category
-                                    </option>
-                                </select>
-                                <input class="form-control" id="newCategory" placeholder="Or create a new category" />
-                                <input class="form-control" id="foodPrice" placeholder="Price" type="number" />
-                                <input class="form-control" id="foodImage" placeholder="Food Image URL" type="url" />
-                                <button class="action-button edit-button" id="saveNewItem">
-                                    Save Item
-                                </button>
-                            </div>
-                            <table class="menu-table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Name
-                                        </th>
-                                        <th>
-                                            Category
-                                        </th>
-                                        <th>
-                                            Price
-                                        </th>
-                                        <th>
-                                            Status
-                                        </th>
-                                        <th>
-                                            Actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="menuTableBody">
-                                </tbody>
-                            </table>
-                        </div>
-                    </details>
-                </section>
+               <section aria-label="Menu Management"
+         class="admin-workspace menu-management-workspace"
+         data-workspace-view="menu"
+         hidden>
+    <section class="menu-management-shell" id="menuManagement">
+        <section class="menu-management-hero">
+            <div>
+                <span class="dashboard-eyebrow">Catalog workspace</span>
+                <h2>Menu Management</h2>
+                <p>Manage pricing, availability, categories and customer-facing menu items.</p>
+            </div>
+            <button class="primary-button menu-add-button" id="addMenuItemBtn" type="button">
+                <span>＋</span> Add Menu Item
+            </button>
+        </section>
+
+        <section class="menu-summary-grid" aria-label="Menu summary">
+            <article class="menu-summary-card"><small>Total Items</small><strong id="menuSummaryTotal">0</strong><p>All menu items</p></article>
+            <article class="menu-summary-card"><small>Available</small><strong id="menuSummaryAvailable">0</strong><p>Visible to customers</p></article>
+            <article class="menu-summary-card"><small>Out of Stock</small><strong id="menuSummaryUnavailable">0</strong><p>Temporarily disabled</p></article>
+            <article class="menu-summary-card"><small>Categories</small><strong id="menuSummaryCategories">0</strong><p>Menu groups</p></article>
+        </section>
+
+        <section class="menu-management-panel">
+            <div class="menu-category-chips" id="menuCategoryChips"></div>
+
+            <div class="menu-management-toolbar">
+                <label class="menu-search-control" for="menuManagementSearch">
+                    <span>⌕</span>
+                    <input id="menuManagementSearch" type="search" placeholder="Search item name or category">
+                </label>
+
+                <select id="menuManagementCategoryFilter"><option value="all">All Categories</option></select>
+                <select id="menuManagementStatusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="available">Available</option>
+                    <option value="unavailable">Out of Stock</option>
+                </select>
+                <select id="menuManagementSort">
+                    <option value="name-asc">Name A–Z</option>
+                    <option value="name-desc">Name Z–A</option>
+                    <option value="price-high">Highest Price</option>
+                    <option value="price-low">Lowest Price</option>
+                    <option value="newest">Recently Updated</option>
+                </select>
+                <select id="menuManagementPageSize">
+                    <option value="25">25 rows</option>
+                    <option value="50">50 rows</option>
+                    <option value="100">100 rows</option>
+                </select>
+            </div>
+
+            <div class="menu-management-results">
+                <strong id="menuManagementRange">Showing 0 items</strong>
+                <span id="menuManagementActiveFilter">All menu items</span>
+            </div>
+
+            <div class="menu-management-table-wrap">
+                <table class="menu-management-table">
+                    <thead>
+                        <tr><th>Item</th><th>Category</th><th>Price</th><th>Status</th><th>Updated</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="menuTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="menu-management-pagination" id="menuManagementPagination" hidden>
+                <button id="menuManagementPrevPage" type="button">Previous</button>
+                <span id="menuManagementPageInfo">Page 1 of 1</span>
+                <button id="menuManagementNextPage" type="button">Next</button>
+            </div>
+
+            <div class="history-empty" id="menuManagementEmpty" hidden>
+                <h3>No menu items found</h3>
+                <p>Try another search or filter, or add a new menu item.</p>
+            </div>
+        </section>
+    </section>
+
+    <div class="menu-drawer" id="menuItemDrawer" aria-hidden="true">
+        <div class="menu-drawer-overlay" data-menu-drawer-close></div>
+        <aside class="menu-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="menuDrawerTitle">
+            <div class="menu-drawer-header">
+                <div>
+                    <span class="dashboard-eyebrow">Menu item</span>
+                    <h2 id="menuDrawerTitle">Add Menu Item</h2>
+                    <p id="menuDrawerSubtitle">Create a new customer-facing item.</p>
+                </div>
+                <button class="bill-modal-close" type="button" data-menu-drawer-close>&times;</button>
+            </div>
+
+            <form class="menu-item-form" id="menuItemForm" novalidate>
+                <input id="menuEditingItemId" type="hidden">
+                <div class="menu-image-preview" id="menuImagePreview"><span>🍽️</span><small>Image preview</small></div>
+
+                <div class="menu-form-field">
+                    <label for="foodName">Item Name</label>
+                    <input id="foodName" type="text" placeholder="Example: Chicken Burger" required>
+                </div>
+
+                <div class="menu-form-grid">
+                    <div class="menu-form-field">
+                        <label for="foodCategory">Category</label>
+                        <select id="foodCategory"><option value="">Select Category</option></select>
+                    </div>
+                    <div class="menu-form-field">
+                        <label for="newCategory">New Category</label>
+                        <input id="newCategory" type="text" placeholder="Optional">
+                    </div>
+                </div>
+
+                <div class="menu-form-field">
+                    <label for="foodPrice">Price</label>
+                    <div class="menu-price-input">
+                        <span id="menuFormCurrency">SAR</span>
+                        <input id="foodPrice" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <div class="menu-form-field">
+                    <label for="foodImage">Image URL</label>
+                    <input id="foodImage" type="url" placeholder="https://example.com/item.jpg">
+                </div>
+
+                <div class="menu-form-field">
+                    <label for="foodDescription">Description</label>
+                    <textarea id="foodDescription" rows="4" placeholder="Optional short description"></textarea>
+                </div>
+
+                <label class="menu-availability-toggle">
+                    <input id="foodAvailable" type="checkbox" checked>
+                    <span class="menu-toggle-track"><span></span></span>
+                    <span><strong>Available to customers</strong><small>Turn off when the item is sold out.</small></span>
+                </label>
+
+                <div class="menu-form-message" id="menuFormMessage"></div>
+
+                <div class="menu-drawer-actions">
+                    <button class="secondary-button" type="button" data-menu-drawer-close>Cancel</button>
+                    <button class="primary-button" id="saveNewItem" type="submit">Save Item</button>
+                </div>
+            </form>
+        </aside>
+    </div>
+</section>
                 <section aria-label="Restaurant Settings" class="admin-workspace" data-workspace-view="settings"
                     hidden="">
                     <details class="collapsible-section" id="restaurantSettings">
@@ -1429,7 +1525,7 @@
     </script>
     <script src="../js/order-history.js?v=2">
     </script>
-    <script src="../js/menu-management.js">
+   <script src="../js/menu-management.js?v=2">
     </script>
     <script src="../js/admin-navigation.js">
     </script>
