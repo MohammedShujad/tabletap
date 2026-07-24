@@ -7,7 +7,7 @@
     <title>
         TableTap Admin V2
     </title>
-    <link href="../css/admin.css?v=2" rel="stylesheet" />
+   <link href="../css/admin.css?v=3" rel="stylesheet">
 </head>
 
 <body>
@@ -945,122 +945,139 @@
                         </section>
                     </div>
                 </section>
-                <section aria-label="Payment Records" class="admin-workspace" data-workspace-view="payments" hidden="">
-                    <details class="collapsible-section" id="paymentRecordsSection" open="">
-                        <summary>
-                            💰 Payment Records
-                        </summary>
-                        <div class="collapsible-content">
-                            <div class="payment-records-heading">
+                <section aria-label="Payment Records" class="admin-workspace payment-records-workspace"
+                    data-workspace-view="payments" hidden>
+                    <details class="collapsible-section payment-records-workspace-card" id="paymentRecordsSection" open>
+                        <summary class="payment-records-native-summary">💰 Payment Records</summary>
+
+                        <div class="collapsible-content payment-records-v2-content">
+                            <section class="payment-records-hero">
                                 <div>
-                                    <h2>
-                                        Completed Payments
-                                    </h2>
-                                    <p>
-                                        Review paid orders, payment methods, VAT and totals.
-                                    </p>
+                                    <span class="dashboard-eyebrow">Transaction ledger</span>
+                                    <h2>Payment Records</h2>
+                                    <p>Review completed payments, VAT and daily collections.</p>
                                 </div>
+
                                 <span class="billing-count" id="paymentRecordsCount">
                                     0 payments
                                 </span>
-                            </div>
-                            <div class="payment-summary-grid">
-                                <div class="payment-summary-card">
-                                    <small>
-                                        Payments
-                                    </small>
-                                    <strong id="paymentSummaryCount">
-                                        0
-                                    </strong>
-                                </div>
-                                <div class="payment-summary-card">
-                                    <small>
-                                        Subtotal
-                                    </small>
+                            </section>
+
+                            <section class="payment-summary-grid payment-summary-grid-v2">
+                                <article class="payment-summary-card">
+                                    <small>Payments</small>
+                                    <strong id="paymentSummaryCount">0</strong>
+                                    <p>Filtered transactions</p>
+                                </article>
+
+                                <article class="payment-summary-card">
+                                    <small>Subtotal</small>
                                     <strong>
-                                        <span id="paymentSummaryCurrency1">
-                                            SAR
-                                        </span>
-                                        <span id="paymentSummarySubtotal">
-                                            0.00
-                                        </span>
+                                        <span id="paymentSummaryCurrency1">SAR</span>
+                                        <span id="paymentSummarySubtotal">0.00</span>
                                     </strong>
-                                </div>
-                                <div class="payment-summary-card">
-                                    <small>
-                                        VAT Collected
-                                    </small>
+                                    <p>Before VAT</p>
+                                </article>
+
+                                <article class="payment-summary-card">
+                                    <small>VAT Collected</small>
                                     <strong>
-                                        <span id="paymentSummaryCurrency2">
-                                            SAR
-                                        </span>
-                                        <span id="paymentSummaryVat">
-                                            0.00
-                                        </span>
+                                        <span id="paymentSummaryCurrency2">SAR</span>
+                                        <span id="paymentSummaryVat">0.00</span>
                                     </strong>
-                                </div>
-                                <div class="payment-summary-card">
-                                    <small>
-                                        Total Collected
-                                    </small>
+                                    <p>Tax collected</p>
+                                </article>
+
+                                <article class="payment-summary-card">
+                                    <small>Total Collected</small>
                                     <strong>
-                                        <span id="paymentSummaryCurrency3">
-                                            SAR
-                                        </span>
-                                        <span id="paymentSummaryTotal">
-                                            0.00
-                                        </span>
+                                        <span id="paymentSummaryCurrency3">SAR</span>
+                                        <span id="paymentSummaryTotal">0.00</span>
                                     </strong>
+                                    <p>Gross payments</p>
+                                </article>
+
+                                <article class="payment-summary-card">
+                                    <small>Average Bill</small>
+                                    <strong id="paymentSummaryAverage">SAR 0.00</strong>
+                                    <p>Average transaction value</p>
+                                </article>
+                            </section>
+
+                            <section class="payment-ledger-panel">
+                                <div class="payment-ledger-toolbar">
+                                    <label class="payment-search-control" for="paymentRecordSearch">
+                                        <span aria-hidden="true">⌕</span>
+                                        <input id="paymentRecordSearch"
+                                            placeholder="Search order ID, customer, phone or table" type="search"
+                                            autocomplete="off">
+                                    </label>
+
+                                    <select id="paymentRecordDateFilter">
+                                        <option value="today">Today</option>
+                                        <option value="yesterday">Yesterday</option>
+                                        <option value="week">Last 7 Days</option>
+                                        <option value="month">This Month</option>
+                                        <option value="all">All Time</option>
+                                    </select>
+
+                                    <select id="paymentRecordMethodFilter">
+                                        <option value="all">All Payment Methods</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Card">Card</option>
+                                        <option value="Apple Pay">Apple Pay</option>
+                                        <option value="Pay at Counter">Pay at Counter</option>
+                                    </select>
+
+                                    <select id="paymentRecordSort">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                        <option value="highest">Highest Total</option>
+                                        <option value="lowest">Lowest Total</option>
+                                    </select>
+
+                                    <select id="paymentRecordPageSize">
+                                        <option value="25">25 rows</option>
+                                        <option value="50">50 rows</option>
+                                        <option value="100">100 rows</option>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="payment-records-toolbar">
-                                <input id="paymentRecordSearch" placeholder="Search order ID, customer, phone or table"
-                                    type="search" />
-                                <select id="paymentRecordDateFilter">
-                                    <option value="today">
-                                        Today
-                                    </option>
-                                    <option value="yesterday">
-                                        Yesterday
-                                    </option>
-                                    <option value="week">
-                                        Last 7 Days
-                                    </option>
-                                    <option value="month">
-                                        This Month
-                                    </option>
-                                    <option value="all">
-                                        All Time
-                                    </option>
-                                </select>
-                                <select id="paymentRecordMethodFilter">
-                                    <option value="all">
-                                        All Payment Methods
-                                    </option>
-                                    <option value="Cash">
-                                        Cash
-                                    </option>
-                                    <option value="Card">
-                                        Card
-                                    </option>
-                                    <option value="Apple Pay">
-                                        Apple Pay
-                                    </option>
-                                    <option value="Pay at Counter">
-                                        Pay at Counter
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="payment-records-grid" id="paymentRecordsGrid">
-                            </div>
-                            <div class="history-empty" hidden="" id="paymentRecordsEmpty">
-                                <h3>
-                                    No payment records found
-                                </h3>
-                                <p>
-                                    Paid orders will appear here automatically.
-                                </p>
-                            </div>
+
+                                <div class="payment-ledger-summary">
+                                    <strong id="paymentRecordRange">Showing 0 records</strong>
+                                    <span id="paymentRecordFilterSummary">Today</span>
+                                </div>
+
+                                <div class="payment-ledger-table-wrap">
+                                    <table class="payment-ledger-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Order ID</th>
+                                                <th>Table</th>
+                                                <th>Customer</th>
+                                                <th>Method</th>
+                                                <th>Subtotal</th>
+                                                <th>VAT</th>
+                                                <th>Total</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="paymentRecordsGrid"></tbody>
+                                    </table>
+                                </div>
+
+                                <div class="payment-pagination" id="paymentPagination" hidden>
+                                    <button id="paymentPrevPage" type="button">Previous</button>
+                                    <span id="paymentPageInfo">Page 1 of 1</span>
+                                    <button id="paymentNextPage" type="button">Next</button>
+                                </div>
+
+                                <div class="history-empty" hidden id="paymentRecordsEmpty">
+                                    <h3>No payment records found</h3>
+                                    <p>Paid orders will appear here automatically.</p>
+                                </div>
+                            </section>
                         </div>
                     </details>
                 </section>
@@ -1287,7 +1304,7 @@
     </script>
     <script src="../js/billing.js?v=2">
     </script>
-    <script src="../js/payment-records.js">
+  <script src="../js/payment-records.js?v=3">
     </script>
     <script src="../js/analytics.js">
     </script>
