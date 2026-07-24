@@ -7,7 +7,7 @@
     <title>
         TableTap Admin V2
     </title>
-   <link href="../css/admin.css?v=3" rel="stylesheet">
+ <link href="../css/admin.css?v=4" rel="stylesheet">
 </head>
 
 <body>
@@ -1081,61 +1081,180 @@
                         </div>
                     </details>
                 </section>
-                <section aria-label="Order History" class="admin-workspace" data-workspace-view="orders" hidden="">
-                    <section class="admin-section" id="orderHistory">
-                        <h2>
-                            Order History
-                        </h2>
-                        <div class="order-history-toolbar">
-                            <input id="orderSearch" placeholder="Search order ID, customer name or phone"
-                                type="search" />
-                            <select aria-label="Order date filter" id="orderDateFilter">
-                                <option value="today">
-                                    Today&rsquo;s Orders
-                                </option>
-                                <option value="yesterday">
-                                    Yesterday
-                                </option>
-                                <option value="week">
-                                    Last 7 Days
-                                </option>
-                                <option value="all">
-                                    All Time
-                                </option>
-                            </select>
-                            <select aria-label="Order status filter" id="orderStatusFilter">
-                                <option value="all">
-                                    All Statuses
-                                </option>
-                                <option value="New">
-                                    New
-                                </option>
-                                <option value="Accepted">
-                                    Accepted
-                                </option>
-                                <option value="Preparing">
-                                    Preparing
-                                </option>
-                                <option value="Ready">
-                                    Ready
-                                </option>
-                                <option value="Completed">
-                                    Completed
-                                </option>
-                            </select>
-                        </div>
-                        <div class="order-history-summary">
-                            <p class="order-history-count" id="orderHistoryCount">
-                                0 orders found
-                            </p>
-                            <span class="active-history-filter" id="activeHistoryFilter">
-                                Showing today&rsquo;s orders
-                            </span>
-                        </div>
-                        <div class="order-history-grid" id="orderHistoryContainer">
-                        </div>
-                    </section>
-                </section>
+              <section aria-label="Order History"
+         class="admin-workspace order-history-workspace"
+         data-workspace-view="orders"
+         hidden>
+    <section class="order-history-v2-shell" id="orderHistory">
+        <section class="order-history-hero">
+            <div>
+                <span class="dashboard-eyebrow">Order archive</span>
+                <h2>Order History</h2>
+                <p>Find any order quickly and review its complete details.</p>
+            </div>
+
+            <span class="billing-count" id="orderHistoryCount">
+                0 orders
+            </span>
+        </section>
+
+        <section class="order-history-summary-grid"
+                 aria-label="Order history summary">
+            <article class="order-history-summary-card">
+                <small>Total Orders</small>
+                <strong id="orderHistoryTotalCount">0</strong>
+                <p>Filtered records</p>
+            </article>
+
+            <article class="order-history-summary-card">
+                <small>Active</small>
+                <strong id="orderHistoryActiveCount">0</strong>
+                <p>Still in progress</p>
+            </article>
+
+            <article class="order-history-summary-card">
+                <small>Completed</small>
+                <strong id="orderHistoryCompletedCount">0</strong>
+                <p>Finished orders</p>
+            </article>
+
+            <article class="order-history-summary-card">
+                <small>Cancelled</small>
+                <strong id="orderHistoryCancelledCount">0</strong>
+                <p>Cancelled orders</p>
+            </article>
+        </section>
+
+        <section class="order-history-ledger-panel">
+            <div class="order-history-toolbar-v2">
+                <label class="order-history-search-control"
+                       for="orderSearch">
+                    <span aria-hidden="true">⌕</span>
+                    <input id="orderSearch"
+                           type="search"
+                           placeholder="Search order ID, customer, phone or table"
+                           autocomplete="off">
+                </label>
+
+                <select aria-label="Order date filter"
+                        id="orderDateFilter">
+                    <option value="today">Today’s Orders</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="week">Last 7 Days</option>
+                    <option value="all">All Time</option>
+                </select>
+
+                <select aria-label="Order status filter"
+                        id="orderStatusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="New">New</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Preparing">Preparing</option>
+                    <option value="Ready">Ready</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+
+                <select id="orderHistorySort"
+                        aria-label="Sort orders">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="highest">Highest Total</option>
+                    <option value="lowest">Lowest Total</option>
+                </select>
+
+                <select id="orderHistoryPageSize"
+                        aria-label="Orders per page">
+                    <option value="25">25 rows</option>
+                    <option value="50">50 rows</option>
+                    <option value="100">100 rows</option>
+                </select>
+            </div>
+
+            <div class="order-history-summary-row">
+                <strong id="orderHistoryRange">Showing 0 records</strong>
+                <span class="active-history-filter"
+                      id="activeHistoryFilter">
+                    Showing today’s orders
+                </span>
+            </div>
+
+            <div class="order-history-table-wrap">
+                <table class="order-history-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Order ID</th>
+                            <th>Table</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="orderHistoryContainer"></tbody>
+                </table>
+            </div>
+
+            <div class="order-history-pagination"
+                 id="orderHistoryPagination"
+                 hidden>
+                <button id="orderHistoryPrevPage"
+                        type="button">
+                    Previous
+                </button>
+
+                <span id="orderHistoryPageInfo">
+                    Page 1 of 1
+                </span>
+
+                <button id="orderHistoryNextPage"
+                        type="button">
+                    Next
+                </button>
+            </div>
+
+            <div class="history-empty"
+                 id="orderHistoryEmpty"
+                 hidden>
+                <h3>No orders found</h3>
+                <p>Try another search, date or status filter.</p>
+            </div>
+        </section>
+    </section>
+
+    <div class="order-details-modal"
+         id="orderDetailsModal"
+         aria-hidden="true">
+        <div class="order-details-overlay"
+             data-order-details-close></div>
+
+        <section class="order-details-panel"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="orderDetailsTitle">
+            <div class="order-details-header">
+                <div>
+                    <span class="dashboard-eyebrow">Order details</span>
+                    <h2 id="orderDetailsTitle">Order</h2>
+                    <p id="orderDetailsSubtitle"></p>
+                </div>
+
+                <button class="bill-modal-close"
+                        type="button"
+                        aria-label="Close order details"
+                        data-order-details-close>
+                    &times;
+                </button>
+            </div>
+
+            <div class="order-details-content"
+                 id="orderDetailsContent"></div>
+        </section>
+    </div>
+</section>
                 <section aria-label="Menu Management" class="admin-workspace" data-workspace-view="menu" hidden="">
                     <details class="collapsible-section" id="menuManagement">
                         <summary>
@@ -1308,7 +1427,7 @@
     </script>
     <script src="../js/analytics.js">
     </script>
-    <script src="../js/order-history.js">
+    <script src="../js/order-history.js?v=2">
     </script>
     <script src="../js/menu-management.js">
     </script>
