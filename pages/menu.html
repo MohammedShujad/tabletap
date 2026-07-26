@@ -1,40 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="theme-color"
-        content="#7f1117"
-    >
+    <meta name="theme-color" content="#7f1117">
 
     <title>Restaurant Menu</title>
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
-    <link
-        rel="stylesheet"
-        href="../css/menu.css"
-    >
+   <link rel="stylesheet" href="../css/menu.css?v=2">
 </head>
 
 <body>
@@ -45,16 +29,10 @@
 
         <div class="header-content">
 
-            <div
-                id="restaurantLogo"
-                class="logo"
-            >
+            <div id="restaurantLogo" class="logo">
                 <span class="logo-icon">🍽️</span>
 
-                <span
-                    id="restaurantName"
-                    class="restaurant-name"
-                >
+                <span id="restaurantName" class="restaurant-name">
                     Green & Red Restaurant
                 </span>
             </div>
@@ -113,10 +91,7 @@
                 </span>
             </div>
 
-            <div
-                id="categoryList"
-                class="category-list"
-            ></div>
+            <div id="categoryList" class="category-list"></div>
 
         </section>
 
@@ -134,21 +109,13 @@
                 </div>
             </div>
 
-            <section
-                id="menuContainer"
-                class="menu-container"
-            ></section>
+            <section id="menuContainer" class="menu-container"></section>
 
         </section>
 
     </main>
 
-    <button
-        id="openCart"
-        class="cart-bar"
-        type="button"
-        aria-label="Open shopping cart"
-    >
+    <button id="openCart" class="cart-bar" type="button" aria-label="Open shopping cart">
         <span class="cart-bar-icon">
             🛒
         </span>
@@ -157,24 +124,14 @@
             View Cart
         </span>
 
-        <span
-            id="cartCount"
-            class="cart-count"
-        >
+        <span id="cartCount" class="cart-count">
             0
         </span>
     </button>
 
-    <div
-        id="cartOverlay"
-        class="cart-overlay"
-    ></div>
+    <div id="cartOverlay" class="cart-overlay"></div>
 
-    <aside
-        id="cartPanel"
-        class="cart-panel"
-        aria-label="Shopping cart"
-    >
+    <aside id="cartPanel" class="cart-panel" aria-label="Shopping cart">
 
         <div class="cart-panel-header">
 
@@ -188,12 +145,7 @@
                 </h2>
             </div>
 
-            <button
-                id="closeCart"
-                class="close-cart"
-                type="button"
-                aria-label="Close shopping cart"
-            >
+            <button id="closeCart" class="close-cart" type="button" aria-label="Close shopping cart">
                 ×
             </button>
 
@@ -223,10 +175,7 @@
             <span>Confirm</span>
         </div>
 
-        <div
-            id="cartItems"
-            class="cart-items"
-        >
+        <div id="cartItems" class="cart-items">
             <p class="empty-cart">
                 Your cart is empty.
             </p>
@@ -254,11 +203,7 @@
 
         </div>
 
-        <button
-            class="checkout-button"
-            type="button"
-            onclick="window.location.href='customer.html'"
-        >
+        <button class="checkout-button" type="button" onclick="window.location.href='customer.html'">
             Continue to customer details
 
             <span>
@@ -269,10 +214,112 @@
         <p class="checkout-note">
             Your order will not be submitted until confirmation.
         </p>
-
+        <button id="callWaiterButton" class="service-button" type="button">
+            Need Assistance?
+        </button>
     </aside>
+        </aside>
 
-    <script src="../js/menu.js"></script>
+    <!-- Paste the complete service request popup here -->
 
+    <div
+        id="serviceRequestOverlay"
+        class="service-request-overlay"
+    ></div>
+
+   <section
+    id="serviceRequestModal"
+    class="service-request-modal"
+    aria-hidden="true"
+    aria-labelledby="serviceRequestTitle"
+>
+    <div class="service-request-header">
+        <div>
+            <span class="mini-label">
+                Table service
+            </span>
+
+            <h2 id="serviceRequestTitle">
+                How can we help?
+            </h2>
+        </div>
+
+        <button
+            id="closeServiceRequest"
+            class="close-service-request"
+            type="button"
+            aria-label="Close service request"
+        >
+            ×
+        </button>
+    </div>
+
+    <div class="service-request-options">
+        <button
+            class="service-request-option"
+            data-request-type="Waiter"
+            type="button"
+        >
+            <span>👨‍🍳</span>
+            Call Waiter
+        </button>
+
+        <button
+            class="service-request-option"
+            data-request-type="Water"
+            type="button"
+        >
+            <span>💧</span>
+            Water
+        </button>
+
+        <button
+            class="service-request-option"
+            data-request-type="Bill"
+            type="button"
+        >
+            <span>💳</span>
+            Request Bill
+        </button>
+
+        <button
+            class="service-request-option"
+            data-request-type="Cleaning"
+            type="button"
+        >
+            <span>🧹</span>
+            Clean Table
+        </button>
+
+        <button
+            class="service-request-option"
+            data-request-type="Other"
+            type="button"
+        >
+            <span>✍️</span>
+            Other Help
+        </button>
+    </div>
+
+    <label
+        class="service-request-notes"
+        for="serviceRequestNotes"
+    >
+        <span>Extra details (optional)</span>
+
+        <textarea
+            id="serviceRequestNotes"
+            placeholder="Example: Please bring two glasses."
+        ></textarea>
+    </label>
+
+    <div
+        id="serviceRequestMessage"
+        class="service-request-message"
+    ></div>
+</section>
+
+<script src="../js/menu.js"></script>
+<script src="../js/waiter-requests-customer.js?v=1"></script>
 </body>
 </html>

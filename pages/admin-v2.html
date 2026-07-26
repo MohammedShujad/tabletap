@@ -7,7 +7,7 @@
     <title>
         TableTap Admin V2
     </title>
-    <link href="../css/admin.css?v=11" rel="stylesheet">
+    <link href="../css/admin.css?v=12" rel="stylesheet">
 </head>
 
 <body>
@@ -95,26 +95,45 @@
                         Menu Management
                     </span>
                 </button>
-                <button class="admin-nav-button" data-admin-view="settings" data-view-title="Restaurant Settings"
+                </button>
+
+                <!-- Service Requests -->
+                <button class="admin-nav-button" data-admin-view="service-requests" data-view-title="Service Requests"
                     type="button">
                     <span class="admin-nav-icon">
-                        ⚙
+                        🔔
                     </span>
+
                     <span>
-                        Restaurant Settings
+                        Service Requests
                     </span>
+
+                    <strong id="serviceRequestNavCount" class="service-request-nav-count">
+                        0
+                    </strong>
                 </button>
-                <p class="admin-nav-label">
-                    Open pages
-                </p>
-                <a class="admin-nav-link" href="menu.html">
-                    <span class="admin-nav-icon">
-                        &nearrow;
-                    </span>
-                    <span>
-                        Customer Menu
-                    </span>
-                </a>
+
+                <button class="admin-nav-button" data-admin-view="settings" data-view-title="Restaurant Settings"
+                    type="button">
+                   
+                        <span class="admin-nav-icon">
+                            ⚙
+                        </span>
+                        <span>
+                            Restaurant Settings
+                        </span>
+                    </button>
+                    <p class="admin-nav-label">
+                        Open pages
+                    </p>
+                    <a class="admin-nav-link" href="menu.html">
+                        <span class="admin-nav-icon">
+                            &nearrow;
+                        </span>
+                        <span>
+                            Customer Menu
+                        </span>
+                    </a>
             </nav>
             <div class="admin-sidebar-footer">
                 <div class="admin-restaurant-profile">
@@ -1211,6 +1230,271 @@
                         </aside>
                     </div>
                 </section>
+                <section
+    aria-label="Service Requests"
+    class="admin-workspace service-requests-workspace"
+    data-workspace-view="service-requests"
+    hidden
+>
+    <section
+        class="service-requests-shell"
+        id="serviceRequestsWorkspace"
+    >
+        <section class="service-requests-hero">
+            <div>
+                <span class="dashboard-eyebrow">
+                    Live table service
+                </span>
+
+                <h2>
+                    Service Requests
+                </h2>
+
+                <p>
+                    Review, accept and complete assistance requests
+                    sent by customers from their tables.
+                </p>
+            </div>
+
+            <div class="service-requests-live-status">
+                <span></span>
+
+                <div>
+                    <strong>Live requests</strong>
+                    <small>Updates automatically</small>
+                </div>
+            </div>
+        </section>
+
+        <section
+            class="service-requests-summary-grid"
+            aria-label="Service request summary"
+        >
+            <article class="service-request-summary-card">
+                <small>New Requests</small>
+
+                <strong id="serviceRequestsNewCount">
+                    0
+                </strong>
+
+                <p>Waiting for staff</p>
+            </article>
+
+            <article class="service-request-summary-card">
+                <small>Accepted</small>
+
+                <strong id="serviceRequestsAcceptedCount">
+                    0
+                </strong>
+
+                <p>Staff on the way</p>
+            </article>
+
+            <article class="service-request-summary-card">
+                <small>Completed Today</small>
+
+                <strong id="serviceRequestsCompletedCount">
+                    0
+                </strong>
+
+                <p>Finished requests</p>
+            </article>
+
+            <article class="service-request-summary-card">
+                <small>Average Response</small>
+
+                <strong id="serviceRequestsAverageTime">
+                    0 min
+                </strong>
+
+                <p>Time before acceptance</p>
+            </article>
+        </section>
+
+        <section class="service-requests-panel">
+            <div class="service-requests-toolbar">
+                <label
+                    class="service-request-search-control"
+                    for="serviceRequestSearch"
+                >
+                    <span aria-hidden="true">
+                        ⌕
+                    </span>
+
+                    <input
+                        id="serviceRequestSearch"
+                        type="search"
+                        placeholder="Search table, customer or request"
+                        autocomplete="off"
+                    >
+                </label>
+
+                <select
+                    id="serviceRequestStatusFilter"
+                    aria-label="Filter service requests by status"
+                >
+                    <option value="all">
+                        All Statuses
+                    </option>
+
+                    <option value="New">
+                        New
+                    </option>
+
+                    <option value="Accepted">
+                        Accepted
+                    </option>
+
+                    <option value="Completed">
+                        Completed
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+                </select>
+
+                <select
+                    id="serviceRequestTypeFilter"
+                    aria-label="Filter service requests by type"
+                >
+                    <option value="all">
+                        All Request Types
+                    </option>
+
+                    <option value="Waiter">
+                        Call Waiter
+                    </option>
+
+                    <option value="Water">
+                        Water
+                    </option>
+
+                    <option value="Bill">
+                        Request Bill
+                    </option>
+
+                    <option value="Cleaning">
+                        Clean Table
+                    </option>
+
+                    <option value="Other">
+                        Other Help
+                    </option>
+                </select>
+
+                <select
+                    id="serviceRequestSort"
+                    aria-label="Sort service requests"
+                >
+                    <option value="oldest">
+                        Oldest First
+                    </option>
+
+                    <option value="newest">
+                        Newest First
+                    </option>
+
+                    <option value="urgent">
+                        Longest Waiting
+                    </option>
+                </select>
+            </div>
+
+            <div class="service-requests-results-row">
+                <strong id="serviceRequestVisibleCount">
+                    0 requests
+                </strong>
+
+                <span id="serviceRequestActiveFilter">
+                    Showing all service requests
+                </span>
+            </div>
+
+            <div
+                class="service-request-board"
+                id="serviceRequestBoard"
+            >
+                <section class="service-request-column">
+                    <header>
+                        <div>
+                            <span class="service-request-column-dot new"></span>
+
+                            <h3>
+                                New
+                            </h3>
+                        </div>
+
+                        <strong id="serviceRequestNewColumnCount">
+                            0
+                        </strong>
+                    </header>
+
+                    <div
+                        class="service-request-column-body"
+                        id="serviceRequestNewList"
+                    ></div>
+                </section>
+
+                <section class="service-request-column">
+                    <header>
+                        <div>
+                            <span class="service-request-column-dot accepted"></span>
+
+                            <h3>
+                                Accepted
+                            </h3>
+                        </div>
+
+                        <strong id="serviceRequestAcceptedColumnCount">
+                            0
+                        </strong>
+                    </header>
+
+                    <div
+                        class="service-request-column-body"
+                        id="serviceRequestAcceptedList"
+                    ></div>
+                </section>
+
+                <section class="service-request-column">
+                    <header>
+                        <div>
+                            <span class="service-request-column-dot completed"></span>
+
+                            <h3>
+                                Completed
+                            </h3>
+                        </div>
+
+                        <strong id="serviceRequestCompletedColumnCount">
+                            0
+                        </strong>
+                    </header>
+
+                    <div
+                        class="service-request-column-body"
+                        id="serviceRequestCompletedList"
+                    ></div>
+                </section>
+            </div>
+
+            <div
+                class="history-empty service-requests-empty"
+                id="serviceRequestsEmpty"
+                hidden
+            >
+                <h3>
+                    No service requests found
+                </h3>
+
+                <p>
+                    Customer requests will appear here automatically.
+                </p>
+            </div>
+        </section>
+    </section>
+</section>
                 <section aria-label="Restaurant Settings" class="admin-workspace settings-workspace"
                     data-workspace-view="settings" hidden>
                     <details class="collapsible-section settings-shell" id="restaurantSettings" open>
@@ -1656,9 +1940,13 @@
     </script>
     <script src="../js/order-history.js?v=2">
     </script>
-    <script src="../js/menu-management.js?v=2">
-    </script>
-    <script src="../js/admin-navigation.js">
+   <script src="../js/menu-management.js?v=2"></script>
+
+<script src="../js/waiter-requests-admin.js?v=1"></script>
+
+<script src="../js/admin-navigation.js"></script>
+
+<script src="../js/admin.js"></script>
     </script>
     <script src="../js/admin.js">
     </script>
