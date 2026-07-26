@@ -7,7 +7,7 @@
     <title>
         TableTap Admin V2
     </title>
-    <link href="../css/admin.css?v=10" rel="stylesheet">
+    <link href="../css/admin.css?v=11" rel="stylesheet">
 </head>
 
 <body>
@@ -1211,109 +1211,430 @@
                         </aside>
                     </div>
                 </section>
-                <section aria-label="Restaurant Settings" class="admin-workspace" data-workspace-view="settings"
-                    hidden="">
-                    <details class="collapsible-section" id="restaurantSettings">
-                        <summary>
+                <section aria-label="Restaurant Settings" class="admin-workspace settings-workspace"
+                    data-workspace-view="settings" hidden>
+                    <details class="collapsible-section settings-shell" id="restaurantSettings" open>
+                        <summary class="settings-native-summary">
                             Restaurant Settings
                         </summary>
-                        <div class="collapsible-content">
-                            <div class="settings-grid">
-                                <div class="settings-field">
-                                    <label for="settingRestaurantName">
-                                        Restaurant Name
-                                    </label>
-                                    <input id="settingRestaurantName" placeholder="Green &amp; Red Restaurant"
-                                        type="text" />
+
+                        <div class="collapsible-content settings-v2-content">
+                            <section class="settings-hero">
+                                <div>
+                                    <span class="settings-eyebrow">Configuration workspace</span>
+                                    <h2>Restaurant Settings</h2>
+                                    <p>
+                                        Manage business details, billing, kitchen behaviour,
+                                        customer experience and system data.
+                                    </p>
                                 </div>
-                                <div class="settings-field">
-                                    <label for="settingBranchName">
-                                        Branch Name
-                                    </label>
-                                    <input id="settingBranchName" placeholder="Main Branch" type="text" />
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingPhone">
-                                        Phone Number
-                                    </label>
-                                    <input id="settingPhone" placeholder="+966 5X XXX XXXX" type="tel" />
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingWhatsApp">
-                                        WhatsApp Number
-                                    </label>
-                                    <input id="settingWhatsApp" placeholder="+966 5X XXX XXXX" type="tel" />
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingEmail">
-                                        Email
-                                    </label>
-                                    <input id="settingEmail" placeholder="restaurant@example.com" type="email" />
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingOpeningHours">
-                                        Opening Hours
-                                    </label>
-                                    <input id="settingOpeningHours" placeholder="10:00 AM &ndash; 12:00 AM"
-                                        type="text" />
-                                </div>
-                                <div class="settings-field full-width">
-                                    <label for="settingAddress">
-                                        Address
-                                    </label>
-                                    <textarea id="settingAddress" placeholder="Restaurant address"></textarea>
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingVatNumber">
-                                        VAT Registration Number
-                                    </label>
-                                    <input id="settingVatNumber" placeholder="15-digit VAT number" type="text" />
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingVatPercent">
-                                        VAT Percentage
-                                    </label>
-                                    <input id="settingVatPercent" max="100" min="0" placeholder="15" step="0.01"
-                                        type="number" />
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingCurrency">
-                                        Currency
-                                    </label>
-                                    <select id="settingCurrency">
-                                        <option value="SAR">
-                                            SAR &mdash; Saudi Riyal
-                                        </option>
-                                        <option value="AED">
-                                            AED &mdash; UAE Dirham
-                                        </option>
-                                        <option value="USD">
-                                            USD &mdash; US Dollar
-                                        </option>
-                                        <option value="INR">
-                                            INR &mdash; Indian Rupee
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="settings-field">
-                                    <label for="settingLogoUrl">
-                                        Logo URL
-                                    </label>
-                                    <input id="settingLogoUrl" placeholder="https://example.com/logo.png" type="url" />
-                                </div>
-                                <div class="settings-field full-width">
-                                    <label for="settingReceiptFooter">
-                                        Receipt Footer
-                                    </label>
-                                    <textarea id="settingReceiptFooter"
-                                        placeholder="Thank you. Please visit again."></textarea>
-                                </div>
-                                <div class="settings-actions">
+
+                                <div class="settings-save-area">
+                                    <span class="settings-message" id="settingsSavedMessage"></span>
+
                                     <button class="save-settings-button" id="saveRestaurantSettings" type="button">
-                                        Save Settings
+                                        Save Changes
                                     </button>
-                                    <span class="settings-message" id="settingsSavedMessage">
-                                    </span>
+                                </div>
+                            </section>
+
+                            <nav class="settings-tabs" aria-label="Restaurant settings categories">
+                                <button class="settings-tab active" data-settings-tab="profile" type="button">
+                                    Business Profile
+                                </button>
+
+                                <button class="settings-tab" data-settings-tab="billing" type="button">
+                                    Billing &amp; Tax
+                                </button>
+
+                                <button class="settings-tab" data-settings-tab="operations" type="button">
+                                    Operations
+                                </button>
+
+                                <button class="settings-tab" data-settings-tab="customer" type="button">
+                                    Customer Experience
+                                </button>
+
+                                <button class="settings-tab" data-settings-tab="system" type="button">
+                                    System
+                                </button>
+                            </nav>
+
+                            <div class="settings-panel active" data-settings-panel="profile">
+                                <div class="settings-panel-heading">
+                                    <div>
+                                        <span class="settings-eyebrow">Business identity</span>
+                                        <h3>Restaurant Profile</h3>
+                                        <p>Information shown across the admin panel, kitchen and receipts.</p>
+                                    </div>
+                                </div>
+
+                                <div class="settings-layout-grid">
+                                    <div class="settings-form-card">
+                                        <div class="settings-grid">
+                                            <div class="settings-field">
+                                                <label for="settingRestaurantName">
+                                                    Restaurant Name
+                                                </label>
+                                                <input id="settingRestaurantName" placeholder="Crave" type="text">
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingBranchName">
+                                                    Branch Name
+                                                </label>
+                                                <input id="settingBranchName" placeholder="Main Branch" type="text">
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingPhone">
+                                                    Phone Number
+                                                </label>
+                                                <input id="settingPhone" placeholder="+966 5X XXX XXXX" type="tel">
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingWhatsApp">
+                                                    WhatsApp Number
+                                                </label>
+                                                <input id="settingWhatsApp" placeholder="+966 5X XXX XXXX" type="tel">
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingEmail">
+                                                    Email
+                                                </label>
+                                                <input id="settingEmail" placeholder="restaurant@example.com"
+                                                    type="email">
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingOpeningHours">
+                                                    Opening Hours
+                                                </label>
+                                                <input id="settingOpeningHours" placeholder="10:00 AM – 12:00 AM"
+                                                    type="text">
+                                            </div>
+
+                                            <div class="settings-field full-width">
+                                                <label for="settingAddress">
+                                                    Address
+                                                </label>
+                                                <textarea id="settingAddress"
+                                                    placeholder="Restaurant address"></textarea>
+                                            </div>
+
+                                            <div class="settings-field full-width">
+                                                <label for="settingLogoUrl">
+                                                    Logo URL
+                                                </label>
+                                                <input id="settingLogoUrl" placeholder="https://example.com/logo.png"
+                                                    type="url">
+                                                <small class="settings-field-help">
+                                                    Use a square image for the best result.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <aside class="settings-preview-card">
+                                        <span class="settings-eyebrow">Live preview</span>
+
+                                        <div class="settings-brand-preview">
+                                            <div class="settings-logo-preview" id="settingsLogoPreview">
+                                                TT
+                                            </div>
+
+                                            <div>
+                                                <strong id="settingsRestaurantPreview">
+                                                    Restaurant Name
+                                                </strong>
+                                                <small id="settingsBranchPreview">
+                                                    Main Branch
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <div class="settings-preview-details">
+                                            <p id="settingsPhonePreview">Phone not added</p>
+                                            <p id="settingsEmailPreview">Email not added</p>
+                                            <p id="settingsHoursPreview">Hours not added</p>
+                                        </div>
+                                    </aside>
+                                </div>
+                            </div>
+
+                            <div class="settings-panel" data-settings-panel="billing" hidden>
+                                <div class="settings-panel-heading">
+                                    <div>
+                                        <span class="settings-eyebrow">Financial configuration</span>
+                                        <h3>Billing &amp; Tax</h3>
+                                        <p>Configure VAT, currency and receipt information.</p>
+                                    </div>
+                                </div>
+
+                                <div class="settings-layout-grid">
+                                    <div class="settings-form-card">
+                                        <div class="settings-grid">
+                                            <div class="settings-field">
+                                                <label for="settingVatNumber">
+                                                    VAT Registration Number
+                                                </label>
+                                                <input id="settingVatNumber" placeholder="15-digit VAT number"
+                                                    type="text">
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingVatPercent">
+                                                    VAT Percentage
+                                                </label>
+                                                <input id="settingVatPercent" max="100" min="0" placeholder="15"
+                                                    step="0.01" type="number">
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingCurrency">
+                                                    Currency
+                                                </label>
+                                                <select id="settingCurrency">
+                                                    <option value="SAR">SAR — Saudi Riyal</option>
+                                                    <option value="AED">AED — UAE Dirham</option>
+                                                    <option value="USD">USD — US Dollar</option>
+                                                    <option value="INR">INR — Indian Rupee</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="settings-field">
+                                                <label for="settingReceiptPaper">
+                                                    Receipt Paper
+                                                </label>
+                                                <select id="settingReceiptPaper">
+                                                    <option value="80mm">80 mm thermal</option>
+                                                    <option value="58mm">58 mm thermal</option>
+                                                    <option value="a4">A4</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="settings-field full-width">
+                                                <label for="settingReceiptFooter">
+                                                    Receipt Footer
+                                                </label>
+                                                <textarea id="settingReceiptFooter"
+                                                    placeholder="Thank you. Please visit again."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <aside class="settings-preview-card">
+                                        <span class="settings-eyebrow">Receipt preview</span>
+
+                                        <div class="settings-receipt-preview">
+                                            <strong id="settingsReceiptRestaurant">
+                                                Restaurant
+                                            </strong>
+                                            <small id="settingsReceiptBranch">
+                                                Main Branch
+                                            </small>
+
+                                            <div class="settings-receipt-line"></div>
+
+                                            <p>
+                                                VAT:
+                                                <strong id="settingsVatPreview">15%</strong>
+                                            </p>
+
+                                            <p>
+                                                Currency:
+                                                <strong id="settingsCurrencyPreview">SAR</strong>
+                                            </p>
+
+                                            <div class="settings-receipt-line"></div>
+
+                                            <small id="settingsReceiptFooterPreview">
+                                                Thank you. Please visit again.
+                                            </small>
+                                        </div>
+                                    </aside>
+                                </div>
+                            </div>
+
+                            <div class="settings-panel" data-settings-panel="operations" hidden>
+                                <div class="settings-panel-heading">
+                                    <div>
+                                        <span class="settings-eyebrow">Restaurant workflow</span>
+                                        <h3>Operations</h3>
+                                        <p>Control kitchen timing, alerts and order behaviour.</p>
+                                    </div>
+                                </div>
+
+                                <div class="settings-form-card">
+                                    <div class="settings-grid">
+                                        <div class="settings-field">
+                                            <label for="settingDefaultOrderType">
+                                                Default Order Type
+                                            </label>
+                                            <select id="settingDefaultOrderType">
+                                                <option value="Dine In">Dine In</option>
+                                                <option value="Takeaway">Takeaway</option>
+                                                <option value="Delivery">Delivery</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="settings-field">
+                                            <label for="settingKitchenWarningMinutes">
+                                                Kitchen Warning Time
+                                            </label>
+                                            <div class="settings-input-suffix">
+                                                <input id="settingKitchenWarningMinutes" min="1" max="120"
+                                                    type="number">
+                                                <span>min</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="settings-field">
+                                            <label for="settingKitchenUrgentMinutes">
+                                                Kitchen Urgent Time
+                                            </label>
+                                            <div class="settings-input-suffix">
+                                                <input id="settingKitchenUrgentMinutes" min="1" max="180" type="number">
+                                                <span>min</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="settings-field">
+                                            <label for="settingCompletedOrderLimit">
+                                                Completed Orders Shown
+                                            </label>
+                                            <input id="settingCompletedOrderLimit" min="1" max="50" type="number">
+                                        </div>
+
+                                        <label class="settings-switch-card">
+                                            <span>
+                                                <strong>Kitchen sound alerts</strong>
+                                                <small>Play a sound when a new order arrives.</small>
+                                            </span>
+                                            <input id="settingKitchenSoundEnabled" type="checkbox">
+                                        </label>
+
+                                        <label class="settings-switch-card">
+                                            <span>
+                                                <strong>Auto-open new orders</strong>
+                                                <small>Show newly received orders immediately.</small>
+                                            </span>
+                                            <input id="settingAutoOpenOrders" type="checkbox">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-panel" data-settings-panel="customer" hidden>
+                                <div class="settings-panel-heading">
+                                    <div>
+                                        <span class="settings-eyebrow">Guest experience</span>
+                                        <h3>Customer Experience</h3>
+                                        <p>Control what customers can see and request from the QR menu.</p>
+                                    </div>
+                                </div>
+
+                                <div class="settings-form-card">
+                                    <div class="settings-grid">
+                                        <div class="settings-field full-width">
+                                            <label for="settingCustomerWelcomeMessage">
+                                                Customer Menu Welcome Message
+                                            </label>
+                                            <textarea id="settingCustomerWelcomeMessage"
+                                                placeholder="Welcome! Browse our menu and order from your table."></textarea>
+                                        </div>
+
+                                        <label class="settings-switch-card">
+                                            <span>
+                                                <strong>Allow customer notes</strong>
+                                                <small>Guests can add preparation instructions.</small>
+                                            </span>
+                                            <input id="settingAllowCustomerNotes" type="checkbox">
+                                        </label>
+
+                                        <label class="settings-switch-card">
+                                            <span>
+                                                <strong>Allow waiter requests</strong>
+                                                <small>Guests can request staff assistance.</small>
+                                            </span>
+                                            <input id="settingAllowWaiterRequests" type="checkbox">
+                                        </label>
+
+                                        <label class="settings-switch-card">
+                                            <span>
+                                                <strong>Show unavailable items</strong>
+                                                <small>Display disabled items as out of stock.</small>
+                                            </span>
+                                            <input id="settingShowUnavailableItems" type="checkbox">
+                                        </label>
+
+                                        <label class="settings-switch-card">
+                                            <span>
+                                                <strong>Show item images</strong>
+                                                <small>Display menu item photos to customers.</small>
+                                            </span>
+                                            <input id="settingShowMenuImages" type="checkbox">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-panel" data-settings-panel="system" hidden>
+                                <div class="settings-panel-heading">
+                                    <div>
+                                        <span class="settings-eyebrow">Data management</span>
+                                        <h3>System &amp; Backup</h3>
+                                        <p>Export, restore or reset local TableTap data.</p>
+                                    </div>
+                                </div>
+
+                                <div class="settings-system-grid">
+                                    <article class="settings-system-card">
+                                        <span>↓</span>
+                                        <div>
+                                            <strong>Export restaurant data</strong>
+                                            <small>Download orders, menu, tables and settings as JSON.</small>
+                                        </div>
+                                        <button id="exportTableTapData" type="button">
+                                            Export
+                                        </button>
+                                    </article>
+
+                                    <article class="settings-system-card">
+                                        <span>↑</span>
+                                        <div>
+                                            <strong>Import backup</strong>
+                                            <small>Restore TableTap data from a previously exported file.</small>
+                                        </div>
+                                        <button id="importTableTapDataButton" type="button">
+                                            Import
+                                        </button>
+                                        <input id="importTableTapDataFile" accept="application/json" hidden type="file">
+                                    </article>
+
+                                    <article class="settings-system-card settings-danger-card">
+                                        <span>!</span>
+                                        <div>
+                                            <strong>Clear demo data</strong>
+                                            <small>Delete orders and payment history but keep configuration.</small>
+                                        </div>
+                                        <button id="clearTableTapDemoData" type="button">
+                                            Clear Data
+                                        </button>
+                                    </article>
+
+                                    <article class="settings-system-card">
+                                        <span>↺</span>
+                                        <div>
+                                            <strong>Restore default settings</strong>
+                                            <small>Reset restaurant configuration to the TableTap defaults.</small>
+                                        </div>
+                                        <button id="restoreDefaultRestaurantSettings" type="button">
+                                            Restore
+                                        </button>
+                                    </article>
                                 </div>
                             </div>
                         </div>
@@ -1324,8 +1645,7 @@
     </div>
     <script src="../js/shared.js">
     </script>
-    <script src="../js/restaurant-settings.js">
-    </script>
+    <script src="../js/restaurant-settings.js?v=2"></script>
     <script src="../js/restaurant-floor.js">
     </script>
     <script src="../js/billing.js?v=2">
