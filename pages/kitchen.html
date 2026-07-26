@@ -3,548 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Kitchen Dashboard</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f8f5ef;
-            color: #2f2f2f;
-        }
-
-        .page-header {
-            background: #8b1014;
-            color: white;
-            padding: 22px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .dashboard {
-            width: 92%;
-            max-width: 1250px;
-            margin: 35px auto;
-        }
-
-        .dashboard-section {
-            margin-bottom: 45px;
-        }
-
-        .section-title {
-            color: #8b1014;
-            margin-bottom: 22px;
-        }
-
-        .section-count {
-            display: inline-block;
-            margin-left: 8px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: #8b1014;
-            color: white;
-            font-size: 15px;
-        }
-
-        .orders-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .order-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
-
-        .completed-card {
-            opacity: 0.85;
-            border: 2px solid #2e9d56;
-        }
-
-        .order-card h2 {
-            color: #8b1014;
-            margin-bottom: 12px;
-            font-size: 21px;
-        }
-
-        .order-meta {
-            background: #faf7f2;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .order-meta p {
-            margin: 6px 0;
-        }
-
-        .status {
-            display: inline-block;
-            margin-bottom: 14px;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .status-new {
-            background: #ffe5e5;
-            color: #8b1014;
-        }
-
-        .status-accepted {
-            background: #fff2c7;
-            color: #886700;
-        }
-
-        .status-preparing {
-            background: #ffe0a3;
-            color: #9a5d00;
-        }
-
-        .status-ready {
-            background: #dff5e5;
-            color: #237944;
-        }
-
-        .status-completed {
-            background: #d9f1df;
-            color: #176b36;
-        }
-
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 8px 0;
-            border-bottom: 1px solid #eeeeee;
-        }
-
-        .order-total {
-            font-weight: bold;
-            margin: 15px 0;
-            text-align: right;
-        }
-
-        .status-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-
-        .status-buttons button {
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .accept {
-            background: #d4af37;
-        }
-
-        .preparing {
-            background: #f0a500;
-        }
-
-        .ready {
-            background: #2e9d56;
-            color: white;
-        }
-
-        .complete {
-            background: #226b3c;
-            color: white;
-        }
-
-        .status-buttons button:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
-
-        .empty-state {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
-
-        .completed-time {
-            margin-top: 12px;
-            color: #237944;
-            font-weight: bold;
-        }
-
-        @media (max-width: 650px) {
-            .status-buttons {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
-</head>
-
+    <title>TableTap Kitchen Display</title>
+<link rel="stylesheet" href="../css/kitchen.css?v=3">
 <body>
-
-   <div class="page-header">
-
-    <span id="kitchenLogo">🍳</span>
-
-    <span id="kitchenRestaurantName">
-        Green & Red Restaurant
-    </span>
-
-    <span>
-        Kitchen Dashboard
-    </span>
-
-</div>
-
-    <main class="dashboard">
-
-        <section class="dashboard-section">
-            <h1 class="section-title">
-                Active Orders
-                <span id="activeCount" class="section-count">0</span>
-            </h1>
-
-            <div id="activeOrdersContainer" class="orders-grid"></div>
-        </section>
-
-        <section class="dashboard-section">
-            <h1 class="section-title">
-                Completed Orders
-                <span id="completedCount" class="section-count">0</span>
-            </h1>
-
-            <div id="completedOrdersContainer" class="orders-grid"></div>
-        </section>
-
-    </main>
-
-    <script>
-        const defaultRestaurantSettings = {
-    restaurantName: "Green &Red Restaurant",
-    currency: "SAR",
-    logoUrl: ""
-};
-
-let restaurantSettings = {
-    ...defaultRestaurantSettings,
-    ...(JSON.parse(localStorage.getItem("tableTapSettings")) || {})
-};
-
-function applyRestaurantSettings() {
-
-    const restaurantName =
-        document.getElementById("kitchenRestaurantName");
-
-    const restaurantLogo =
-        document.getElementById("kitchenLogo");
-
-    if (restaurantName) {
-        restaurantName.textContent =
-            restaurantSettings.restaurantName;
-    }
-
-    if (
-        restaurantLogo &&
-        restaurantSettings.logoUrl
-    ) {
-
-        restaurantLogo.innerHTML = `
-            <img
-                src="${restaurantSettings.logoUrl}"
-                style="
-                    width:40px;
-                    height:40px;
-                    object-fit:cover;
-                    border-radius:8px;
-                    vertical-align:middle;
-                "
-            >`;
-
-    }
-
-    document.title =
-        restaurantSettings.restaurantName +
-        " Kitchen";
-}
-        const activeOrdersContainer =
-            document.getElementById("activeOrdersContainer");
-
-        const completedOrdersContainer =
-            document.getElementById("completedOrdersContainer");
-
-        const activeCount =
-            document.getElementById("activeCount");
-
-        const completedCount =
-            document.getElementById("completedCount");
-
-        let orders =
-            JSON.parse(localStorage.getItem("tableTapOrders")) || [];
-
-        orders = orders.map(function (order) {
-            return {
-                ...order,
-                status: order.status || "New"
-            };
-        });
-
-        function getStatusClass(status) {
-            const normalizedStatus =
-                String(status || "New").toLowerCase();
-
-            return `status-${normalizedStatus}`;
-        }
-
-        function createOrderCard(order, isCompleted) {
-            const card = document.createElement("article");
-
-            card.className =
-                isCompleted
-                    ? "order-card completed-card"
-                    : "order-card";
-
-            let itemsHtml = "";
-
-            order.items.forEach(function (item) {
-                itemsHtml += `
-                    <div class="order-item">
-                        <span>
-                            ${item.name} × ${item.quantity}
-                        </span>
-
-                        <strong>
-                           ${restaurantSettings.currency}
-${Number(item.price) * Number(item.quantity)}
-                        </strong>
-                    </div>
-                `;
-            });
-
-            const actionButtons = isCompleted
-                ? `
-                    <div class="completed-time">
-                        Completed:
-                        ${order.completedAt || "Time unavailable"}
-                    </div>
-                `
-                : `
-                    <div class="status-buttons">
-
-                        <button
-                            class="accept"
-                            onclick="changeStatus('${order.id}', 'Accepted')"
-                            ${order.status === "Accepted" ? "disabled" : ""}
-                        >
-                            Accept
-                        </button>
-
-                        <button
-                            class="preparing"
-                            onclick="changeStatus('${order.id}', 'Preparing')"
-                            ${order.status === "Preparing" ? "disabled" : ""}
-                        >
-                            Preparing
-                        </button>
-
-                        <button
-                            class="ready"
-                            onclick="changeStatus('${order.id}', 'Ready')"
-                            ${order.status === "Ready" ? "disabled" : ""}
-                        >
-                            Ready
-                        </button>
-
-                        <button
-                            class="complete"
-                            onclick="changeStatus('${order.id}', 'Completed')"
-                            ${order.status !== "Ready" ? "disabled" : ""}
-                        >
-                            Complete
-                        </button>
-
-                    </div>
-                `;
-
-            card.innerHTML = `
-                <h2>${order.id}</h2>
-
-                <div class="order-meta">
-                    <p>
-                        <strong>Customer:</strong>
-                        ${order.customer?.name || "Unknown"}
-                    </p>
-
-                    <p>
-                        <strong>Table:</strong>
-                        ${order.customer?.table || "Not provided"}
-                    </p>
-
-                    <p>
-                        <strong>Phone:</strong>
-                        ${order.customer?.phone || "Not provided"}
-                    </p>
-
-                    <p>
-                        <strong>Instructions:</strong>
-                        ${order.customer?.request || "None"}
-                    </p>
-
-                    <p>
-                        <strong>Placed:</strong>
-                        ${order.createdAt || "Time unavailable"}
-                    </p>
-                </div>
-
-                <div class="status ${getStatusClass(order.status)}">
-                    ${order.status}
-                </div>
-
+    <div class="kds-app">
+        <header class="kds-topbar">
+            <div class="kds-brand">
+                <div class="kds-logo" id="kitchenLogo">TT</div>
                 <div>
-                    ${itemsHtml}
+                    <strong id="kitchenRestaurantName">TableTap</strong>
+                    <small>Kitchen Display System</small>
                 </div>
-
-                <div class="order-total">
-                    Total: SAR ${order.total}Total:
-${restaurantSettings.currency}
-${order.total}
+            </div>
+            <div class="kds-topbar-actions">
+                <div class="kds-live-status"><span></span>Live orders</div>
+                <div class="kds-date-time">
+                    <strong id="kitchenCurrentTime">--:--</strong>
+                    <small id="kitchenCurrentDate">Today</small>
                 </div>
+                <button class="kds-fullscreen-button" id="kitchenFullscreenButton" type="button">Full Screen</button>
+            </div>
+        </header>
 
-                ${actionButtons}
-            `;
+        <main class="kds-main">
+            <section class="kds-summary-grid" aria-label="Kitchen order summary">
+                <article class="kds-summary-card kds-summary-new"><small>New</small><strong id="kitchenNewCount">0</strong><p>Waiting to start</p></article>
+                <article class="kds-summary-card kds-summary-preparing"><small>Preparing</small><strong id="kitchenPreparingCount">0</strong><p>Currently cooking</p></article>
+                <article class="kds-summary-card kds-summary-ready"><small>Ready</small><strong id="kitchenReadyCount">0</strong><p>Waiting to serve</p></article>
+                <article class="kds-summary-card"><small>Completed Today</small><strong id="kitchenCompletedCount">0</strong><p>Finished orders</p></article>
+                <article class="kds-summary-card"><small>Average Time</small><strong id="kitchenAverageTime">0 min</strong><p>Preparation duration</p></article>
+            </section>
 
-            return card;
-        }
+            <section class="kds-toolbar">
+                <label class="kds-search-control" for="kitchenSearch"><span>⌕</span><input id="kitchenSearch" type="search" placeholder="Search order, customer or table" autocomplete="off"></label>
+                <select id="kitchenOrderTypeFilter" aria-label="Filter kitchen orders">
+                    <option value="all">All Orders</option>
+                    <option value="dine-in">Dine In</option>
+                    <option value="takeaway">Takeaway</option>
+                    <option value="delivery">Delivery</option>
+                </select>
+                <select id="kitchenSortOrder" aria-label="Sort kitchen orders">
+                    <option value="oldest">Oldest First</option>
+                    <option value="newest">Newest First</option>
+                    <option value="urgent">Most Delayed</option>
+                </select>
+                <label class="kds-sound-toggle"><input id="kitchenSoundToggle" type="checkbox" checked><span>Sound alerts</span></label>
+            </section>
 
-        function renderOrders() {
-            activeOrdersContainer.innerHTML = "";
-            completedOrdersContainer.innerHTML = "";
+            <section class="kds-board" aria-label="Kitchen order board">
+                <article class="kds-column kds-column-new"><header><div><span class="kds-column-dot"></span><h2>New Orders</h2></div><strong id="kitchenNewColumnCount">0</strong></header><div class="kds-column-body" id="kitchenNewOrders"></div></article>
+                <article class="kds-column kds-column-preparing"><header><div><span class="kds-column-dot"></span><h2>Preparing</h2></div><strong id="kitchenPreparingColumnCount">0</strong></header><div class="kds-column-body" id="kitchenPreparingOrders"></div></article>
+                <article class="kds-column kds-column-ready"><header><div><span class="kds-column-dot"></span><h2>Ready</h2></div><strong id="kitchenReadyColumnCount">0</strong></header><div class="kds-column-body" id="kitchenReadyOrders"></div></article>
+                <article class="kds-column kds-column-completed"><header><div><span class="kds-column-dot"></span><h2>Completed</h2></div><strong id="kitchenCompletedColumnCount">0</strong></header><div class="kds-column-body" id="kitchenCompletedOrders"></div></article>
+            </section>
+        </main>
 
-            const activeOrders =
-                orders.filter(function (order) {
-                    return order.status !== "Completed";
-                });
-
-            const completedOrders =
-                orders.filter(function (order) {
-                    return order.status === "Completed";
-                });
-
-            activeCount.textContent = activeOrders.length;
-            completedCount.textContent = completedOrders.length;
-
-            if (activeOrders.length === 0) {
-                activeOrdersContainer.innerHTML = `
-                    <div class="empty-state">
-                        <h2>No active orders</h2>
-                        <p>New orders will appear here.</p>
-                    </div>
-                `;
-            } else {
-                activeOrders
-                    .slice()
-                    .reverse()
-                    .forEach(function (order) {
-                        activeOrdersContainer.appendChild(
-                            createOrderCard(order, false)
-                        );
-                    });
-            }
-
-            if (completedOrders.length === 0) {
-                completedOrdersContainer.innerHTML = `
-                    <div class="empty-state">
-                        <h2>No completed orders</h2>
-                        <p>Completed orders will appear here.</p>
-                    </div>
-                `;
-            } else {
-                completedOrders
-                    .slice()
-                    .reverse()
-                    .forEach(function (order) {
-                        completedOrdersContainer.appendChild(
-                            createOrderCard(order, true)
-                        );
-                    });
-            }
-        }
-
-        function changeStatus(orderId, newStatus) {
-            const selectedOrder =
-                orders.find(function (order) {
-                    return String(order.id) === String(orderId);
-                });
-
-            if (!selectedOrder) {
-                return;
-            }
-
-            selectedOrder.status = newStatus;
-
-            if (newStatus === "Completed") {
-                selectedOrder.completedAt =
-                    new Date().toLocaleString();
-            }
-
-            localStorage.setItem(
-                "tableTapOrders",
-                JSON.stringify(orders)
-            );
-
-            const latestOrder =
-                JSON.parse(
-                    localStorage.getItem("tableTapLatestOrder")
-                );
-
-            if (
-                latestOrder &&
-                String(latestOrder.id) === String(orderId)
-            ) {
-                localStorage.setItem(
-                    "tableTapLatestOrder",
-                    JSON.stringify(selectedOrder)
-                );
-            }
-
-            renderOrders();
-        }
-
-       window.addEventListener("storage", function (event) {
-    if (event.key === "tableTapOrders") {
-        orders =
-            JSON.parse(event.newValue) || [];
-
-        renderOrders();
-    }
-
-    if (event.key === "tableTapSettings") {
-        restaurantSettings = {
-            ...defaultRestaurantSettings,
-            ...(JSON.parse(event.newValue) || {})
-        };
-
-        applyRestaurantSettings();
-        renderOrders();
-    }
-});
-
-        applyRestaurantSettings();
-renderOrders();
-    </script>
-
+        <div class="kds-toast" id="kitchenToast" aria-live="polite"></div>
+    </div>
+    <script src="../js/kitchen.js?v=2"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
     <title>
         TableTap Admin V2
     </title>
-<link href="../css/admin.css?v=5" rel="stylesheet">
+    <link href="../css/admin.css?v=10" rel="stylesheet">
 </head>
 
 <body>
@@ -165,379 +165,187 @@
                 <div class="page-header" id="adminPageHeader">
                     ⚙️ Green &amp; Red Restaurant Admin
                 </div>
-                <section aria-label="Dashboard" class="admin-workspace" data-workspace-view="dashboard">
-                    <section class="dashboard-hero">
+                <section aria-label="Dashboard" class="admin-workspace dashboard-workspace"
+                    data-workspace-view="dashboard">
+                    <section class="dashboard-control-hero">
                         <div>
-                            <span class="dashboard-eyebrow">
-                                Restaurant overview
-                            </span>
-                            <h2>
-                                Welcome back to TableTap
-                            </h2>
-                            <p>
-                                Track sales, orders and daily restaurant activity from one place.
-                            </p>
+                            <span class="dashboard-eyebrow">Restaurant control centre</span>
+                            <h2>Welcome back to TableTap</h2>
+                            <p>Monitor sales, orders, tables and kitchen activity from one live workspace.</p>
                         </div>
-                        <div class="dashboard-status-pill">
-                            <span>
-                            </span>
-                            Restaurant is operational
+                        <div class="dashboard-control-status">
+                            <span class="dashboard-live-dot"></span>
+                            <div>
+                                <strong>Restaurant operational</strong>
+                                <small id="dashboardCurrentDate">Today</small>
+                            </div>
                         </div>
                     </section>
-                    <section class="dashboard-analytics-card">
+
+                    <section class="dashboard-kpi-grid">
+                        <article class="dashboard-kpi-card dashboard-kpi-highlight">
+                            <span class="dashboard-kpi-icon">﷼</span>
+                            <div><small>Revenue</small><strong><span id="dashboardCurrency">SAR</span> <span
+                                        id="totalRevenue">0.00</span></strong>
+                                <p>Selected period</p>
+                            </div>
+                        </article>
+                        <article class="dashboard-kpi-card">
+                            <span class="dashboard-kpi-icon">▤</span>
+                            <div><small>Total Orders</small><strong id="totalOrders">0</strong>
+                                <p>Orders received</p>
+                            </div>
+                        </article>
+                        <article class="dashboard-kpi-card">
+                            <span class="dashboard-kpi-icon">✓</span>
+                            <div><small>Completed</small><strong id="completedOrders">0</strong>
+                                <p>Successfully completed</p>
+                            </div>
+                        </article>
+                        <article class="dashboard-kpi-card">
+                            <span class="dashboard-kpi-icon">⌛</span>
+                            <div><small>Active Orders</small><strong id="activeOrders">0</strong>
+                                <p>Require attention</p>
+                            </div>
+                        </article>
+                        <article class="dashboard-kpi-card">
+                            <span class="dashboard-kpi-icon">▦</span>
+                            <div><small>Active Tables</small><strong id="dashboardActiveTables">0</strong>
+                                <p>Currently occupied</p>
+                            </div>
+                        </article>
+                        <article class="dashboard-kpi-card">
+                            <span class="dashboard-kpi-icon">≈</span>
+                            <div><small>Average Order</small><strong><span id="dashboardAverageCurrency">SAR</span>
+                                    <span id="averageOrder">0.00</span></strong>
+                                <p>Completed orders</p>
+                            </div>
+                        </article>
+                    </section>
+
+                    <section class="dashboard-performance-card">
                         <div class="dashboard-section-heading">
                             <div>
-                                <span class="dashboard-eyebrow">
-                                    Performance
-                                </span>
-                                <h2>
-                                    Sales Analytics
-                                </h2>
-                                <p>
-                                    Review revenue and order performance for the selected period.
-                                </p>
+                                <span class="dashboard-eyebrow">Performance</span>
+                                <h2>Sales Analytics</h2>
+                                <p>Review restaurant performance for the selected period.</p>
                             </div>
                             <div class="analytics-toolbar">
                                 <div class="analytics-presets">
-                                    <button class="analytics-filter active" data-period="today" type="button">
-                                        Today
-                                    </button>
-                                    <button class="analytics-filter" data-period="yesterday" type="button">
-                                        Yesterday
-                                    </button>
-                                    <button class="analytics-filter" data-period="month" type="button">
-                                        This Month
-                                    </button>
-                                    <button class="analytics-filter" data-period="all" type="button">
-                                        All Time
-                                    </button>
+                                    <button class="analytics-filter active" data-period="today"
+                                        type="button">Today</button>
+                                    <button class="analytics-filter" data-period="yesterday"
+                                        type="button">Yesterday</button>
+                                    <button class="analytics-filter" data-period="month" type="button">This
+                                        Month</button>
+                                    <button class="analytics-filter" data-period="all" type="button">All Time</button>
                                 </div>
                                 <button class="analytics-filter custom-range-button" id="toggleCustomDate"
-                                    type="button">
-                                    📅 Custom Range
-                                </button>
+                                    type="button">📅 Custom Range</button>
                             </div>
                         </div>
+
                         <div class="custom-date-panel" id="customDatePanel">
-                            <div class="date-field">
-                                <label for="analyticsStartDate">
-                                    From date
-                                </label>
-                                <input id="analyticsStartDate" type="date" />
-                            </div>
-                            <div class="date-field">
-                                <label for="analyticsEndDate">
-                                    To date
-                                </label>
-                                <input id="analyticsEndDate" type="date" />
-                            </div>
-                            <button class="secondary-button" id="clearCustomDate" type="button">
-                                Clear
-                            </button>
-                            <button class="primary-button" id="applyCustomDate" type="button">
-                                Apply Range
-                            </button>
+                            <div class="date-field"><label for="analyticsStartDate">From date</label><input
+                                    id="analyticsStartDate" type="date"></div>
+                            <div class="date-field"><label for="analyticsEndDate">To date</label><input
+                                    id="analyticsEndDate" type="date"></div>
+                            <button class="secondary-button" id="clearCustomDate" type="button">Clear</button>
+                            <button class="primary-button" id="applyCustomDate" type="button">Apply Range</button>
                         </div>
-                        <section class="dashboard-stats-grid">
-                            <article class="dashboard-stat-card dashboard-stat-primary">
-                                <div class="dashboard-stat-icon">
-                                    💰
+
+                        <div class="dashboard-insight-grid">
+                            <article class="dashboard-insight-card dashboard-hourly-card">
+                                <div class="dashboard-panel-heading">
+                                    <div><span class="dashboard-eyebrow">Sales activity</span>
+                                        <h3>Hourly Revenue</h3>
+                                    </div><span id="dashboardPeakHour">Peak: —</span>
                                 </div>
-                                <div>
-                                    <span>
-                                        Revenue
-                                    </span>
-                                    <strong>
-                                        SAR
-                                        <span id="totalRevenue">
-                                            0.00
-                                        </span>
-                                    </strong>
-                                    <small>
-                                        Selected period
-                                    </small>
+                                <div class="dashboard-hourly-chart" id="dashboardHourlyChart"></div>
+                            </article>
+
+                            <article class="dashboard-insight-card">
+                                <div class="dashboard-panel-heading">
+                                    <div><span class="dashboard-eyebrow">Order mix</span>
+                                        <h3>Status Breakdown</h3>
+                                    </div>
+                                </div>
+                                <div class="dashboard-status-breakdown" id="dashboardStatusBreakdown"></div>
+                            </article>
+
+                            <article class="dashboard-insight-card">
+                                <div class="dashboard-panel-heading">
+                                    <div><span class="dashboard-eyebrow">Menu intelligence</span>
+                                        <h3>Top Performance</h3>
+                                    </div>
+                                </div>
+                                <div class="dashboard-top-performance">
+                                    <div><small>Best-selling item</small><strong id="bestSellingItem">—</strong></div>
+                                    <div><small>Top category</small><strong id="topCategory">—</strong></div>
+                                    <div><small>Menu items</small><strong id="menuCount">0</strong></div>
                                 </div>
                             </article>
-                            <article class="dashboard-stat-card">
-                                <div class="dashboard-stat-icon">
-                                    🧾
-                                </div>
-                                <div>
-                                    <span>
-                                        Total Orders
-                                    </span>
-                                    <strong id="totalOrders">
-                                        0
-                                    </strong>
-                                    <small>
-                                        All received orders
-                                    </small>
-                                </div>
-                            </article>
-                            <article class="dashboard-stat-card">
-                                <div class="dashboard-stat-icon">
-                                    ✅
-                                </div>
-                                <div>
-                                    <span>
-                                        Completed Orders
-                                    </span>
-                                    <strong id="completedOrders">
-                                        0
-                                    </strong>
-                                    <small>
-                                        Successfully completed
-                                    </small>
-                                </div>
-                            </article>
-                            <article class="dashboard-stat-card">
-                                <div class="dashboard-stat-icon">
-                                    🔥
-                                </div>
-                                <div>
-                                    <span>
-                                        Active Orders
-                                    </span>
-                                    <strong id="activeOrders">
-                                        0
-                                    </strong>
-                                    <small>
-                                        Currently in progress
-                                    </small>
-                                </div>
-                            </article>
-                            <article class="dashboard-stat-card">
-                                <div class="dashboard-stat-icon">
-                                    📊
-                                </div>
-                                <div>
-                                    <span>
-                                        Average Order
-                                    </span>
-                                    <strong>
-                                        SAR
-                                        <span id="averageOrder">
-                                            0.00
-                                        </span>
-                                    </strong>
-                                    <small>
-                                        Average completed order
-                                    </small>
-                                </div>
-                            </article>
-                            <article class="dashboard-stat-card">
-                                <div class="dashboard-stat-icon">
-                                    ⭐
-                                </div>
-                                <div>
-                                    <span>
-                                        Best-Selling Item
-                                    </span>
-                                    <strong id="bestSellingItem">
-                                        &mdash;
-                                    </strong>
-                                    <small>
-                                        Most ordered item
-                                    </small>
-                                </div>
-                            </article>
-                            <article class="dashboard-stat-card">
-                                <div class="dashboard-stat-icon">
-                                    🏷️
-                                </div>
-                                <div>
-                                    <span>
-                                        Top Category
-                                    </span>
-                                    <strong id="topCategory">
-                                        &mdash;
-                                    </strong>
-                                    <small>
-                                        Most popular category
-                                    </small>
-                                </div>
-                            </article>
-                            <article class="dashboard-stat-card">
-                                <div class="dashboard-stat-icon">
-                                    🍽️
-                                </div>
-                                <div>
-                                    <span>
-                                        Menu Items
-                                    </span>
-                                    <strong id="menuCount">
-                                        0
-                                    </strong>
-                                    <small>
-                                        Total menu products
-                                    </small>
-                                </div>
-                            </article>
-                        </section>
+                        </div>
                     </section>
-                    <section class="dashboard-lower-grid">
+
+                    <section class="dashboard-lower-grid dashboard-lower-grid-v2">
                         <article class="dashboard-panel">
                             <div class="dashboard-panel-heading">
-                                <div>
-                                    <span class="dashboard-eyebrow">
-                                        Shortcuts
-                                    </span>
-                                    <h2>
-                                        Quick Actions
-                                    </h2>
+                                <div><span class="dashboard-eyebrow">Shortcuts</span>
+                                    <h2>Quick Actions</h2>
                                 </div>
                             </div>
-                            <div class="dashboard-action-grid">
-                                <a class="dashboard-action-card" href="kitchen.html">
-                                    <span class="dashboard-action-icon">
-                                        🍳
-                                    </span>
-                                    <span>
-                                        <strong>
-                                            Kitchen Dashboard
-                                        </strong>
-                                        <small>
-                                            Manage kitchen orders
-                                        </small>
-                                    </span>
-                                </a>
-                                <a class="dashboard-action-card" href="menu.html">
-                                    <span class="dashboard-action-icon">
-                                        🍽️
-                                    </span>
-                                    <span>
-                                        <strong>
-                                            Customer Menu
-                                        </strong>
-                                        <small>
-                                            Open the live menu
-                                        </small>
-                                    </span>
-                                </a>
+                            <div class="dashboard-action-grid dashboard-action-grid-v2">
+                                <a class="dashboard-action-card" href="kitchen.html"><span
+                                        class="dashboard-action-icon">🍳</span><span><strong>Kitchen
+                                            Dashboard</strong><small>Manage kitchen orders</small></span></a>
                                 <a class="dashboard-action-card" data-admin-view="floor"
-                                    data-view-title="Restaurant Floor" href="#" id="openRestaurantFloorLink">
-                                    <span class="dashboard-action-icon">
-                                        🏠
-                                    </span>
-                                    <span>
-                                        <strong>
-                                            Restaurant Floor
-                                        </strong>
-                                        <small>
-                                            Manage tables and seating
-                                        </small>
-                                    </span>
-                                </a>
+                                    data-view-title="Restaurant Floor" href="#" id="openRestaurantFloorLink"><span
+                                        class="dashboard-action-icon">🏠</span><span><strong>Restaurant
+                                            Floor</strong><small>Manage tables and seating</small></span></a>
                                 <a class="dashboard-action-card" data-admin-view="billing"
-                                    data-view-title="Billing &amp; Cashier" href="#" id="openBillingLink">
-                                    <span class="dashboard-action-icon">
-                                        💳
-                                    </span>
-                                    <span>
-                                        <strong>
-                                            Billing &amp; Cashier
-                                        </strong>
-                                        <small>
-                                            Process customer payments
-                                        </small>
-                                    </span>
-                                </a>
+                                    data-view-title="Billing &amp; Cashier" href="#" id="openBillingLink"><span
+                                        class="dashboard-action-icon">💳</span><span><strong>Billing &amp;
+                                            Cashier</strong><small>Process customer payments</small></span></a>
                                 <a class="dashboard-action-card" data-admin-view="payments"
-                                    data-view-title="Payment Records" href="#" id="openPaymentRecordsLink">
-                                    <span class="dashboard-action-icon">
-                                        💰
-                                    </span>
-                                    <span>
-                                        <strong>
-                                            Payment Records
-                                        </strong>
-                                        <small>
-                                            Review completed payments
-                                        </small>
-                                    </span>
-                                </a>
+                                    data-view-title="Payment Records" href="#" id="openPaymentRecordsLink"><span
+                                        class="dashboard-action-icon">💰</span><span><strong>Payment
+                                            Records</strong><small>Review completed payments</small></span></a>
                                 <a class="dashboard-action-card" data-admin-view="menu"
-                                    data-view-title="Menu Management" href="#" id="openMenuManagementLink">
-                                    <span class="dashboard-action-icon">
-                                        📦
-                                    </span>
-                                    <span>
-                                        <strong>
-                                            Menu Management
-                                        </strong>
-                                        <small>
-                                            Add and update menu items
-                                        </small>
-                                    </span>
-                                </a>
+                                    data-view-title="Menu Management" href="#" id="openMenuManagementLink"><span
+                                        class="dashboard-action-icon">📦</span><span><strong>Menu
+                                            Management</strong><small>Add and update menu items</small></span></a>
                                 <a class="dashboard-action-card" data-admin-view="settings"
-                                    data-view-title="Restaurant Settings" href="#" id="openRestaurantSettingsLink">
-                                    <span class="dashboard-action-icon">
-                                        ⚙️
-                                    </span>
-                                    <span>
-                                        <strong>
-                                            Restaurant Settings
-                                        </strong>
-                                        <small>
-                                            Manage branding and VAT
-                                        </small>
-                                    </span>
-                                </a>
+                                    data-view-title="Restaurant Settings" href="#" id="openRestaurantSettingsLink"><span
+                                        class="dashboard-action-icon">⚙️</span><span><strong>Restaurant
+                                            Settings</strong><small>Manage branding and VAT</small></span></a>
                             </div>
                         </article>
+
                         <article class="dashboard-panel">
                             <div class="dashboard-panel-heading">
-                                <div>
-                                    <span class="dashboard-eyebrow">
-                                        Live status
-                                    </span>
-                                    <h2>
-                                        Restaurant Snapshot
-                                    </h2>
+                                <div><span class="dashboard-eyebrow">Live status</span>
+                                    <h2>Restaurant Snapshot</h2>
                                 </div>
                             </div>
                             <div class="dashboard-snapshot-list">
-                                <div class="dashboard-snapshot-item">
-                                    <span class="snapshot-dot snapshot-success">
-                                    </span>
-                                    <div>
-                                        <strong>
-                                            Restaurant online
-                                        </strong>
-                                        <small>
-                                            Customer ordering is available
-                                        </small>
+                                <div class="dashboard-snapshot-item"><span class="snapshot-dot snapshot-success"></span>
+                                    <div><strong>Restaurant online</strong><small>Customer ordering is available</small>
                                     </div>
                                 </div>
-                                <div class="dashboard-snapshot-item">
-                                    <span class="snapshot-dot snapshot-warning">
-                                    </span>
-                                    <div>
-                                        <strong>
-                                            Active orders
-                                        </strong>
-                                        <small>
-                                            <span id="dashboardActiveOrdersMirror">
-                                                0
-                                            </span>
-                                            orders require attention
-                                        </small>
-                                    </div>
+                                <div class="dashboard-snapshot-item"><span class="snapshot-dot snapshot-warning"></span>
+                                    <div><strong>Active orders</strong><small><span
+                                                id="dashboardActiveOrdersMirror">0</span> orders require
+                                            attention</small></div>
                                 </div>
-                                <div class="dashboard-snapshot-item">
-                                    <span class="snapshot-dot snapshot-info">
-                                    </span>
-                                    <div>
-                                        <strong>
-                                            Menu availability
-                                        </strong>
-                                        <small>
-                                            <span id="dashboardMenuItemsMirror">
-                                                0
-                                            </span>
-                                            menu items configured
-                                        </small>
+                                <div class="dashboard-snapshot-item"><span class="snapshot-dot snapshot-info"></span>
+                                    <div><strong>Occupied tables</strong><small><span
+                                                id="dashboardActiveTablesMirror">0</span> tables currently
+                                            active</small></div>
+                                </div>
+                                <div class="dashboard-snapshot-item"><span class="snapshot-dot snapshot-info"></span>
+                                    <div><strong>Menu availability</strong><small><span
+                                                id="dashboardMenuItemsMirror">0</span> menu items configured</small>
                                     </div>
                                 </div>
                             </div>
@@ -1081,325 +889,328 @@
                         </div>
                     </details>
                 </section>
-              <section aria-label="Order History"
-         class="admin-workspace order-history-workspace"
-         data-workspace-view="orders"
-         hidden>
-    <section class="order-history-v2-shell" id="orderHistory">
-        <section class="order-history-hero">
-            <div>
-                <span class="dashboard-eyebrow">Order archive</span>
-                <h2>Order History</h2>
-                <p>Find any order quickly and review its complete details.</p>
-            </div>
+                <section aria-label="Order History" class="admin-workspace order-history-workspace"
+                    data-workspace-view="orders" hidden>
+                    <section class="order-history-v2-shell" id="orderHistory">
+                        <section class="order-history-hero">
+                            <div>
+                                <span class="dashboard-eyebrow">Order archive</span>
+                                <h2>Order History</h2>
+                                <p>Find any order quickly and review its complete details.</p>
+                            </div>
 
-            <span class="billing-count" id="orderHistoryCount">
-                0 orders
-            </span>
-        </section>
+                            <span class="billing-count" id="orderHistoryCount">
+                                0 orders
+                            </span>
+                        </section>
 
-        <section class="order-history-summary-grid"
-                 aria-label="Order history summary">
-            <article class="order-history-summary-card">
-                <small>Total Orders</small>
-                <strong id="orderHistoryTotalCount">0</strong>
-                <p>Filtered records</p>
-            </article>
+                        <section class="order-history-summary-grid" aria-label="Order history summary">
+                            <article class="order-history-summary-card">
+                                <small>Total Orders</small>
+                                <strong id="orderHistoryTotalCount">0</strong>
+                                <p>Filtered records</p>
+                            </article>
 
-            <article class="order-history-summary-card">
-                <small>Active</small>
-                <strong id="orderHistoryActiveCount">0</strong>
-                <p>Still in progress</p>
-            </article>
+                            <article class="order-history-summary-card">
+                                <small>Active</small>
+                                <strong id="orderHistoryActiveCount">0</strong>
+                                <p>Still in progress</p>
+                            </article>
 
-            <article class="order-history-summary-card">
-                <small>Completed</small>
-                <strong id="orderHistoryCompletedCount">0</strong>
-                <p>Finished orders</p>
-            </article>
+                            <article class="order-history-summary-card">
+                                <small>Completed</small>
+                                <strong id="orderHistoryCompletedCount">0</strong>
+                                <p>Finished orders</p>
+                            </article>
 
-            <article class="order-history-summary-card">
-                <small>Cancelled</small>
-                <strong id="orderHistoryCancelledCount">0</strong>
-                <p>Cancelled orders</p>
-            </article>
-        </section>
+                            <article class="order-history-summary-card">
+                                <small>Cancelled</small>
+                                <strong id="orderHistoryCancelledCount">0</strong>
+                                <p>Cancelled orders</p>
+                            </article>
+                        </section>
 
-        <section class="order-history-ledger-panel">
-            <div class="order-history-toolbar-v2">
-                <label class="order-history-search-control"
-                       for="orderSearch">
-                    <span aria-hidden="true">⌕</span>
-                    <input id="orderSearch"
-                           type="search"
-                           placeholder="Search order ID, customer, phone or table"
-                           autocomplete="off">
-                </label>
+                        <section class="order-history-ledger-panel">
+                            <div class="order-history-toolbar-v2">
+                                <label class="order-history-search-control" for="orderSearch">
+                                    <span aria-hidden="true">⌕</span>
+                                    <input id="orderSearch" type="search"
+                                        placeholder="Search order ID, customer, phone or table" autocomplete="off">
+                                </label>
 
-                <select aria-label="Order date filter"
-                        id="orderDateFilter">
-                    <option value="today">Today’s Orders</option>
-                    <option value="yesterday">Yesterday</option>
-                    <option value="week">Last 7 Days</option>
-                    <option value="all">All Time</option>
-                </select>
+                                <select aria-label="Order date filter" id="orderDateFilter">
+                                    <option value="today">Today’s Orders</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="week">Last 7 Days</option>
+                                    <option value="all">All Time</option>
+                                </select>
 
-                <select aria-label="Order status filter"
-                        id="orderStatusFilter">
-                    <option value="all">All Statuses</option>
-                    <option value="New">New</option>
-                    <option value="Accepted">Accepted</option>
-                    <option value="Preparing">Preparing</option>
-                    <option value="Ready">Ready</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-                </select>
+                                <select aria-label="Order status filter" id="orderStatusFilter">
+                                    <option value="all">All Statuses</option>
+                                    <option value="New">New</option>
+                                    <option value="Accepted">Accepted</option>
+                                    <option value="Preparing">Preparing</option>
+                                    <option value="Ready">Ready</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
 
-                <select id="orderHistorySort"
-                        aria-label="Sort orders">
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="highest">Highest Total</option>
-                    <option value="lowest">Lowest Total</option>
-                </select>
+                                <select id="orderHistorySort" aria-label="Sort orders">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="highest">Highest Total</option>
+                                    <option value="lowest">Lowest Total</option>
+                                </select>
 
-                <select id="orderHistoryPageSize"
-                        aria-label="Orders per page">
-                    <option value="25">25 rows</option>
-                    <option value="50">50 rows</option>
-                    <option value="100">100 rows</option>
-                </select>
-            </div>
+                                <select id="orderHistoryPageSize" aria-label="Orders per page">
+                                    <option value="25">25 rows</option>
+                                    <option value="50">50 rows</option>
+                                    <option value="100">100 rows</option>
+                                </select>
+                            </div>
 
-            <div class="order-history-summary-row">
-                <strong id="orderHistoryRange">Showing 0 records</strong>
-                <span class="active-history-filter"
-                      id="activeHistoryFilter">
-                    Showing today’s orders
-                </span>
-            </div>
+                            <div class="order-history-summary-row">
+                                <strong id="orderHistoryRange">Showing 0 records</strong>
+                                <span class="active-history-filter" id="activeHistoryFilter">
+                                    Showing today’s orders
+                                </span>
+                            </div>
 
-            <div class="order-history-table-wrap">
-                <table class="order-history-table">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Order ID</th>
-                            <th>Table</th>
-                            <th>Customer</th>
-                            <th>Items</th>
-                            <th>Status</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+                            <div class="order-history-table-wrap">
+                                <table class="order-history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Order ID</th>
+                                            <th>Table</th>
+                                            <th>Customer</th>
+                                            <th>Items</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
 
-                    <tbody id="orderHistoryContainer"></tbody>
-                </table>
-            </div>
+                                    <tbody id="orderHistoryContainer"></tbody>
+                                </table>
+                            </div>
 
-            <div class="order-history-pagination"
-                 id="orderHistoryPagination"
-                 hidden>
-                <button id="orderHistoryPrevPage"
-                        type="button">
-                    Previous
-                </button>
+                            <div class="order-history-pagination" id="orderHistoryPagination" hidden>
+                                <button id="orderHistoryPrevPage" type="button">
+                                    Previous
+                                </button>
 
-                <span id="orderHistoryPageInfo">
-                    Page 1 of 1
-                </span>
+                                <span id="orderHistoryPageInfo">
+                                    Page 1 of 1
+                                </span>
 
-                <button id="orderHistoryNextPage"
-                        type="button">
-                    Next
-                </button>
-            </div>
+                                <button id="orderHistoryNextPage" type="button">
+                                    Next
+                                </button>
+                            </div>
 
-            <div class="history-empty"
-                 id="orderHistoryEmpty"
-                 hidden>
-                <h3>No orders found</h3>
-                <p>Try another search, date or status filter.</p>
-            </div>
-        </section>
-    </section>
+                            <div class="history-empty" id="orderHistoryEmpty" hidden>
+                                <h3>No orders found</h3>
+                                <p>Try another search, date or status filter.</p>
+                            </div>
+                        </section>
+                    </section>
 
-    <div class="order-details-modal"
-         id="orderDetailsModal"
-         aria-hidden="true">
-        <div class="order-details-overlay"
-             data-order-details-close></div>
+                    <div class="order-details-modal" id="orderDetailsModal" aria-hidden="true">
+                        <div class="order-details-overlay" data-order-details-close></div>
 
-        <section class="order-details-panel"
-                 role="dialog"
-                 aria-modal="true"
-                 aria-labelledby="orderDetailsTitle">
-            <div class="order-details-header">
-                <div>
-                    <span class="dashboard-eyebrow">Order details</span>
-                    <h2 id="orderDetailsTitle">Order</h2>
-                    <p id="orderDetailsSubtitle"></p>
-                </div>
+                        <section class="order-details-panel" role="dialog" aria-modal="true"
+                            aria-labelledby="orderDetailsTitle">
+                            <div class="order-details-header">
+                                <div>
+                                    <span class="dashboard-eyebrow">Order details</span>
+                                    <h2 id="orderDetailsTitle">Order</h2>
+                                    <p id="orderDetailsSubtitle"></p>
+                                </div>
 
-                <button class="bill-modal-close"
-                        type="button"
-                        aria-label="Close order details"
-                        data-order-details-close>
-                    &times;
-                </button>
-            </div>
+                                <button class="bill-modal-close" type="button" aria-label="Close order details"
+                                    data-order-details-close>
+                                    &times;
+                                </button>
+                            </div>
 
-            <div class="order-details-content"
-                 id="orderDetailsContent"></div>
-        </section>
-    </div>
-</section>
-               <section aria-label="Menu Management"
-         class="admin-workspace menu-management-workspace"
-         data-workspace-view="menu"
-         hidden>
-    <section class="menu-management-shell" id="menuManagement">
-        <section class="menu-management-hero">
-            <div>
-                <span class="dashboard-eyebrow">Catalog workspace</span>
-                <h2>Menu Management</h2>
-                <p>Manage pricing, availability, categories and customer-facing menu items.</p>
-            </div>
-            <button class="primary-button menu-add-button" id="addMenuItemBtn" type="button">
-                <span>＋</span> Add Menu Item
-            </button>
-        </section>
-
-        <section class="menu-summary-grid" aria-label="Menu summary">
-            <article class="menu-summary-card"><small>Total Items</small><strong id="menuSummaryTotal">0</strong><p>All menu items</p></article>
-            <article class="menu-summary-card"><small>Available</small><strong id="menuSummaryAvailable">0</strong><p>Visible to customers</p></article>
-            <article class="menu-summary-card"><small>Out of Stock</small><strong id="menuSummaryUnavailable">0</strong><p>Temporarily disabled</p></article>
-            <article class="menu-summary-card"><small>Categories</small><strong id="menuSummaryCategories">0</strong><p>Menu groups</p></article>
-        </section>
-
-        <section class="menu-management-panel">
-            <div class="menu-category-chips" id="menuCategoryChips"></div>
-
-            <div class="menu-management-toolbar">
-                <label class="menu-search-control" for="menuManagementSearch">
-                    <span>⌕</span>
-                    <input id="menuManagementSearch" type="search" placeholder="Search item name or category">
-                </label>
-
-                <select id="menuManagementCategoryFilter"><option value="all">All Categories</option></select>
-                <select id="menuManagementStatusFilter">
-                    <option value="all">All Statuses</option>
-                    <option value="available">Available</option>
-                    <option value="unavailable">Out of Stock</option>
-                </select>
-                <select id="menuManagementSort">
-                    <option value="name-asc">Name A–Z</option>
-                    <option value="name-desc">Name Z–A</option>
-                    <option value="price-high">Highest Price</option>
-                    <option value="price-low">Lowest Price</option>
-                    <option value="newest">Recently Updated</option>
-                </select>
-                <select id="menuManagementPageSize">
-                    <option value="25">25 rows</option>
-                    <option value="50">50 rows</option>
-                    <option value="100">100 rows</option>
-                </select>
-            </div>
-
-            <div class="menu-management-results">
-                <strong id="menuManagementRange">Showing 0 items</strong>
-                <span id="menuManagementActiveFilter">All menu items</span>
-            </div>
-
-            <div class="menu-management-table-wrap">
-                <table class="menu-management-table">
-                    <thead>
-                        <tr><th>Item</th><th>Category</th><th>Price</th><th>Status</th><th>Updated</th><th>Actions</th></tr>
-                    </thead>
-                    <tbody id="menuTableBody"></tbody>
-                </table>
-            </div>
-
-            <div class="menu-management-pagination" id="menuManagementPagination" hidden>
-                <button id="menuManagementPrevPage" type="button">Previous</button>
-                <span id="menuManagementPageInfo">Page 1 of 1</span>
-                <button id="menuManagementNextPage" type="button">Next</button>
-            </div>
-
-            <div class="history-empty" id="menuManagementEmpty" hidden>
-                <h3>No menu items found</h3>
-                <p>Try another search or filter, or add a new menu item.</p>
-            </div>
-        </section>
-    </section>
-
-    <div class="menu-drawer" id="menuItemDrawer" aria-hidden="true">
-        <div class="menu-drawer-overlay" data-menu-drawer-close></div>
-        <aside class="menu-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="menuDrawerTitle">
-            <div class="menu-drawer-header">
-                <div>
-                    <span class="dashboard-eyebrow">Menu item</span>
-                    <h2 id="menuDrawerTitle">Add Menu Item</h2>
-                    <p id="menuDrawerSubtitle">Create a new customer-facing item.</p>
-                </div>
-                <button class="bill-modal-close" type="button" data-menu-drawer-close>&times;</button>
-            </div>
-
-            <form class="menu-item-form" id="menuItemForm" novalidate>
-                <input id="menuEditingItemId" type="hidden">
-                <div class="menu-image-preview" id="menuImagePreview"><span>🍽️</span><small>Image preview</small></div>
-
-                <div class="menu-form-field">
-                    <label for="foodName">Item Name</label>
-                    <input id="foodName" type="text" placeholder="Example: Chicken Burger" required>
-                </div>
-
-                <div class="menu-form-grid">
-                    <div class="menu-form-field">
-                        <label for="foodCategory">Category</label>
-                        <select id="foodCategory"><option value="">Select Category</option></select>
+                            <div class="order-details-content" id="orderDetailsContent"></div>
+                        </section>
                     </div>
-                    <div class="menu-form-field">
-                        <label for="newCategory">New Category</label>
-                        <input id="newCategory" type="text" placeholder="Optional">
+                </section>
+                <section aria-label="Menu Management" class="admin-workspace menu-management-workspace"
+                    data-workspace-view="menu" hidden>
+                    <section class="menu-management-shell" id="menuManagement">
+                        <section class="menu-management-hero">
+                            <div>
+                                <span class="dashboard-eyebrow">Catalog workspace</span>
+                                <h2>Menu Management</h2>
+                                <p>Manage pricing, availability, categories and customer-facing menu items.</p>
+                            </div>
+                            <button class="primary-button menu-add-button" id="addMenuItemBtn" type="button">
+                                <span>＋</span> Add Menu Item
+                            </button>
+                        </section>
+
+                        <section class="menu-summary-grid" aria-label="Menu summary">
+                            <article class="menu-summary-card"><small>Total Items</small><strong
+                                    id="menuSummaryTotal">0</strong>
+                                <p>All menu items</p>
+                            </article>
+                            <article class="menu-summary-card"><small>Available</small><strong
+                                    id="menuSummaryAvailable">0</strong>
+                                <p>Visible to customers</p>
+                            </article>
+                            <article class="menu-summary-card"><small>Out of Stock</small><strong
+                                    id="menuSummaryUnavailable">0</strong>
+                                <p>Temporarily disabled</p>
+                            </article>
+                            <article class="menu-summary-card"><small>Categories</small><strong
+                                    id="menuSummaryCategories">0</strong>
+                                <p>Menu groups</p>
+                            </article>
+                        </section>
+
+                        <section class="menu-management-panel">
+                            <div class="menu-category-chips" id="menuCategoryChips"></div>
+
+                            <div class="menu-management-toolbar">
+                                <label class="menu-search-control" for="menuManagementSearch">
+                                    <span>⌕</span>
+                                    <input id="menuManagementSearch" type="search"
+                                        placeholder="Search item name or category">
+                                </label>
+
+                                <select id="menuManagementCategoryFilter">
+                                    <option value="all">All Categories</option>
+                                </select>
+                                <select id="menuManagementStatusFilter">
+                                    <option value="all">All Statuses</option>
+                                    <option value="available">Available</option>
+                                    <option value="unavailable">Out of Stock</option>
+                                </select>
+                                <select id="menuManagementSort">
+                                    <option value="name-asc">Name A–Z</option>
+                                    <option value="name-desc">Name Z–A</option>
+                                    <option value="price-high">Highest Price</option>
+                                    <option value="price-low">Lowest Price</option>
+                                    <option value="newest">Recently Updated</option>
+                                </select>
+                                <select id="menuManagementPageSize">
+                                    <option value="25">25 rows</option>
+                                    <option value="50">50 rows</option>
+                                    <option value="100">100 rows</option>
+                                </select>
+                            </div>
+
+                            <div class="menu-management-results">
+                                <strong id="menuManagementRange">Showing 0 items</strong>
+                                <span id="menuManagementActiveFilter">All menu items</span>
+                            </div>
+
+                            <div class="menu-management-table-wrap">
+                                <table class="menu-management-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Updated</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="menuTableBody"></tbody>
+                                </table>
+                            </div>
+
+                            <div class="menu-management-pagination" id="menuManagementPagination" hidden>
+                                <button id="menuManagementPrevPage" type="button">Previous</button>
+                                <span id="menuManagementPageInfo">Page 1 of 1</span>
+                                <button id="menuManagementNextPage" type="button">Next</button>
+                            </div>
+
+                            <div class="history-empty" id="menuManagementEmpty" hidden>
+                                <h3>No menu items found</h3>
+                                <p>Try another search or filter, or add a new menu item.</p>
+                            </div>
+                        </section>
+                    </section>
+
+                    <div class="menu-drawer" id="menuItemDrawer" aria-hidden="true">
+                        <div class="menu-drawer-overlay" data-menu-drawer-close></div>
+                        <aside class="menu-drawer-panel" role="dialog" aria-modal="true"
+                            aria-labelledby="menuDrawerTitle">
+                            <div class="menu-drawer-header">
+                                <div>
+                                    <span class="dashboard-eyebrow">Menu item</span>
+                                    <h2 id="menuDrawerTitle">Add Menu Item</h2>
+                                    <p id="menuDrawerSubtitle">Create a new customer-facing item.</p>
+                                </div>
+                                <button class="bill-modal-close" type="button" data-menu-drawer-close>&times;</button>
+                            </div>
+
+                            <form class="menu-item-form" id="menuItemForm" novalidate>
+                                <input id="menuEditingItemId" type="hidden">
+                                <div class="menu-image-preview" id="menuImagePreview"><span>🍽️</span><small>Image
+                                        preview</small></div>
+
+                                <div class="menu-form-field">
+                                    <label for="foodName">Item Name</label>
+                                    <input id="foodName" type="text" placeholder="Example: Chicken Burger" required>
+                                </div>
+
+                                <div class="menu-form-grid">
+                                    <div class="menu-form-field">
+                                        <label for="foodCategory">Category</label>
+                                        <select id="foodCategory">
+                                            <option value="">Select Category</option>
+                                        </select>
+                                    </div>
+                                    <div class="menu-form-field">
+                                        <label for="newCategory">New Category</label>
+                                        <input id="newCategory" type="text" placeholder="Optional">
+                                    </div>
+                                </div>
+
+                                <div class="menu-form-field">
+                                    <label for="foodPrice">Price</label>
+                                    <div class="menu-price-input">
+                                        <span id="menuFormCurrency">SAR</span>
+                                        <input id="foodPrice" type="number" min="0.01" step="0.01" placeholder="0.00"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="menu-form-field">
+                                    <label for="foodImage">Image URL</label>
+                                    <input id="foodImage" type="url" placeholder="https://example.com/item.jpg">
+                                </div>
+
+                                <div class="menu-form-field">
+                                    <label for="foodDescription">Description</label>
+                                    <textarea id="foodDescription" rows="4"
+                                        placeholder="Optional short description"></textarea>
+                                </div>
+
+                                <label class="menu-availability-toggle">
+                                    <input id="foodAvailable" type="checkbox" checked>
+                                    <span class="menu-toggle-track"><span></span></span>
+                                    <span><strong>Available to customers</strong><small>Turn off when the item is sold
+                                            out.</small></span>
+                                </label>
+
+                                <div class="menu-form-message" id="menuFormMessage"></div>
+
+                                <div class="menu-drawer-actions">
+                                    <button class="secondary-button" type="button"
+                                        data-menu-drawer-close>Cancel</button>
+                                    <button class="primary-button" id="saveNewItem" type="submit">Save Item</button>
+                                </div>
+                            </form>
+                        </aside>
                     </div>
-                </div>
-
-                <div class="menu-form-field">
-                    <label for="foodPrice">Price</label>
-                    <div class="menu-price-input">
-                        <span id="menuFormCurrency">SAR</span>
-                        <input id="foodPrice" type="number" min="0.01" step="0.01" placeholder="0.00" required>
-                    </div>
-                </div>
-
-                <div class="menu-form-field">
-                    <label for="foodImage">Image URL</label>
-                    <input id="foodImage" type="url" placeholder="https://example.com/item.jpg">
-                </div>
-
-                <div class="menu-form-field">
-                    <label for="foodDescription">Description</label>
-                    <textarea id="foodDescription" rows="4" placeholder="Optional short description"></textarea>
-                </div>
-
-                <label class="menu-availability-toggle">
-                    <input id="foodAvailable" type="checkbox" checked>
-                    <span class="menu-toggle-track"><span></span></span>
-                    <span><strong>Available to customers</strong><small>Turn off when the item is sold out.</small></span>
-                </label>
-
-                <div class="menu-form-message" id="menuFormMessage"></div>
-
-                <div class="menu-drawer-actions">
-                    <button class="secondary-button" type="button" data-menu-drawer-close>Cancel</button>
-                    <button class="primary-button" id="saveNewItem" type="submit">Save Item</button>
-                </div>
-            </form>
-        </aside>
-    </div>
-</section>
+                </section>
                 <section aria-label="Restaurant Settings" class="admin-workspace" data-workspace-view="settings"
                     hidden="">
                     <details class="collapsible-section" id="restaurantSettings">
@@ -1519,13 +1330,13 @@
     </script>
     <script src="../js/billing.js?v=2">
     </script>
-  <script src="../js/payment-records.js?v=3">
+    <script src="../js/payment-records.js?v=3">
     </script>
-    <script src="../js/analytics.js">
+    <script src="../js/analytics.js?v=5">
     </script>
     <script src="../js/order-history.js?v=2">
     </script>
-   <script src="../js/menu-management.js?v=2">
+    <script src="../js/menu-management.js?v=2">
     </script>
     <script src="../js/admin-navigation.js">
     </script>
