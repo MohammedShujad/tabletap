@@ -1,0 +1,934 @@
+/* =====================================
+   TABLETAP WAITER DASHBOARD
+===================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+    background:#eef2f7;
+
+    color:#1f2937;
+
+}
+
+.waiter-app{
+
+    min-height:100vh;
+
+    padding:30px;
+
+}
+
+.waiter-topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.waiter-eyebrow{
+
+    color:#64748b;
+
+    font-size:13px;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+}
+
+.waiter-topbar h1{
+
+    margin-top:6px;
+
+    font-size:34px;
+
+}
+
+.waiter-topbar p{
+
+    margin-top:10px;
+
+    color:#64748b;
+
+}
+
+.waiter-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:white;
+
+    padding:16px 20px;
+
+    border-radius:16px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.06);
+
+}
+
+.waiter-status span{
+
+    width:14px;
+
+    height:14px;
+
+    border-radius:50%;
+
+    background:#22c55e;
+
+}
+
+.waiter-toolbar {
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.waiter-name-control,
+.waiter-search-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid #dbe2ea;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+.waiter-name-control span {
+    flex-shrink: 0;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.waiter-name-control input,
+.waiter-search-control input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #1f2937;
+    font-size: 14px;
+}
+
+.waiter-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.waiter-column {
+    min-width: 0;
+    min-height: 520px;
+    overflow: hidden;
+    border: 1px solid #dbe2ea;
+    border-radius: 18px;
+    background: #f8fafc;
+}
+
+.waiter-column > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 18px;
+    border-bottom: 1px solid #dbe2ea;
+    background: #ffffff;
+}
+
+.waiter-column > header > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.waiter-column h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.waiter-column > header strong {
+    min-width: 32px;
+    padding: 6px 9px;
+    border-radius: 999px;
+    background: #eef2f7;
+    text-align: center;
+    font-size: 12px;
+}
+
+.waiter-column-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.waiter-column-dot.waiting {
+    background: #ef4444;
+}
+
+.waiter-column-dot.assigned {
+    background: #f59e0b;
+}
+
+.waiter-column-dot.delivered {
+    background: #22c55e;
+}
+
+.waiter-column-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+}
+
+.waiter-order-card {
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #94a3b8;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
+}
+
+.waiter-order-card-waiting {
+    border-left-color: #ef4444;
+}
+
+.waiter-order-card-assigned {
+    border-left-color: #f59e0b;
+}
+
+.waiter-order-card-delivered {
+    border-left-color: #22c55e;
+    opacity: 0.94;
+}
+
+.waiter-order-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px 10px;
+}
+
+.waiter-order-card-header small {
+    color: #94a3b8;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.waiter-order-card-header h3 {
+    margin-top: 4px;
+    font-size: 15px;
+    word-break: break-word;
+}
+
+.waiter-ready-time {
+    flex-shrink: 0;
+    padding: 7px 9px;
+    border-radius: 9px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.waiter-table-block {
+    margin: 0 14px 10px;
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.waiter-table-block small,
+.waiter-table-block strong {
+    display: block;
+}
+
+.waiter-table-block small {
+    color: #94a3b8;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.waiter-table-block strong {
+    margin-top: 5px;
+    font-size: 21px;
+}
+
+.waiter-order-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    padding: 0 14px 10px;
+}
+
+.waiter-order-meta > div {
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid #edf1f6;
+    border-radius: 10px;
+}
+
+.waiter-order-meta small,
+.waiter-order-meta strong {
+    display: block;
+}
+
+.waiter-order-meta small {
+    color: #94a3b8;
+    font-size: 10px;
+}
+
+.waiter-order-meta strong {
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.waiter-assignment {
+    margin: 0 14px 10px;
+    padding: 10px 12px;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 12px;
+}
+
+.waiter-assignment strong {
+    margin-left: 4px;
+}
+
+.waiter-order-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 14px 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.waiter-order-actions button {
+    min-height: 36px;
+    padding: 9px 13px;
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.waiter-accept-button {
+    background: #2563eb;
+}
+
+.waiter-delivered-button {
+    background: #16a34a;
+}
+
+.waiter-delivered-label {
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.waiter-column-empty {
+    min-height: 200px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 7px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.waiter-column-empty span {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #e2e8f0;
+}
+
+.waiter-column-empty strong {
+    color: #64748b;
+}
+
+.waiter-column-empty small {
+    font-size: 12px;
+}
+
+.waiter-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1000;
+    max-width: 360px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: #111827;
+    color: #ffffff;
+    box-shadow: 0 16px 35px rgba(15, 23, 42, 0.24);
+    opacity: 0;
+    transform: translateY(16px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.waiter-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1100px) {
+    .waiter-board {
+        grid-template-columns: 1fr;
+    }
+
+    .waiter-column {
+        min-height: 340px;
+    }
+}
+
+@media (max-width: 720px) {
+    .waiter-app {
+        padding: 18px;
+    }
+
+    .waiter-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .waiter-topbar h1 {
+        font-size: 27px;
+    }
+
+    .waiter-status {
+        width: 100%;
+    }
+
+    .waiter-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .waiter-order-meta {
+        grid-template-columns: 1fr;
+    }
+}
+/* =====================================
+   COMPACT WAITER OPERATIONS BOARD
+===================================== */
+
+.waiter-column {
+    min-height: 440px;
+}
+
+.waiter-column-body {
+    gap: 8px;
+    padding: 10px;
+}
+
+.waiter-order-row {
+    overflow: hidden;
+    border: 1px solid #dfe6ee;
+    border-left: 4px solid #94a3b8;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.waiter-order-row-waiting {
+    border-left-color: #ef4444;
+}
+
+.waiter-order-row-assigned {
+    border-left-color: #f59e0b;
+}
+
+.waiter-order-row-delivered {
+    border-left-color: #22c55e;
+}
+
+.waiter-row-main {
+    display: grid;
+    grid-template-columns:
+        10px
+        minmax(125px, 1.4fr)
+        minmax(60px, 0.55fr)
+        minmax(90px, 1fr)
+        minmax(45px, 0.45fr)
+        minmax(70px, 0.65fr)
+        auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 68px;
+    padding: 9px 10px;
+}
+
+.waiter-row-main > div {
+    min-width: 0;
+}
+
+.waiter-row-main small {
+    display: block;
+    margin-bottom: 3px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.waiter-row-main strong {
+    display: block;
+    overflow: hidden;
+    color: #1e293b;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.waiter-row-status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #94a3b8;
+}
+
+.waiter-order-row-waiting .waiter-row-status-dot {
+    background: #ef4444;
+}
+
+.waiter-order-row-assigned .waiter-row-status-dot {
+    background: #f59e0b;
+}
+
+.waiter-order-row-delivered .waiter-row-status-dot {
+    background: #22c55e;
+}
+
+.waiter-row-time strong {
+    color: #b91c1c;
+}
+
+.waiter-order-row-assigned .waiter-row-time strong {
+    color: #b45309;
+}
+
+.waiter-order-row-delivered .waiter-row-time strong {
+    color: #15803d;
+}
+
+.waiter-row-action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.waiter-row-action button {
+    min-width: 74px;
+    min-height: 32px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.waiter-row-assignment {
+    padding: 7px 12px;
+    border-top: 1px solid #f1f5f9;
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 11px;
+}
+
+.waiter-row-assignment strong {
+    margin-left: 4px;
+}
+
+.waiter-delivered-label {
+    white-space: nowrap;
+}
+
+@media (max-width: 1350px) {
+    .waiter-board {
+        grid-template-columns: 1fr;
+    }
+
+    .waiter-column {
+        min-height: 260px;
+    }
+}
+
+@media (max-width: 760px) {
+    .waiter-row-main {
+        grid-template-columns:
+            10px
+            minmax(0, 1fr)
+            55px
+            auto;
+    }
+
+    .waiter-row-customer,
+    .waiter-row-items {
+        display: none;
+    }
+
+    .waiter-row-time {
+        text-align: right;
+    }
+
+    .waiter-row-action {
+        grid-column: 2 / -1;
+    }
+
+    .waiter-row-action button {
+        width: 100%;
+    }
+}
+
+/* =====================================
+   WAITER DASHBOARD — PROFESSIONAL LAYOUT
+===================================== */
+
+body {
+    background: #f3f6fa;
+    color: #172033;
+}
+
+/* Main page width */
+
+.waiter-app {
+    width: 100%;
+    max-width: 1700px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Professional header */
+
+.waiter-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 20px;
+    padding: 22px 26px;
+    border-radius: 18px;
+    background: #0f1b33;
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(15, 27, 51, 0.15);
+}
+
+.waiter-eyebrow {
+    display: block;
+    color: #7da7ff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.waiter-topbar h1 {
+    margin: 6px 0 4px;
+    color: #ffffff;
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.waiter-topbar p {
+    margin: 0;
+    color: #b9c5da;
+    font-size: 14px;
+}
+
+.waiter-status {
+    min-width: 220px;
+    padding: 13px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+}
+
+.waiter-status strong,
+.waiter-status small {
+    display: block;
+}
+
+.waiter-status strong {
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.waiter-status small {
+    margin-top: 2px;
+    color: #9fb0ca;
+    font-size: 11px;
+}
+
+/* Summary cards */
+
+.waiter-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.waiter-summary-card {
+    position: relative;
+    min-height: 110px;
+    padding: 17px 18px;
+    overflow: hidden;
+    border: 1px solid #dfe6ef;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.waiter-summary-card::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #2563eb;
+    content: "";
+}
+
+.waiter-summary-card:nth-child(1)::before {
+    background: #ef4444;
+}
+
+.waiter-summary-card:nth-child(2)::before {
+    background: #f59e0b;
+}
+
+.waiter-summary-card:nth-child(3)::before {
+    background: #22c55e;
+}
+
+.waiter-summary-card:nth-child(4)::before {
+    background: #2563eb;
+}
+
+.waiter-summary-card small {
+    display: block;
+    color: #66748a;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.waiter-summary-card strong {
+    display: block;
+    margin: 7px 0 3px;
+    color: #14213d;
+    font-size: 29px;
+    line-height: 1;
+}
+
+.waiter-summary-card p {
+    margin: 0;
+    color: #8a96a8;
+    font-size: 11px;
+}
+
+/* Toolbar */
+
+.waiter-toolbar {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 12px;
+    border: 1px solid #dfe6ef;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 5px 16px rgba(15, 23, 42, 0.04);
+}
+
+.waiter-name-control,
+.waiter-search-control {
+    min-height: 43px;
+    border: 1px solid #d9e1ec;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+/* Three operation columns */
+
+.waiter-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+}
+
+.waiter-column {
+    min-height: 300px;
+    max-height: 560px;
+    border: 1px solid #dce4ee;
+    border-radius: 16px;
+    background: #f8fafc;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.waiter-column > header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 14px 15px;
+    background: #ffffff;
+}
+
+.waiter-column h2 {
+    color: #172033;
+    font-size: 15px;
+}
+
+.waiter-column-body {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 9px;
+}
+
+/* Compact order row */
+
+.waiter-order-row {
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+}
+
+.waiter-row-main {
+    grid-template-columns:
+        8px
+        minmax(105px, 1.4fr)
+        minmax(42px, 0.45fr)
+        minmax(70px, 0.9fr)
+        minmax(35px, 0.35fr)
+        minmax(55px, 0.55fr)
+        auto;
+
+    gap: 7px;
+    min-height: 59px;
+    padding: 8px 9px;
+}
+
+.waiter-row-main small {
+    margin-bottom: 2px;
+    font-size: 8px;
+}
+
+.waiter-row-main strong {
+    font-size: 11px;
+}
+
+.waiter-row-action button {
+    min-width: 68px;
+    min-height: 29px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    font-size: 10px;
+}
+
+.waiter-row-assignment {
+    padding: 5px 10px;
+    font-size: 10px;
+}
+
+/* Empty states should not occupy huge space */
+
+.waiter-column-empty {
+    min-height: 175px;
+}
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+    .waiter-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .waiter-board {
+        grid-template-columns: 1fr;
+    }
+
+    .waiter-column {
+        min-height: 220px;
+        max-height: 430px;
+    }
+}
+
+@media (max-width: 700px) {
+    .waiter-app {
+        padding: 12px;
+    }
+
+    .waiter-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .waiter-status {
+        width: 100%;
+    }
+
+    .waiter-summary-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+    }
+
+    .waiter-summary-card {
+        min-height: 95px;
+        padding: 14px;
+    }
+
+    .waiter-summary-card strong {
+        font-size: 24px;
+    }
+
+    .waiter-toolbar {
+        grid-template-columns: 1fr;
+    }
+}

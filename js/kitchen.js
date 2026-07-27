@@ -145,11 +145,45 @@ function getKitchenTypeLabel(type) {
 }
 
 function getKitchenStatus(order) {
-    const status = String(order.status || "New");
+    const rawStatus = String(
+        order.status || "New"
+    )
+        .trim()
+        .toLowerCase();
 
-    return status === "Accepted"
-        ? "Preparing"
-        : status;
+    if (
+        rawStatus === "pending" ||
+        rawStatus === "placed" ||
+        rawStatus === "waiting" ||
+        rawStatus === "submitted" ||
+        rawStatus === "new"
+    ) {
+        return "New";
+    }
+
+    if (
+        rawStatus === "accepted" ||
+        rawStatus === "preparing"
+    ) {
+        return "Preparing";
+    }
+
+    if (rawStatus === "ready") {
+        return "Ready";
+    }
+
+    if (
+        rawStatus === "completed" ||
+        rawStatus === "served"
+    ) {
+        return "Completed";
+    }
+
+    if (rawStatus === "cancelled") {
+        return "Cancelled";
+    }
+
+    return "New";
 }
 
 function getKitchenItemsHtml(order) {
@@ -639,31 +673,32 @@ function detectNewKitchenOrders(nextOrders) {
 }
 
 function changeKitchenStatus(orderId, newStatus) {
-    const order = kitchenOrders.find(function (currentOrder) {
-        return String(currentOrder.id) === String(orderId);
-    });
+    if (!window.TableTapOrderSync) {
+        console.error(
+            "TableTapOrderSync is not available."
+        );
 
-    if (!order) return;
-
-    order.status = newStatus;
-    order.updatedAt = new Date().toISOString();
-
-    if (newStatus === "Preparing") {
-        order.preparingAt = new Date().toISOString();
+        return;
     }
 
-    if (newStatus === "Ready") {
-        order.readyAt = new Date().toISOString();
+    const updatedOrder =
+        TableTapOrderSync.updateOrderStatus(
+            orderId,
+            newStatus,
+            "kitchen"
+        );
+
+    if (!updatedOrder) {
+        return;
     }
 
-    if (newStatus === "Completed") {
-        order.completedAt = new Date().toISOString();
-    }
+    kitchenOrders =
+        TableTapOrderSync.getOrders();
 
-    saveKitchenOrders();
+    renderKitchenOrders();
 
     showKitchenToast(
-        `Order ${order.id} marked ${newStatus}`
+        `Order ${updatedOrder.id} marked ${newStatus}`
     );
 }
 

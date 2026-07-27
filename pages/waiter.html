@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TableTap Waiter Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/waiter.css?v=3"
+    >
+</head>
+
+<body>
+
+    <div class="waiter-app">
+
+        <header class="waiter-topbar">
+            <div>
+                <span class="waiter-eyebrow">
+                    TableTap Operations
+                </span>
+
+                <h1>
+                    Waiter Delivery Dashboard
+                </h1>
+
+                <p>
+                    Accept ready orders and confirm delivery to the customer.
+                </p>
+            </div>
+
+            <div class="waiter-status">
+                <span></span>
+
+                <div>
+                    <strong>Live delivery queue</strong>
+                    <small>Updates automatically</small>
+                </div>
+            </div>
+        </header>
+
+        <main class="waiter-main">
+
+            <section
+                class="waiter-summary-grid"
+                aria-label="Waiter delivery summary"
+            >
+                <article class="waiter-summary-card">
+                    <small>Waiting for Pickup</small>
+
+                    <strong id="waiterWaitingCount">
+                        0
+                    </strong>
+
+                    <p>Ready orders waiting for staff</p>
+                </article>
+
+                <article class="waiter-summary-card">
+                    <small>Assigned</small>
+
+                    <strong id="waiterAssignedCount">
+                        0
+                    </strong>
+
+                    <p>Orders currently being delivered</p>
+                </article>
+
+                <article class="waiter-summary-card">
+                    <small>Delivered Today</small>
+
+                    <strong id="waiterDeliveredCount">
+                        0
+                    </strong>
+
+                    <p>Completed table deliveries</p>
+                </article>
+
+                <article class="waiter-summary-card">
+                    <small>Average Delivery</small>
+
+                    <strong id="waiterAverageTime">
+                        0 min
+                    </strong>
+
+                    <p>Time from ready to delivered</p>
+                </article>
+            </section>
+
+            <section class="waiter-toolbar">
+
+                <label
+                    class="waiter-name-control"
+                    for="waiterName"
+                >
+                    <span>Waiter Name</span>
+
+                    <input
+                        id="waiterName"
+                        type="text"
+                        placeholder="Example: Ahmed"
+                        autocomplete="name"
+                    >
+                </label>
+
+                <label
+                    class="waiter-search-control"
+                    for="waiterSearch"
+                >
+                    <span aria-hidden="true">
+                        ⌕
+                    </span>
+
+                    <input
+                        id="waiterSearch"
+                        type="search"
+                        placeholder="Search order, table or customer"
+                        autocomplete="off"
+                    >
+                </label>
+
+            </section>
+
+            <section
+                class="waiter-board"
+                aria-label="Food delivery board"
+            >
+
+                <article class="waiter-column">
+                    <header>
+                        <div>
+                            <span class="waiter-column-dot waiting"></span>
+
+                            <h2>
+                                Waiting for Pickup
+                            </h2>
+                        </div>
+
+                        <strong id="waiterWaitingColumnCount">
+                            0
+                        </strong>
+                    </header>
+
+                    <div
+                        id="waiterWaitingList"
+                        class="waiter-column-body"
+                    ></div>
+                </article>
+
+                <article class="waiter-column">
+                    <header>
+                        <div>
+                            <span class="waiter-column-dot assigned"></span>
+
+                            <h2>
+                                Assigned to Me
+                            </h2>
+                        </div>
+
+                        <strong id="waiterAssignedColumnCount">
+                            0
+                        </strong>
+                    </header>
+
+                    <div
+                        id="waiterAssignedList"
+                        class="waiter-column-body"
+                    ></div>
+                </article>
+
+                <article class="waiter-column">
+                    <header>
+                        <div>
+                            <span class="waiter-column-dot delivered"></span>
+
+                            <h2>
+                                Delivered Today
+                            </h2>
+                        </div>
+
+                        <strong id="waiterDeliveredColumnCount">
+                            0
+                        </strong>
+                    </header>
+
+                    <div
+                        id="waiterDeliveredList"
+                        class="waiter-column-body"
+                    ></div>
+                </article>
+
+            </section>
+
+        </main>
+
+        <div
+            id="waiterToast"
+            class="waiter-toast"
+            aria-live="polite"
+        ></div>
+
+    </div>
+
+    <script src="../js/shared-order-sync.js?v=1"></script>
+    <script src="../js/waiter.js?v=2"></script>
+
+</body>
+
+</html>

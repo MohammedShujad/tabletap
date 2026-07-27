@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Track Your Order</title>
 
@@ -20,17 +25,17 @@
         }
 
         .page-header {
-        background: #8b1014;
-        color: white;
-        padding: 22px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        text-align: center;
-        font-size: 28px;
-        font-weight: bold;
-}
+            background: #8b1014;
+            color: white;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
 
         .tracking-card {
             width: 90%;
@@ -39,7 +44,7 @@
             background: white;
             padding: 38px;
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
         }
 
         .checkmark {
@@ -139,58 +144,105 @@
 <body>
 
     <div class="page-header">
-    <div id="confirmationRestaurantLogo">🍽️</div>
-    <div id="confirmationRestaurantName">
-        Restaurant
+        <div id="confirmationRestaurantLogo">
+            🍽️
+        </div>
+
+        <div id="confirmationRestaurantName">
+            Restaurant
+        </div>
     </div>
-</div>
 
     <main class="tracking-card">
 
-        <div class="checkmark">✅</div>
+        <div class="checkmark">
+            ✅
+        </div>
 
-        <h1>Order Confirmed</h1>
+        <h1>
+            Order Confirmed
+        </h1>
 
         <p class="subtitle">
             Track the progress of your order below.
         </p>
 
-        <div id="orderNumber" class="order-number"></div>
+        <div
+            id="orderNumber"
+            class="order-number"
+        ></div>
 
         <section class="tracking-steps">
 
-            <div id="stepNew" class="tracking-step">
-                <div class="step-icon">🕒</div>
-                <span>Waiting for Restaurant</span>
+            <div
+                id="stepNew"
+                class="tracking-step"
+            >
+                <div class="step-icon">
+                    🕒
+                </div>
+
+                <span>
+                    Waiting for Restaurant
+                </span>
             </div>
 
-            <div id="stepAccepted" class="tracking-step">
-                <div class="step-icon">👍</div>
-                <span>Order Accepted</span>
+            <div
+                id="stepAccepted"
+                class="tracking-step"
+            >
+                <div class="step-icon">
+                    👍
+                </div>
+
+                <span>
+                    Order Accepted
+                </span>
             </div>
 
-            <div id="stepPreparing" class="tracking-step">
-                <div class="step-icon">🍳</div>
-                <span>Preparing Your Food</span>
+            <div
+                id="stepPreparing"
+                class="tracking-step"
+            >
+                <div class="step-icon">
+                    🍳
+                </div>
+
+                <span>
+                    Preparing Your Food
+                </span>
             </div>
 
-            <div id="stepReady" class="tracking-step">
-                <div class="step-icon">✅</div>
-                <span>Ready to Serve</span>
+            <div
+                id="stepReady"
+                class="tracking-step"
+            >
+                <div class="step-icon">
+                    ✅
+                </div>
+
+                <span>
+                    Ready to Serve
+                </span>
             </div>
 
         </section>
 
         <p class="refresh-note">
-            Refresh this page after the kitchen updates your order.
+            Your order status updates automatically.
         </p>
 
-        <button id="refreshStatus" class="action-button">
+        <button
+            id="refreshStatus"
+            class="action-button"
+            type="button"
+        >
             Refresh Status
         </button>
 
         <button
             class="action-button secondary-button"
+            type="button"
             onclick="window.location.href='menu.html'"
         >
             Order More
@@ -198,89 +250,140 @@
 
     </main>
 
+    <script src="../js/shared-order-sync.js?v=1"></script>
+
     <script>
-
         const savedSettings =
-    JSON.parse(
-        localStorage.getItem("tableTapSettings")
-    ) || {};
+            JSON.parse(
+                localStorage.getItem(
+                    "tableTapSettings"
+                )
+            ) || {};
 
-const confirmationRestaurantName =
-    document.getElementById(
-        "confirmationRestaurantName"
-    );
+        const confirmationRestaurantName =
+            document.getElementById(
+                "confirmationRestaurantName"
+            );
 
-const confirmationRestaurantLogo =
-    document.getElementById(
-        "confirmationRestaurantLogo"
-    );
+        const confirmationRestaurantLogo =
+            document.getElementById(
+                "confirmationRestaurantLogo"
+            );
 
-const restaurantName =
-    savedSettings.restaurantName ||
-    "Green & Red Restaurant";
+        const restaurantName =
+            savedSettings.restaurantName ||
+            "Green & Red Restaurant";
 
-confirmationRestaurantName.textContent =
-    restaurantName;
+        confirmationRestaurantName.textContent =
+            restaurantName;
 
-document.title =
-    `${restaurantName} Order Tracking`;
+        document.title =
+            `${restaurantName} Order Tracking`;
 
-if (savedSettings.logoUrl) {
-    confirmationRestaurantLogo.innerHTML = `
-        <img
-            src="${savedSettings.logoUrl}"
-            alt="${restaurantName} logo"
-            style="
-                width:42px;
-                height:42px;
-                object-fit:cover;
-                border-radius:10px;
-                vertical-align:middle;
-            "
-        >
-    `;
-}
+        if (savedSettings.logoUrl) {
+            confirmationRestaurantLogo.innerHTML = `
+                <img
+                    src="${savedSettings.logoUrl}"
+                    alt="${restaurantName} logo"
+                    style="
+                        width: 42px;
+                        height: 42px;
+                        object-fit: cover;
+                        border-radius: 10px;
+                        vertical-align: middle;
+                    "
+                >
+            `;
+        }
 
-        const stepNew = document.getElementById("stepNew");
-        const stepAccepted = document.getElementById("stepAccepted");
-        const stepPreparing = document.getElementById("stepPreparing");
-        const stepReady = document.getElementById("stepReady");
+        const stepNew =
+            document.getElementById(
+                "stepNew"
+            );
 
-        function loadOrderStatus() {
-            const latestOrder =
-                JSON.parse(
-                    localStorage.getItem("tableTapLatestOrder")
+        const stepAccepted =
+            document.getElementById(
+                "stepAccepted"
+            );
+
+        const stepPreparing =
+            document.getElementById(
+                "stepPreparing"
+            );
+
+        const stepReady =
+            document.getElementById(
+                "stepReady"
+            );
+
+        const orderNumberElement =
+            document.getElementById(
+                "orderNumber"
+            );
+
+        function getTrackedOrderId() {
+            try {
+                const latestOrder =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "tableTapLatestOrder"
+                        )
+                    );
+
+                return latestOrder?.id || null;
+            } catch (error) {
+                console.error(
+                    "Unable to read latest order:",
+                    error
                 );
 
-            if (!latestOrder) {
-                document.getElementById("orderNumber").textContent =
-                    "Order information unavailable";
+                return null;
+            }
+        }
 
-                return;
+        function normalizeTrackingStatus(status) {
+            const value =
+                String(status || "New")
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                value === "pending" ||
+                value === "placed" ||
+                value === "submitted" ||
+                value === "waiting" ||
+                value === "new"
+            ) {
+                return "New";
             }
 
-            document.getElementById("orderNumber").textContent =
-                `Order Number: ${latestOrder.id}`;
+            if (value === "accepted") {
+                return "Accepted";
+            }
 
-            const orders =
-                JSON.parse(
-                    localStorage.getItem("tableTapOrders")
-                ) || [];
+            if (value === "preparing") {
+                return "Preparing";
+            }
 
-            const currentOrder =
-                orders.find(function (order) {
-                    return order.id === latestOrder.id;
-                }) || latestOrder;
+            if (value === "ready") {
+                return "Ready";
+            }
 
-            const statusOrder = [
-                "New",
-                "Accepted",
-                "Preparing",
-                "Ready"
-            ];
+            if (
+                value === "served" ||
+                value === "completed"
+            ) {
+                return "Completed";
+            }
 
-            const currentIndex =
-                statusOrder.indexOf(currentOrder.status);
+            return "New";
+        }
+
+        function updateTrackingSteps(status) {
+            const normalizedStatus =
+                normalizeTrackingStatus(
+                    status
+                );
 
             const steps = [
                 stepNew,
@@ -289,25 +392,160 @@ if (savedSettings.logoUrl) {
                 stepReady
             ];
 
-            steps.forEach(function (step, index) {
-                step.classList.remove("active", "complete");
+            const statusIndexes = {
+                New: 0,
+                Accepted: 1,
+                Preparing: 2,
+                Ready: 3,
+                Completed: 4
+            };
 
-                if (index < currentIndex) {
-                    step.classList.add("complete");
-                }
+            const currentIndex =
+                statusIndexes[
+                    normalizedStatus
+                ] ?? 0;
 
-                if (index === currentIndex) {
-                    step.classList.add("active");
+            steps.forEach(
+                function (step, index) {
+                    step.classList.remove(
+                        "active",
+                        "complete"
+                    );
+
+                    if (
+                        currentIndex >=
+                        steps.length
+                    ) {
+                        step.classList.add(
+                            "complete"
+                        );
+
+                        return;
+                    }
+
+                    if (index < currentIndex) {
+                        step.classList.add(
+                            "complete"
+                        );
+                    }
+
+                    if (index === currentIndex) {
+                        step.classList.add(
+                            "active"
+                        );
+                    }
                 }
-            });
+            );
+
+            const readyText =
+                stepReady.querySelector(
+                    "span"
+                );
+
+            if (
+                normalizedStatus ===
+                "Completed"
+            ) {
+                readyText.textContent =
+                    "Order Served Successfully";
+            } else {
+                readyText.textContent =
+                    "Ready to Serve";
+            }
+        }
+
+        function loadOrderStatus() {
+            if (!window.TableTapOrderSync) {
+                orderNumberElement.textContent =
+                    "Order sync unavailable";
+
+                return;
+            }
+
+            const trackedOrderId =
+                getTrackedOrderId();
+
+            if (!trackedOrderId) {
+                orderNumberElement.textContent =
+                    "Order information unavailable";
+
+                return;
+            }
+
+            const currentOrder =
+                TableTapOrderSync.getOrderById(
+                    trackedOrderId
+                );
+
+            if (!currentOrder) {
+                orderNumberElement.textContent =
+                    `Order Number: ${trackedOrderId}`;
+
+                updateTrackingSteps(
+                    "New"
+                );
+
+                return;
+            }
+
+            orderNumberElement.textContent =
+                `Order Number: ${currentOrder.id}`;
+
+            updateTrackingSteps(
+                currentOrder.status
+            );
         }
 
         document
-            .getElementById("refreshStatus")
-            .addEventListener("click", loadOrderStatus);
+            .getElementById(
+                "refreshStatus"
+            )
+            .addEventListener(
+                "click",
+                loadOrderStatus
+            );
+
+        if (window.TableTapOrderSync) {
+            TableTapOrderSync.subscribe(
+                function (orders) {
+                    const trackedOrderId =
+                        getTrackedOrderId();
+
+                    if (!trackedOrderId) {
+                        return;
+                    }
+
+                    const updatedOrder =
+                        orders.find(
+                            function (order) {
+                                return (
+                                    String(
+                                        order.id
+                                    ) ===
+                                    String(
+                                        trackedOrderId
+                                    )
+                                );
+                            }
+                        );
+
+                    if (!updatedOrder) {
+                        return;
+                    }
+
+                    orderNumberElement.textContent =
+                        `Order Number: ${updatedOrder.id}`;
+
+                    updateTrackingSteps(
+                        updatedOrder.status
+                    );
+                }
+            );
+        }
 
         loadOrderStatus();
     </script>
 
 </body>
+
 </html>
