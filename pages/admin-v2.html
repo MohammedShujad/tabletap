@@ -8,7 +8,12 @@
         TableTap Admin V2
     </title>
     <link href="../css/admin.css?v=12" rel="stylesheet">
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    defer
+></script>
 </head>
+
 
 <body>
     <div class="admin-app-shell" id="adminApp">
@@ -115,25 +120,42 @@
 
                 <button class="admin-nav-button" data-admin-view="settings" data-view-title="Restaurant Settings"
                     type="button">
-                   
-                        <span class="admin-nav-icon">
-                            ⚙
-                        </span>
-                        <span>
-                            Restaurant Settings
-                        </span>
-                    </button>
-                    <p class="admin-nav-label">
-                        Open pages
-                    </p>
-                    <a class="admin-nav-link" href="menu.html">
-                        <span class="admin-nav-icon">
-                            &nearrow;
-                        </span>
-                        <span>
-                            Customer Menu
-                        </span>
-                    </a>
+
+                    <span class="admin-nav-icon">
+                        ⚙
+                    </span>
+                    <span>
+                        Restaurant Settings
+                    </span>
+                </button>
+                <button class="admin-nav-button" data-admin-view="staff" data-view-title="Staff Management"
+                    type="button">
+
+                    <span class="admin-nav-icon">👥</span>
+
+                    <span>Staff</span>
+
+                </button>
+                <button
+    class="admin-nav-button"
+    data-admin-view="qr-generator"
+    data-view-title="QR Generator"
+    type="button"
+>
+    <span class="admin-nav-icon">▦</span>
+    <span>QR Generator</span>
+</button>
+                <p class="admin-nav-label">
+                    Open pages
+                </p>
+                <a class="admin-nav-link" href="menu.html">
+                    <span class="admin-nav-icon">
+                        &nearrow;
+                    </span>
+                    <span>
+                        Customer Menu
+                    </span>
+                </a>
             </nav>
             <div class="admin-sidebar-footer">
                 <div class="admin-restaurant-profile">
@@ -1230,271 +1252,229 @@
                         </aside>
                     </div>
                 </section>
-                <section
-    aria-label="Service Requests"
-    class="admin-workspace service-requests-workspace"
-    data-workspace-view="service-requests"
-    hidden
->
-    <section
-        class="service-requests-shell"
-        id="serviceRequestsWorkspace"
-    >
-        <section class="service-requests-hero">
-            <div>
-                <span class="dashboard-eyebrow">
-                    Live table service
-                </span>
+                <section aria-label="Service Requests" class="admin-workspace service-requests-workspace"
+                    data-workspace-view="service-requests" hidden>
+                    <section class="service-requests-shell" id="serviceRequestsWorkspace">
+                        <section class="service-requests-hero">
+                            <div>
+                                <span class="dashboard-eyebrow">
+                                    Live table service
+                                </span>
 
-                <h2>
-                    Service Requests
-                </h2>
+                                <h2>
+                                    Service Requests
+                                </h2>
 
-                <p>
-                    Review, accept and complete assistance requests
-                    sent by customers from their tables.
-                </p>
-            </div>
+                                <p>
+                                    Review, accept and complete assistance requests
+                                    sent by customers from their tables.
+                                </p>
+                            </div>
 
-            <div class="service-requests-live-status">
-                <span></span>
+                            <div class="service-requests-live-status">
+                                <span></span>
 
-                <div>
-                    <strong>Live requests</strong>
-                    <small>Updates automatically</small>
-                </div>
-            </div>
-        </section>
+                                <div>
+                                    <strong>Live requests</strong>
+                                    <small>Updates automatically</small>
+                                </div>
+                            </div>
+                        </section>
 
-        <section
-            class="service-requests-summary-grid"
-            aria-label="Service request summary"
-        >
-            <article class="service-request-summary-card">
-                <small>New Requests</small>
+                        <section class="service-requests-summary-grid" aria-label="Service request summary">
+                            <article class="service-request-summary-card">
+                                <small>New Requests</small>
 
-                <strong id="serviceRequestsNewCount">
-                    0
-                </strong>
+                                <strong id="serviceRequestsNewCount">
+                                    0
+                                </strong>
 
-                <p>Waiting for staff</p>
-            </article>
+                                <p>Waiting for staff</p>
+                            </article>
 
-            <article class="service-request-summary-card">
-                <small>Accepted</small>
+                            <article class="service-request-summary-card">
+                                <small>Accepted</small>
 
-                <strong id="serviceRequestsAcceptedCount">
-                    0
-                </strong>
+                                <strong id="serviceRequestsAcceptedCount">
+                                    0
+                                </strong>
 
-                <p>Staff on the way</p>
-            </article>
+                                <p>Staff on the way</p>
+                            </article>
 
-            <article class="service-request-summary-card">
-                <small>Completed Today</small>
+                            <article class="service-request-summary-card">
+                                <small>Completed Today</small>
 
-                <strong id="serviceRequestsCompletedCount">
-                    0
-                </strong>
+                                <strong id="serviceRequestsCompletedCount">
+                                    0
+                                </strong>
 
-                <p>Finished requests</p>
-            </article>
+                                <p>Finished requests</p>
+                            </article>
 
-            <article class="service-request-summary-card">
-                <small>Average Response</small>
+                            <article class="service-request-summary-card">
+                                <small>Average Response</small>
 
-                <strong id="serviceRequestsAverageTime">
-                    0 min
-                </strong>
+                                <strong id="serviceRequestsAverageTime">
+                                    0 min
+                                </strong>
 
-                <p>Time before acceptance</p>
-            </article>
-        </section>
+                                <p>Time before acceptance</p>
+                            </article>
+                        </section>
 
-        <section class="service-requests-panel">
-            <div class="service-requests-toolbar">
-                <label
-                    class="service-request-search-control"
-                    for="serviceRequestSearch"
-                >
-                    <span aria-hidden="true">
-                        ⌕
-                    </span>
+                        <section class="service-requests-panel">
+                            <div class="service-requests-toolbar">
+                                <label class="service-request-search-control" for="serviceRequestSearch">
+                                    <span aria-hidden="true">
+                                        ⌕
+                                    </span>
 
-                    <input
-                        id="serviceRequestSearch"
-                        type="search"
-                        placeholder="Search table, customer or request"
-                        autocomplete="off"
-                    >
-                </label>
+                                    <input id="serviceRequestSearch" type="search"
+                                        placeholder="Search table, customer or request" autocomplete="off">
+                                </label>
 
-                <select
-                    id="serviceRequestStatusFilter"
-                    aria-label="Filter service requests by status"
-                >
-                    <option value="all">
-                        All Statuses
-                    </option>
+                                <select id="serviceRequestStatusFilter" aria-label="Filter service requests by status">
+                                    <option value="all">
+                                        All Statuses
+                                    </option>
 
-                    <option value="New">
-                        New
-                    </option>
+                                    <option value="New">
+                                        New
+                                    </option>
 
-                    <option value="Accepted">
-                        Accepted
-                    </option>
+                                    <option value="Accepted">
+                                        Accepted
+                                    </option>
 
-                    <option value="Completed">
-                        Completed
-                    </option>
+                                    <option value="Completed">
+                                        Completed
+                                    </option>
 
-                    <option value="Cancelled">
-                        Cancelled
-                    </option>
-                </select>
+                                    <option value="Cancelled">
+                                        Cancelled
+                                    </option>
+                                </select>
 
-                <select
-                    id="serviceRequestTypeFilter"
-                    aria-label="Filter service requests by type"
-                >
-                    <option value="all">
-                        All Request Types
-                    </option>
+                                <select id="serviceRequestTypeFilter" aria-label="Filter service requests by type">
+                                    <option value="all">
+                                        All Request Types
+                                    </option>
 
-                    <option value="Waiter">
-                        Call Waiter
-                    </option>
+                                    <option value="Waiter">
+                                        Call Waiter
+                                    </option>
 
-                    <option value="Water">
-                        Water
-                    </option>
+                                    <option value="Water">
+                                        Water
+                                    </option>
 
-                    <option value="Bill">
-                        Request Bill
-                    </option>
+                                    <option value="Bill">
+                                        Request Bill
+                                    </option>
 
-                    <option value="Cleaning">
-                        Clean Table
-                    </option>
+                                    <option value="Cleaning">
+                                        Clean Table
+                                    </option>
 
-                    <option value="Other">
-                        Other Help
-                    </option>
-                </select>
+                                    <option value="Other">
+                                        Other Help
+                                    </option>
+                                </select>
 
-                <select
-                    id="serviceRequestSort"
-                    aria-label="Sort service requests"
-                >
-                    <option value="oldest">
-                        Oldest First
-                    </option>
+                                <select id="serviceRequestSort" aria-label="Sort service requests">
+                                    <option value="oldest">
+                                        Oldest First
+                                    </option>
 
-                    <option value="newest">
-                        Newest First
-                    </option>
+                                    <option value="newest">
+                                        Newest First
+                                    </option>
 
-                    <option value="urgent">
-                        Longest Waiting
-                    </option>
-                </select>
-            </div>
+                                    <option value="urgent">
+                                        Longest Waiting
+                                    </option>
+                                </select>
+                            </div>
 
-            <div class="service-requests-results-row">
-                <strong id="serviceRequestVisibleCount">
-                    0 requests
-                </strong>
+                            <div class="service-requests-results-row">
+                                <strong id="serviceRequestVisibleCount">
+                                    0 requests
+                                </strong>
 
-                <span id="serviceRequestActiveFilter">
-                    Showing all service requests
-                </span>
-            </div>
+                                <span id="serviceRequestActiveFilter">
+                                    Showing all service requests
+                                </span>
+                            </div>
 
-            <div
-                class="service-request-board"
-                id="serviceRequestBoard"
-            >
-                <section class="service-request-column">
-                    <header>
-                        <div>
-                            <span class="service-request-column-dot new"></span>
+                            <div class="service-request-board" id="serviceRequestBoard">
+                                <section class="service-request-column">
+                                    <header>
+                                        <div>
+                                            <span class="service-request-column-dot new"></span>
 
-                            <h3>
-                                New
-                            </h3>
-                        </div>
+                                            <h3>
+                                                New
+                                            </h3>
+                                        </div>
 
-                        <strong id="serviceRequestNewColumnCount">
-                            0
-                        </strong>
-                    </header>
+                                        <strong id="serviceRequestNewColumnCount">
+                                            0
+                                        </strong>
+                                    </header>
 
-                    <div
-                        class="service-request-column-body"
-                        id="serviceRequestNewList"
-                    ></div>
+                                    <div class="service-request-column-body" id="serviceRequestNewList"></div>
+                                </section>
+
+                                <section class="service-request-column">
+                                    <header>
+                                        <div>
+                                            <span class="service-request-column-dot accepted"></span>
+
+                                            <h3>
+                                                Accepted
+                                            </h3>
+                                        </div>
+
+                                        <strong id="serviceRequestAcceptedColumnCount">
+                                            0
+                                        </strong>
+                                    </header>
+
+                                    <div class="service-request-column-body" id="serviceRequestAcceptedList"></div>
+                                </section>
+
+                                <section class="service-request-column">
+                                    <header>
+                                        <div>
+                                            <span class="service-request-column-dot completed"></span>
+
+                                            <h3>
+                                                Completed
+                                            </h3>
+                                        </div>
+
+                                        <strong id="serviceRequestCompletedColumnCount">
+                                            0
+                                        </strong>
+                                    </header>
+
+                                    <div class="service-request-column-body" id="serviceRequestCompletedList"></div>
+                                </section>
+                            </div>
+
+                            <div class="history-empty service-requests-empty" id="serviceRequestsEmpty" hidden>
+                                <h3>
+                                    No service requests found
+                                </h3>
+
+                                <p>
+                                    Customer requests will appear here automatically.
+                                </p>
+                            </div>
+                        </section>
+                    </section>
                 </section>
-
-                <section class="service-request-column">
-                    <header>
-                        <div>
-                            <span class="service-request-column-dot accepted"></span>
-
-                            <h3>
-                                Accepted
-                            </h3>
-                        </div>
-
-                        <strong id="serviceRequestAcceptedColumnCount">
-                            0
-                        </strong>
-                    </header>
-
-                    <div
-                        class="service-request-column-body"
-                        id="serviceRequestAcceptedList"
-                    ></div>
-                </section>
-
-                <section class="service-request-column">
-                    <header>
-                        <div>
-                            <span class="service-request-column-dot completed"></span>
-
-                            <h3>
-                                Completed
-                            </h3>
-                        </div>
-
-                        <strong id="serviceRequestCompletedColumnCount">
-                            0
-                        </strong>
-                    </header>
-
-                    <div
-                        class="service-request-column-body"
-                        id="serviceRequestCompletedList"
-                    ></div>
-                </section>
-            </div>
-
-            <div
-                class="history-empty service-requests-empty"
-                id="serviceRequestsEmpty"
-                hidden
-            >
-                <h3>
-                    No service requests found
-                </h3>
-
-                <p>
-                    Customer requests will appear here automatically.
-                </p>
-            </div>
-        </section>
-    </section>
-</section>
                 <section aria-label="Restaurant Settings" class="admin-workspace settings-workspace"
                     data-workspace-view="settings" hidden>
                     <details class="collapsible-section settings-shell" id="restaurantSettings" open>
@@ -1924,56 +1904,537 @@
                         </div>
                     </details>
                 </section>
-            </main>
-        </div>
-    </div>
-    <script src="../js/shared.js">
-    </script>
-    <script src="../js/restaurant-settings.js?v=2"></script>
-    <script src="../js/restaurant-floor.js">
-    </script>
-    <script src="../js/billing.js?v=2">
-    </script>
-    <script src="../js/payment-records.js?v=3">
-    </script>
-    <script src="../js/analytics.js?v=5">
-    </script>
-    <script src="../js/order-history.js?v=2">
-    </script>
-   <script src="../js/menu-management.js?v=2"></script>
+              <section
+    class="admin-workspace staff-workspace"
+    data-workspace-view="staff"
+    hidden
+>
+    <section class="staff-shell">
 
+        <section class="staff-hero">
+            <div>
+                <span class="dashboard-eyebrow">
+                    Team Management
+                </span>
+
+                <h2>
+                    Staff Management
+                </h2>
+
+                <p>
+                    Manage restaurant employees, assign roles and control system access.
+                </p>
+            </div>
+
+            <button
+                class="primary-button"
+                id="addStaffButton"
+                type="button"
+            >
+                + Add Staff
+            </button>
+        </section>
+
+        <section class="staff-summary-grid">
+
+            <article class="dashboard-kpi-card">
+                <small>Total Staff</small>
+                <strong id="staffTotalCount">0</strong>
+            </article>
+
+            <article class="dashboard-kpi-card">
+                <small>Active</small>
+                <strong id="staffActiveCount">0</strong>
+            </article>
+
+            <article class="dashboard-kpi-card">
+                <small>Managers</small>
+                <strong id="staffManagerCount">0</strong>
+            </article>
+
+            <article class="dashboard-kpi-card">
+                <small>Kitchen</small>
+                <strong id="staffKitchenCount">0</strong>
+            </article>
+
+        </section>
+
+        <section class="staff-toolbar">
+
+            <input
+                id="staffSearch"
+                type="search"
+                placeholder="Search staff"
+                autocomplete="off"
+            >
+
+            <select id="staffRoleFilter">
+                <option value="all">All Roles</option>
+                <option value="Owner">Owner</option>
+                <option value="Manager">Manager</option>
+                <option value="Kitchen">Kitchen</option>
+                <option value="Cashier">Cashier</option>
+                <option value="Waiter">Waiter</option>
+            </select>
+
+        </section>
+
+        <div class="staff-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="staffTableBody"></tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <!-- ADD / EDIT STAFF MODAL -->
+    <div
+        class="staff-modal"
+        id="staffModal"
+        aria-hidden="true"
+    >
+        <div
+            class="staff-modal-overlay"
+            id="staffModalOverlay"
+        ></div>
+
+        <section
+            class="staff-modal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="staffModalTitle"
+        >
+            <div class="staff-modal-header">
+
+                <div>
+                    <span class="dashboard-eyebrow">
+                        Staff account
+                    </span>
+
+                    <h2 id="staffModalTitle">
+                        Add Staff
+                    </h2>
+
+                    <p>
+                        Create a staff login and assign system access.
+                    </p>
+                </div>
+
+                <button
+                    id="closeStaffModal"
+                    class="bill-modal-close"
+                    type="button"
+                    aria-label="Close"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+            <form
+                id="staffForm"
+                class="staff-form"
+                novalidate
+            >
+                <input
+                    id="staffEditingId"
+                    type="hidden"
+                >
+
+                <div class="staff-form-grid">
+
+                    <label>
+                        <span>Full Name</span>
+
+                        <input
+                            id="staffName"
+                            type="text"
+                            required
+                            placeholder="Example: Ahmed Ali"
+                        >
+                    </label>
+
+                    <label>
+                        <span>Phone</span>
+
+                        <input
+                            id="staffPhone"
+                            type="tel"
+                            placeholder="+966 5X XXX XXXX"
+                        >
+                    </label>
+
+                    <label>
+                        <span>Username</span>
+
+                        <input
+                            id="staffUsername"
+                            type="text"
+                            required
+                            autocomplete="off"
+                            placeholder="Example: ahmed"
+                        >
+                    </label>
+
+                    <label>
+                        <span>Password</span>
+
+                        <input
+                            id="staffPassword"
+                            type="password"
+                            required
+                            minlength="4"
+                            autocomplete="new-password"
+                            placeholder="Minimum 4 characters"
+                        >
+                    </label>
+
+                    <label>
+                        <span>Role</span>
+
+                        <select
+                            id="staffRole"
+                            required
+                        >
+                            <option value="">
+                                Select role
+                            </option>
+
+                            <option value="Manager">
+                                Manager
+                            </option>
+
+                            <option value="Kitchen">
+                                Kitchen
+                            </option>
+
+                            <option value="Cashier">
+                                Cashier
+                            </option>
+
+                            <option value="Waiter">
+                                Waiter
+                            </option>
+                        </select>
+                    </label>
+
+                    <label class="staff-active-field">
+                        <input
+                            id="staffActive"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span>
+                            Active staff account
+                        </span>
+                    </label>
+
+                </div>
+
+                <div
+                    id="staffFormMessage"
+                    class="staff-form-message"
+                ></div>
+
+                <div class="staff-form-actions">
+
+                    <button
+                        id="cancelStaffButton"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+                        Save Staff
+                    </button>
+
+                </div>
+
+            </form>
+        </section>
+    </div>
+
+</section>
+<section
+    class="admin-workspace qr-generator-workspace"
+    data-workspace-view="qr-generator"
+    hidden
+>
+
+    <section class="qr-shell">
+
+        <section class="qr-hero">
+
+            <div>
+
+                <span class="dashboard-eyebrow">
+                    QR Management
+                </span>
+
+                <h2>
+                    QR Generator
+                </h2>
+
+                <p>
+                    Generate printable QR codes for every restaurant table.
+                </p>
+
+            </div>
+
+            <button
+                id="generateAllQrButton"
+                class="primary-button"
+                type="button">
+
+                Generate All QR Codes
+
+            </button>
+
+        </section>
+
+        <section class="dashboard-kpi-grid">
+
+            <article class="dashboard-kpi-card">
+
+                <small>Total Tables</small>
+
+                <strong id="qrTotalTables">
+                    0
+                </strong>
+
+            </article>
+
+            <article class="dashboard-kpi-card">
+
+                <small>QR Generated</small>
+
+                <strong id="qrGeneratedCount">
+                    0
+                </strong>
+
+            </article>
+
+        </section>
+
+        <section
+            id="qrTableGrid"
+            class="restaurant-floor-grid">
+
+        </section>
+
+    </section>
+<div
+    class="qr-modal"
+    id="qrModal"
+    aria-hidden="true"
+>
+    <div
+        class="qr-modal-overlay"
+        id="qrModalOverlay"
+    ></div>
+
+    <section
+        class="qr-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="qrModalTitle"
+    >
+        <div class="qr-modal-header">
+            <div>
+                <span class="dashboard-eyebrow">
+                    Printable table QR
+                </span>
+
+                <h2 id="qrModalTitle">
+                    Table QR Code
+                </h2>
+
+                <p>
+                    Customers can scan this code to open the menu.
+                </p>
+            </div>
+
+            <button
+                id="closeQrModal"
+                class="bill-modal-close"
+                type="button"
+                aria-label="Close QR preview"
+            >
+                &times;
+            </button>
+        </div>
+
+        <div
+            class="qr-print-card"
+            id="qrPrintCard"
+        >
+            <div class="qr-print-brand">
+                <div class="qr-print-logo">
+                    TT
+                </div>
+
+                <div>
+                    <strong id="qrRestaurantName">
+                        TableTap Restaurant
+                    </strong>
+
+                    <small>
+                        Scan to view the menu
+                    </small>
+                </div>
+            </div>
+
+            <div
+                class="qr-code-box"
+                id="qrCodeBox"
+            ></div>
+
+            <div class="qr-table-information">
+                <span>
+                    Your table
+                </span>
+
+                <h3 id="qrTableName">
+                    Table
+                </h3>
+
+                <p id="qrTableCode">
+                    Table code
+                </p>
+            </div>
+
+            <p
+                class="qr-menu-url"
+                id="qrMenuUrl"
+            ></p>
+        </div>
+
+        <div class="qr-modal-actions">
+            <button
+                id="downloadQrButton"
+                class="secondary-button"
+                type="button"
+            >
+                Download PNG
+            </button>
+
+            <button
+                id="printQrButton"
+                class="primary-button"
+                type="button"
+            >
+                Print QR
+            </button>
+        </div>
+    </section>
+</div>
+</section>
+</main>
+</div>
+</div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/restaurant-settings.js?v=2"></script>
+<script src="../js/restaurant-floor.js"></script>
+<script src="../js/billing.js?v=2"></script>
+<script src="../js/payment-records.js?v=3"></script>
+<script src="../js/analytics.js?v=5"></script>
+<script src="../js/order-history.js?v=2"></script>
+<script src="../js/menu-management.js?v=2"></script>
 <script src="../js/waiter-requests-admin.js?v=1"></script>
 
+<!-- Your file is named staff.js -->
+<script src="../js/staff.js?v=1"></script>
+<script src="../js/qr-generator.js?v=1"></script>
 <script src="../js/admin-navigation.js"></script>
-
 <script src="../js/admin.js"></script>
-    </script>
-    <script src="../js/admin.js">
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+
+<script>
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            TableTapAuth.requireLogin();
+
+            TableTapAuth.requireRole([
+                "Owner",
+                "Manager"
+            ]);
+
             initAdminNavigation();
 
-            const settings = JSON.parse(localStorage.getItem("tableTapSettings")) || {};
-            const restaurantName = settings.restaurantName || "Green & Red Restaurant";
-            const branchName = settings.branchName || "Main Branch";
+            const settings =
+                JSON.parse(
+                    localStorage.getItem(
+                        "tableTapSettings"
+                    )
+                ) || {};
 
-            const sidebarRestaurantName = document.getElementById("sidebarRestaurantName");
-            const sidebarBranchName = document.getElementById("sidebarBranchName");
-            const adminCurrentDate = document.getElementById("adminCurrentDate");
+            const restaurantName =
+                settings.restaurantName ||
+                "Green & Red Restaurant";
 
-            if (sidebarRestaurantName) sidebarRestaurantName.textContent = restaurantName;
-            if (sidebarBranchName) sidebarBranchName.textContent = branchName;
+            const branchName =
+                settings.branchName ||
+                "Main Branch";
+
+            const sidebarRestaurantName =
+                document.getElementById(
+                    "sidebarRestaurantName"
+                );
+
+            const sidebarBranchName =
+                document.getElementById(
+                    "sidebarBranchName"
+                );
+
+            const adminCurrentDate =
+                document.getElementById(
+                    "adminCurrentDate"
+                );
+
+            if (sidebarRestaurantName) {
+                sidebarRestaurantName.textContent =
+                    restaurantName;
+            }
+
+            if (sidebarBranchName) {
+                sidebarBranchName.textContent =
+                    branchName;
+            }
 
             if (adminCurrentDate) {
-                adminCurrentDate.textContent = new Intl.DateTimeFormat("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric"
-                }).format(new Date());
+                adminCurrentDate.textContent =
+                    new Intl.DateTimeFormat(
+                        "en-GB",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    ).format(new Date());
             }
-        });
-    </script>
-</body>
 
+        }
+    );
+</script>
+
+</body>
 </html>

@@ -4,33 +4,19 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="theme-color"
-        content="#7f1117"
-    >
+    <meta name="theme-color" content="#7f1117">
 
     <title>Order Summary</title>
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
     <style>
         :root {
@@ -59,11 +45,9 @@
             font-family: "DM Sans", Arial, Helvetica, sans-serif;
             color: var(--text);
             background:
-                radial-gradient(
-                    circle at top right,
+                radial-gradient(circle at top right,
                     rgba(213, 170, 49, 0.12),
-                    transparent 32%
-                ),
+                    transparent 32%),
                 var(--background);
         }
 
@@ -74,11 +58,9 @@
             overflow: hidden;
             color: white;
             background:
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     var(--primary-dark),
-                    var(--primary)
-                );
+                    var(--primary));
         }
 
         .page-header::after {
@@ -337,11 +319,9 @@
             border: none;
             color: white;
             background:
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     var(--primary),
-                    var(--primary-dark)
-                );
+                    var(--primary-dark));
             box-shadow: 0 12px 28px rgba(139, 17, 23, 0.23);
         }
 
@@ -411,17 +391,11 @@
 
             <div class="restaurant-brand">
 
-                <div
-                    id="restaurantLogo"
-                    class="restaurant-logo"
-                >
+                <div id="restaurantLogo" class="restaurant-logo">
                     🍽️
                 </div>
 
-                <div
-                    id="restaurantName"
-                    class="restaurant-name"
-                >
+                <div id="restaurantName" class="restaurant-name">
                     Restaurant
                 </div>
 
@@ -453,19 +427,13 @@
 
         </section>
 
-        <section
-            id="customerInfo"
-            class="info-card"
-        ></section>
+        <section id="customerInfo" class="info-card"></section>
 
         <h2 class="order-section-title">
             Your items
         </h2>
 
-        <section
-            id="orderItems"
-            class="order-items"
-        ></section>
+        <section id="orderItems" class="order-items"></section>
 
         <section class="pricing-card">
 
@@ -503,19 +471,11 @@
 
         <div class="button-group">
 
-            <button
-                id="backToMenu"
-                class="back-button"
-                type="button"
-            >
+            <button id="backToMenu" class="back-button" type="button">
                 ← Back to Menu
             </button>
 
-            <button
-                id="placeOrder"
-                class="place-order-button"
-                type="button"
-            >
+            <button id="placeOrder" class="place-order-button" type="button">
                 Place Order →
             </button>
 
@@ -721,7 +681,19 @@
                     );
                     return;
                 }
+                const scannedTable =
+                    localStorage.getItem(
+                        "tableTapCurrentTable"
+                    );
 
+                if (scannedTable) {
+                    customer.table = scannedTable;
+
+                    localStorage.setItem(
+                        "tableTapCustomer",
+                        JSON.stringify(customer)
+                    );
+                }
                 if (
                     !customer.name ||
                     !customer.phone ||

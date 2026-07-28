@@ -1,3 +1,20 @@
+/* ==========================================
+   TABLE FROM QR
+========================================== */
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const currentTable =
+    urlParams.get("table") ||
+    localStorage.getItem("tableTapCurrentTable");
+
+if (currentTable) {
+    localStorage.setItem(
+        "tableTapCurrentTable",
+        currentTable
+    );
+}
+
 const defaultRestaurantSettings = {
     restaurantName: "Green & Red Restaurant",
     currency: "SAR",
